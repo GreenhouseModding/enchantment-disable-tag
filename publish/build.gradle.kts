@@ -16,7 +16,7 @@ publishMods {
     type = STABLE
 
     val curseForgeProjectId = "1012987"
-    val modrinthProjectId = "1012987"
+    val modrinthProjectId = "P7SsQE5n"
 
     val neoForgeLoaders = listOf("neoforge")
     val fabricLoaders = listOf("fabric", "quilt")
