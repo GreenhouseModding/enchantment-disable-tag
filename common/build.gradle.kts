@@ -11,9 +11,8 @@ val mixin_extras_version: String by project
 minecraft {
     version(minecraft_version)
     val aw = file("src/main/resources/${mod_id}.accesswidener")
-    if(aw.exists()){
+    if (aw.exists())
         accessWideners(aw)
-    }
 }
 
 dependencies {

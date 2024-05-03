@@ -28,9 +28,8 @@ dependencies {
 
 loom {
     val aw = project(":common").file("src/main/resources/${mod_id}.accesswidener");
-    if (aw.exists()) {
+    if (aw.exists())
         accessWidenerPath.set(aw)
-    }
     mixin {
         defaultRefmapName.set("${mod_id}.refmap.json")
     }
