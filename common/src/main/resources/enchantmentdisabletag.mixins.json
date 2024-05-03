@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.example.examplemod.mixin",
+  "refmap": "${mod_id}.refmap.json",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "EnchantmentHelperMixin",
+    "EnchantRandomlyFunctionMixin",
+    "ItemEnchantmentsMixin",
+    "ItemEnchantmentsMutableMixin",
+    "MappedRegistryMixin",
+    "ResourceArgumentMixin",
+    "VillagerTradesEnchantBookForEmeraldsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
+

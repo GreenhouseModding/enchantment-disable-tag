@@ -3,34 +3,29 @@
     "id": "${mod_id}",
     "version": "${version}",
     "name": "${mod_name}",
-    "description": "${description}",
+    "description": "${mod_description}",
     "authors": [
-        "${mod_author}"
+        "Greenhouse Team"
+    ],
+    "contributors": [
+        "MerchantPug"
     ],
     "contact": {
-        "homepage": "https://fabricmc.net/",
-        "sources": "https://github.com/FabricMC/fabric-example-mod"
+        "homepage": "https://modrinth.com/project/enchantment-disable-tag/",
+        "sources": "https://github.com/GreenhouseTeam/enchantment-disable-tag",
+        "issues": "https://github.com/GreenhouseTeam/enchantment-disable-tag/issues"
     },
-    "license": "${license}",
+    "license": "${mod_license}",
     "icon": "${mod_id}.png",
-    "environment": "*",
-    "entrypoints": {
-        "main": [
-            "com.example.examplemod.ExampleMod"
-        ]
-    },
+    "environment": "server",
     "mixins": [
-        "${mod_id}.mixins.json",
-        "${mod_id}.fabric.mixins.json"
+        "${mod_id}.mixins.json"
     ],
+    "accessWidener": "${mod_id}.accesswidener",
     "depends": {
-        "fabricloader": ">=${fabric_loader_version}",
+        "fabricloader": ">=0.15",
         "fabric-api": "*",
         "minecraft": "${minecraft_version}",
         "java": ">=${java_version}"
-    },
-    "suggests": {
-        "another-mod": "*"
     }
 }
-  

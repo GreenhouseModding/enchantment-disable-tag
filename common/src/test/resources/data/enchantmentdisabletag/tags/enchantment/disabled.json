@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:bane_of_arthropods",
+    "minecraft:sharpness",
+    "minecraft:smite"
+  ]
+}
