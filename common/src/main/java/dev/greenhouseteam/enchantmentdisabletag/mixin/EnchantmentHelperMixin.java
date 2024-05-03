@@ -1,6 +1,6 @@
-package com.example.examplemod.mixin;
+package dev.greenhouseteam.enchantmentdisabletag.mixin;
 
-import com.example.examplemod.access.ItemEnchantmentsMutableAccess;
+import dev.greenhouseteam.enchantmentdisabletag.access.ItemEnchantmentsMutableAccess;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;

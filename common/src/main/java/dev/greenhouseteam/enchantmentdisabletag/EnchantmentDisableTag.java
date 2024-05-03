@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package dev.greenhouseteam.enchantmentdisabletag;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -7,7 +7,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EnchantmentDisabledTag {    public static final String MOD_ID = "enchantmentdisabledtag";
+public class EnchantmentDisableTag {    public static final String MOD_ID = "enchantmentdisabledtag";
     public static final String MOD_NAME = "Enchantment Disabled Tag";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 

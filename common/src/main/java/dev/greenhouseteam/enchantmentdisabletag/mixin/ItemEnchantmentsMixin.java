@@ -1,7 +1,7 @@
-package com.example.examplemod.mixin;
+package dev.greenhouseteam.enchantmentdisabletag.mixin;
 
-import com.example.examplemod.EnchantmentDisabledTag;
-import com.example.examplemod.access.ItemEnchantmentsAccess;
+import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTag;
+import dev.greenhouseteam.enchantmentdisabletag.access.ItemEnchantmentsAccess;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -34,11 +34,11 @@ public abstract class ItemEnchantmentsMixin implements ItemEnchantmentsAccess {
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void enchantmentdisabletag$validateEnchantmentsInCodec(CallbackInfo ci) {
         CODEC = CODEC.flatXmap(itemEnchantments -> {
-            List<Holder<Enchantment>> disabledHolders = new ArrayList<>(itemEnchantments.keySet().stream().filter(holder -> holder.is(EnchantmentDisabledTag.DISABLED_ENCHANTMENT_TAG)).toList());
+            List<Holder<Enchantment>> disabledHolders = new ArrayList<>(itemEnchantments.keySet().stream().filter(holder -> holder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)).toList());
             if (!disabledHolders.isEmpty()) {
                 Object2IntOpenHashMap<Holder<Enchantment>> potentialNewMap = new Object2IntOpenHashMap<>();
                 for (Object2IntMap.Entry<Holder<Enchantment>> entry : itemEnchantments.entrySet()) {
-                    if (!entry.getKey().is(EnchantmentDisabledTag.DISABLED_ENCHANTMENT_TAG))
+                    if (!entry.getKey().is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG))
                         potentialNewMap.addTo(entry.getKey(), entry.getIntValue());
                 }
                 var newItemEnchantments = new ItemEnchantments(potentialNewMap, ((ItemEnchantmentsMixin) (Object) itemEnchantments).enchantmentdisabletag$getShowInTooltip());
@@ -63,7 +63,7 @@ public abstract class ItemEnchantmentsMixin implements ItemEnchantmentsAccess {
     @Override
     public void enchantmentdisabletag$validate() {
         for (Object2IntMap.Entry<Holder<Enchantment>> entry : this.enchantments.object2IntEntrySet()) {
-            if (entry.getKey().is(EnchantmentDisabledTag.DISABLED_ENCHANTMENT_TAG)) {
+            if (entry.getKey().is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)) {
                 this.enchantments.remove(entry, entry.getIntValue());
             }
         }

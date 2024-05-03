@@ -5,13 +5,13 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "EnchantmentHelperMixin",
-    "EnchantRandomlyFunctionMixin",
-    "ItemEnchantmentsMixin",
-    "ItemEnchantmentsMutableMixin",
-    "MappedRegistryMixin",
-    "ResourceArgumentMixin",
-    "VillagerTradesEnchantBookForEmeraldsMixin"
+    "dev.greenhouseteam.enchantmentdisabletag.mixin.EnchantmentHelperMixin",
+    "dev.greenhouseteam.enchantmentdisabletag.mixin.EnchantRandomlyFunctionMixin",
+    "dev.greenhouseteam.enchantmentdisabletag.mixin.ItemEnchantmentsMixin",
+    "dev.greenhouseteam.enchantmentdisabletag.mixin.ItemEnchantmentsMutableMixin",
+    "dev.greenhouseteam.enchantmentdisabletag.mixin.MappedRegistryMixin",
+    "dev.greenhouseteam.enchantmentdisabletag.mixin.ResourceArgumentMixin",
+    "dev.greenhouseteam.enchantmentdisabletag.mixin.VillagerTradesEnchantBookForEmeraldsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,6 +1,6 @@
-package com.example.examplemod.mixin;
+package dev.greenhouseteam.enchantmentdisabletag.mixin;
 
-import com.example.examplemod.EnchantmentDisabledTag;
+import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTag;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -27,7 +27,7 @@ public class EnchantRandomlyFunctionMixin {
         ENCHANTMENT_SET_CODEC.xmap(holders -> {
             List<Holder<Enchantment>> enchantmentHolders = new ArrayList<>();
             for (int i = 0; i < holders.size(); ++i) {
-                if (!holders.get(i).is(EnchantmentDisabledTag.DISABLED_ENCHANTMENT_TAG))
+                if (!holders.get(i).is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG))
                     enchantmentHolders.add(holders.get(i));
             }
             return HolderSet.direct(enchantmentHolders);

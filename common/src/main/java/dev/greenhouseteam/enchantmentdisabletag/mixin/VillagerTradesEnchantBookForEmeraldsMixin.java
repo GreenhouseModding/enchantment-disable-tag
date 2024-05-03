@@ -1,6 +1,6 @@
-package com.example.examplemod.mixin;
+package dev.greenhouseteam.enchantmentdisabletag.mixin;
 
-import com.example.examplemod.EnchantmentDisabledTag;
+import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTag;
 import com.google.common.collect.ImmutableList;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
@@ -31,7 +31,7 @@ public class VillagerTradesEnchantBookForEmeraldsMixin {
     private void enchantmentdisabletag$disableFromVillagerTrades(int minLevel, int maxLevel, int villagerXp, Enchantment[] enchantments, CallbackInfo ci, @Share("shouldCancel") LocalRef<Unit> shouldCancel) {
         List<Enchantment> finalEnchantments = new ArrayList<>();
         for (Enchantment enchantment : enchantments) {
-            if (!enchantment.builtInRegistryHolder().is(EnchantmentDisabledTag.DISABLED_ENCHANTMENT_TAG))
+            if (!enchantment.builtInRegistryHolder().is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG))
                 finalEnchantments.add(enchantment);
         }
         if (finalEnchantments.isEmpty())
