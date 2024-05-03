@@ -23,3 +23,4 @@ rootProject.name = "enchantment-disable-tag"
 include("common")
 include("fabric")
 include("neoforge")
+include("publish")
