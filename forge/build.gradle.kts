@@ -26,7 +26,7 @@ minecraft {
         accessTransformer(at)
 
     runs {
-        register("client") {
+        create("client") {
             workingDirectory(project.file("run"))
 
             ideaModule("${rootProject.name}.${project.name}.test")
@@ -43,7 +43,7 @@ minecraft {
                 }
             }
         }
-        register("server") {
+        create("server") {
             workingDirectory(project.file("run"))
 
             ideaModule("${rootProject.name}.${project.name}.test")
