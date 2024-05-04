@@ -19,6 +19,7 @@ public class EnchantmentDisableTag {
     public static final TagKey<Enchantment> DISABLED_ENCHANTMENT_TAG = TagKey.create(Registries.ENCHANTMENT, asResource("disabled"));
 
     private static EnchantmentDisableTagPlatformHelper helper;
+    private static boolean reloaded = false;
 
     public static void init(EnchantmentDisableTagPlatformHelper helper) {
         EnchantmentDisableTag.helper = helper;
@@ -53,6 +54,17 @@ public class EnchantmentDisableTag {
             }
             return false;
         });
+    }
+
+    public static boolean getAndResetReloadState() {
+        boolean retValue = reloaded;
+        if (reloaded)
+            reloaded = false;
+        return retValue;
+    }
+
+    public static void setReloaded() {
+        reloaded = true;
     }
 
     public static Holder<Enchantment> getHolder(Enchantment enchantment) {

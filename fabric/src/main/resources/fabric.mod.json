@@ -26,6 +26,7 @@
     "mixins": [
         "${mod_id}.mixins.json"
     ],
+    "accessWidener": "${mod_id}.accesswidener",
     "depends": {
         "fabricloader": ">=0.14.11",
         "minecraft": ">=1.20 <=1.20.1",
