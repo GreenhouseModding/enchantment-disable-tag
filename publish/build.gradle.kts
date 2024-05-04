@@ -47,7 +47,7 @@ publishMods {
 
     curseforge("curseforgeForge") {
         file = project(":forge").tasks.getByName<Jar>("jar").archiveFile
-        displayName = "v${mod_version} (NeoForge ${minecraft_version})"
+        displayName = "v${mod_version} (Forge ${minecraft_version})"
         version = "${mod_version}+${minecraft_version}-neoforge"
 
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
@@ -58,7 +58,7 @@ publishMods {
 
     modrinth("modrinthForge") {
         file = project(":forge").tasks.getByName<Jar>("jar").archiveFile
-        displayName = "v${mod_version} (NeoForge ${minecraft_version})"
+        displayName = "v${mod_version} (Forge ${minecraft_version})"
         version = "${mod_version}+${minecraft_version}-neoforge"
 
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
@@ -82,3 +82,7 @@ publishMods {
         tagName = "${mod_version}+${minecraft_version}"
     }
 }
+
+tasks["publishCurseforgeForge"].dependsOn(project(":forge").tasks["jarJar"])
+tasks["publishModrinthForge"].dependsOn(project(":forge").tasks["jarJar"])
+tasks["publishGithub"].dependsOn(project(":forge").tasks["jarJar"])
