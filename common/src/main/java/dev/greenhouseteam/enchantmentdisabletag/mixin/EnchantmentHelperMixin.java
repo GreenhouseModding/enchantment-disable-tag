@@ -1,21 +1,19 @@
 package dev.greenhouseteam.enchantmentdisabletag.mixin;
 
-import dev.greenhouseteam.enchantmentdisabletag.access.ItemEnchantmentsMutableAccess;
-import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.world.item.ItemStack;
+import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTag;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import java.util.function.Consumer;
+import java.util.Map;
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
-    @Inject(method = "updateEnchantments", at = @At(value = "INVOKE", target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V"))
-    private static void enchantmentdisabletag$filterOutDisabledEnchantments(ItemStack stack, Consumer<ItemEnchantments.Mutable> consumer, CallbackInfoReturnable<ItemEnchantments> cir, @Local ItemEnchantments.Mutable mutable) {
-        ((ItemEnchantmentsMutableAccess)mutable).enchantmentdisabletag$setToValidate();
+    @ModifyVariable(method = "setEnchantments", at = @At("HEAD"), argsOnly = true)
+    private static Map<Enchantment, Integer> enchantmentdisabletag$removeFromEnchantmentSetting(Map<Enchantment, Integer> original) {
+        original.keySet().removeIf(enchantment -> EnchantmentDisableTag.getHolder(enchantment).is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG));
+        return original;
     }
 }

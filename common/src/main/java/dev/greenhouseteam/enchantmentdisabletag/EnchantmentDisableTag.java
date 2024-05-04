@@ -1,43 +1,60 @@
 package dev.greenhouseteam.enchantmentdisabletag;
 
+import dev.greenhouseteam.enchantmentdisabletag.platform.EnchantmentDisableTagPlatformHelper;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 
-import java.util.Map;
+import java.util.Optional;
 
 public class EnchantmentDisableTag {
     public static final String MOD_ID = "enchantmentdisabletag";
 
     public static final TagKey<Enchantment> DISABLED_ENCHANTMENT_TAG = TagKey.create(Registries.ENCHANTMENT, asResource("disabled"));
 
+    private static EnchantmentDisableTagPlatformHelper helper;
+
+    public static void init(EnchantmentDisableTagPlatformHelper helper) {
+        EnchantmentDisableTag.helper = helper;
+    }
+
+    public static EnchantmentDisableTagPlatformHelper getHelper() {
+        return helper;
+    }
+
     public static void removeDisabledEnchantments(ItemStack stack) {
-        if (stack.has(DataComponents.ENCHANTMENTS)) {
-            ItemEnchantments.Mutable itemEnchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
-            for (Map.Entry<Holder<Enchantment>, Integer> entry : stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).entrySet())
-                if (entry.getKey().isBound() && !entry.getKey().is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG))
-                    itemEnchantments.set(entry.getKey().value(), entry.getValue());
-            if (itemEnchantments.keySet().isEmpty())
-                stack.remove(DataComponents.ENCHANTMENTS);
-            else
-                stack.set(DataComponents.ENCHANTMENTS, itemEnchantments.toImmutable());
-        }
-        if (stack.has(DataComponents.STORED_ENCHANTMENTS)) {
-            ItemEnchantments.Mutable itemEnchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
-            for (Map.Entry<Holder<Enchantment>, Integer> entry : stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).entrySet())
-                if (entry.getKey().isBound() && !entry.getKey().is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG))
-                    itemEnchantments.set(entry.getKey().value(), entry.getValue());
-            if (itemEnchantments.keySet().isEmpty())
-                stack.set(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
-            else
-                stack.set(DataComponents.STORED_ENCHANTMENTS, itemEnchantments.toImmutable());
-        }
+        if (stack.getTag() == null)
+            return;
+        if (stack.getTag().contains("Enchantments", Tag.TAG_LIST))
+            removeDisabledEnchantments(stack.getTag().getList("Enchantments", Tag.TAG_COMPOUND));
+        if (stack.getTag().contains("StoredEnchantments", Tag.TAG_LIST))
+            removeDisabledEnchantments(stack.getTag().getList("StoredEnchantments", Tag.TAG_COMPOUND));
+    }
+
+    public static void removeDisabledEnchantments(ListTag list) {
+        if (list == null)
+            return;
+        list.removeIf(tag -> {
+            if (!(tag instanceof CompoundTag compoundTag))
+                return false;
+            if (compoundTag.contains("id", Tag.TAG_STRING)) {
+                Holder<Enchantment> enchantmentHolder = EnchantmentDisableTag.getHolder(BuiltInRegistries.ENCHANTMENT.get(new ResourceLocation(compoundTag.getString("id"))));
+                return enchantmentHolder != null && enchantmentHolder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG);
+            }
+            return false;
+        });
+    }
+
+    public static Holder<Enchantment> getHolder(Enchantment enchantment) {
+        return helper.getHolder(enchantment).orElse(null);
     }
 
     public static ResourceLocation asResource(String path) {

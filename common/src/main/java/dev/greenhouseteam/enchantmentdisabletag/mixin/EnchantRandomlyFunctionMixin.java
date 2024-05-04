@@ -4,6 +4,7 @@ import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTag;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import org.spongepowered.asm.mixin.Final;
@@ -20,17 +21,12 @@ import java.util.function.Function;
 
 @Mixin(EnchantRandomlyFunction.class)
 public class EnchantRandomlyFunctionMixin {
-    @Shadow @Mutable @Final private static Codec<HolderSet<Enchantment>> ENCHANTMENT_SET_CODEC;
 
-    @Inject(method = "<clinit>", at = @At("TAIL"))
-    private static void enchantmentdisabletag$modifyEnchantmentSetCodec(CallbackInfo ci) {
-        ENCHANTMENT_SET_CODEC.xmap(holders -> {
-            List<Holder<Enchantment>> enchantmentHolders = new ArrayList<>();
-            for (int i = 0; i < holders.size(); ++i) {
-                if (!holders.get(i).is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG))
-                    enchantmentHolders.add(holders.get(i));
-            }
-            return HolderSet.direct(enchantmentHolders);
-        }, Function.identity());
+    @Shadow @Mutable @Final
+    List<Enchantment> enchantments;
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void enchantmentdisabletag$modifyEnchantmentList(CallbackInfo ci) {
+        enchantments = enchantments.stream().filter(enchantment -> !EnchantmentDisableTag.getHolder(enchantment).is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)).toList();
     }
 }

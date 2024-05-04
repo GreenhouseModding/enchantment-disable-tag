@@ -5,13 +5,7 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "EnchantedBookItemMixin",
-    "EnchantmentHelperMixin",
-    "EnchantRandomlyFunctionMixin",
-    "ItemStackMixin",
-    "MappedRegistryMixin",
-    "ResourceArgumentMixin",
-    "SlotMixin"
+    "forge.ForgeRegistryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

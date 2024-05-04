@@ -78,8 +78,9 @@ tasks {
     val fabric_loader_version: String by project
     val license: String by project
     val mod_description: String by project
-    val neoforge_version: String by project
-    val neoforge_loader_version_range: String by project
+    val forge_version: String by project
+    val forge_loader_version_range: String by project
+    val forge_version_range: String by project
 
     val expandProps = mapOf(
         "version" to version,
@@ -92,13 +93,14 @@ tasks {
         "mod_id" to mod_id,
         "mod_license" to license,
         "mod_description" to mod_description,
-        "neoforge_version" to neoforge_version,
-        "neoforge_loader_version_range" to neoforge_loader_version_range,
+        "forge_version" to forge_version,
+        "forge_loader_version_range" to forge_loader_version_range,
+        "forge_version_range" to forge_version_range,
         "java_version" to java_version
     )
     named<ProcessResources>("processResources").configure {
         inputs.properties(expandProps)
-        filesMatching(setOf("fabric.mod.json", "META-INF/neoforge.mods.toml", "*.mixins.json")) {
+        filesMatching(setOf("fabric.mod.json", "META-INF/mods.toml", "*.mixins.json")) {
             expand(expandProps)
         }
     }

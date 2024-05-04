@@ -7,6 +7,7 @@ val fabric_loader_version: String by project
 val fabric_version: String by project
 val minecraft_version: String by project
 val modmenu_version: String by project
+val mixin_extras_version: String by project
 val mod_id: String by project
 
 repositories {
@@ -22,6 +23,10 @@ dependencies {
 
     modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
+
+    include("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")
+    implementation("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")
+    annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")
 
     modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
 }

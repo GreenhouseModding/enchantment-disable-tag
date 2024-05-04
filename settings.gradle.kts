@@ -2,8 +2,8 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
-        maven("https://maven.neoforged.net/releases") {
-            name = "NeoForged"
+        maven("https://maven.minecraftforge.net") {
+            name = "Forge"
         }
         maven("https://maven.fabricmc.net/") {
             name = "Fabric"
@@ -22,5 +22,5 @@ plugins {
 rootProject.name = "enchantment-disable-tag"
 include("common")
 include("fabric")
-include("neoforge")
+include("forge")
 include("publish")

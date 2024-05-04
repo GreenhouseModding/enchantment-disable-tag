@@ -28,8 +28,6 @@ public abstract class MappedRegistryMixin<T> {
 
     @Shadow public abstract ResourceKey<? extends Registry<T>> key();
 
-    @Shadow public abstract Optional<Holder.Reference<T>> getHolder(ResourceLocation resourceLocation);
-
     @Shadow public abstract Optional<Holder.Reference<T>> getHolder(ResourceKey<T> resourceKey);
 
     @ModifyArg(method = "keySet", at = @At(value = "INVOKE", target = "Ljava/util/Collections;unmodifiableSet(Ljava/util/Set;)Ljava/util/Set;"))
@@ -38,7 +36,7 @@ public abstract class MappedRegistryMixin<T> {
             return original;
 
         return original.stream().filter(t -> {
-            var optionalHolder = this.getHolder(t);
+            var optionalHolder = this.getHolder((ResourceKey<T>) ResourceKey.create(Registries.ENCHANTMENT, t));
             return optionalHolder.isEmpty() || !optionalHolder.get().is((TagKey<T>) EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG);
         }).collect(Collectors.toSet());
     }

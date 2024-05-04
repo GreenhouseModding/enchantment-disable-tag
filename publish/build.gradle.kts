@@ -6,7 +6,7 @@ plugins {
 
 evaluationDependsOn(":common")
 evaluationDependsOn(":fabric")
-evaluationDependsOn(":neoforge")
+evaluationDependsOn(":forge")
 
 val mod_version: String by project
 val minecraft_version: String by project
@@ -18,10 +18,10 @@ publishMods {
     val curseForgeProjectId = "1012987"
     val modrinthProjectId = "P7SsQE5n"
 
-    val neoForgeLoaders = listOf("neoforge")
+    val neoForgeLoaders = listOf("forge", "neoforge")
     val fabricLoaders = listOf("fabric", "quilt")
-    val neoForgeMCVersions = listOf("1.20.6")
-    val fabricMCVersions = listOf("1.20.5", "1.20.6")
+    val neoForgeMCVersions = listOf("1.20.1")
+    val fabricMCVersions = listOf("1.20", "1.20.1")
 
     curseforge("curseforgeFabric") {
         file = project(":fabric").tasks.getByName<Jar>("remapJar").archiveFile
@@ -53,8 +53,8 @@ publishMods {
         }
     }
 
-    curseforge("curseforgeNeoforge") {
-        file = project(":neoforge").tasks.getByName<Jar>("jar").archiveFile
+    curseforge("curseforgeForge") {
+        file = project(":forge").tasks.getByName<Jar>("jar").archiveFile
         displayName = "v${mod_version} (NeoForge ${minecraft_version})"
         version = "${mod_version}+${minecraft_version}-neoforge"
 
@@ -64,8 +64,8 @@ publishMods {
         minecraftVersions.addAll(neoForgeMCVersions)
     }
 
-    modrinth("modrinthNeoforge") {
-        file = project(":neoforge").tasks.getByName<Jar>("jar").archiveFile
+    modrinth("modrinthForge") {
+        file = project(":forge").tasks.getByName<Jar>("jar").archiveFile
         displayName = "v${mod_version} (NeoForge ${minecraft_version})"
         version = "${mod_version}+${minecraft_version}-neoforge"
 
@@ -81,7 +81,7 @@ publishMods {
         displayName = "Enchantment Disable Tag ${mod_version} (${minecraft_version})"
         file = project(":fabric").tasks.getByName<Jar>("remapJar").archiveFile
         additionalFiles.from(
-            project(":neoforge").tasks.getByName<Jar>("jar").archiveFile)
+            project(":forge").tasks.getByName<Jar>("jar").archiveFile)
         version = "${mod_version}+${minecraft_version}"
 
         accessToken = providers.environmentVariable("GITHUB_TOKEN")
