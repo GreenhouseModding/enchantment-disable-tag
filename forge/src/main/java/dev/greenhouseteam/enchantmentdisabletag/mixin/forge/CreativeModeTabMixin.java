@@ -10,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CreativeModeTab.ItemDisplayBuilder.class)
 public class CreativeModeTabMixin {
+    // I could not get this to work with the event.
+    // A mixin will do.
     @Inject(method = "accept", at = @At("HEAD"), cancellable = true)
     private void enchantmentdisabletag$filterOutInvalidCreativeItems(ItemStack stack, CreativeModeTab.TabVisibility visibility, CallbackInfo ci) {
         if (stack.getItem() instanceof EnchantedBookItem && EnchantedBookItem.getEnchantments(stack).isEmpty())
