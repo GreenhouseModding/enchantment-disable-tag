@@ -32,10 +32,6 @@ publishMods {
         projectId = curseForgeProjectId
         modLoaders.addAll(fabricLoaders)
         minecraftVersions.addAll(fabricMCVersions)
-
-        requires {
-            slug = "fabric-api"
-        }
     }
 
     modrinth("modrinthFabric") {
@@ -47,10 +43,6 @@ publishMods {
         projectId = modrinthProjectId
         modLoaders.addAll(fabricLoaders)
         minecraftVersions.addAll(fabricMCVersions)
-
-        requires {
-            slug = "fabric-api"
-        }
     }
 
     curseforge("curseforgeForge") {
