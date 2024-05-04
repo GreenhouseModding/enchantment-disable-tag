@@ -20,11 +20,9 @@ public class EnchantmentDisabledTagForge {
     public static class ModBusEvents {
         @SubscribeEvent
         public static void removeFromCreativeModeTab(BuildCreativeModeTabContentsEvent event) {
-            for (Map.Entry<ItemStack, CreativeModeTab.TabVisibility> entry : event.getEntries())  {
-                if (entry.getKey().getItem() instanceof EnchantedBookItem && EnchantedBookItem.getEnchantments(entry.getKey()).isEmpty()) {
+            for (Map.Entry<ItemStack, CreativeModeTab.TabVisibility> entry : event.getEntries())
+                if (entry.getKey().getItem() instanceof EnchantedBookItem && EnchantedBookItem.getEnchantments(entry.getKey()).isEmpty())
                     event.getEntries().remove(entry.getKey());
-                }
-            }
         }
     }
 }
