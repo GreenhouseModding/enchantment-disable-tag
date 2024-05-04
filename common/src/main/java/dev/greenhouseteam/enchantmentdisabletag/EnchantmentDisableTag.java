@@ -7,13 +7,11 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-
-import java.util.Optional;
 
 public class EnchantmentDisableTag {
     public static final String MOD_ID = "enchantmentdisabletag";
@@ -35,8 +33,12 @@ public class EnchantmentDisableTag {
             return;
         if (stack.getTag().contains("Enchantments", Tag.TAG_LIST))
             removeDisabledEnchantments(stack.getTag().getList("Enchantments", Tag.TAG_COMPOUND));
-        if (stack.getTag().contains("StoredEnchantments", Tag.TAG_LIST))
+        if (stack.getTag().getList("Enchantments", Tag.TAG_LIST).isEmpty())
+            stack.removeTagKey("Enchantments");
+        if (stack.getItem() instanceof EnchantedBookItem && stack.getTag().contains("StoredEnchantments", Tag.TAG_LIST))
             removeDisabledEnchantments(stack.getTag().getList("StoredEnchantments", Tag.TAG_COMPOUND));
+        if (stack.getItem() instanceof EnchantedBookItem && stack.getTag().getList("StoredEnchantments", Tag.TAG_LIST).isEmpty())
+            stack.removeTagKey("StoredEnchantments");
     }
 
     public static void removeDisabledEnchantments(ListTag list) {
