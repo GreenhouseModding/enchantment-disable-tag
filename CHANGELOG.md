@@ -1,1 +1,1 @@
-- Initial release.
+- Fixed creative mode tabs not reloading when the tag does.
