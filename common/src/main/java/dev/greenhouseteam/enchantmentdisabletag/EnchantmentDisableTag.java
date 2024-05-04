@@ -1,7 +1,6 @@
 package dev.greenhouseteam.enchantmentdisabletag;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -16,6 +15,7 @@ public class EnchantmentDisableTag {
     public static final String MOD_ID = "enchantmentdisabletag";
 
     public static final TagKey<Enchantment> DISABLED_ENCHANTMENT_TAG = TagKey.create(Registries.ENCHANTMENT, asResource("disabled"));
+    public static boolean reloaded = false;
 
     public static void removeDisabledEnchantments(ItemStack stack) {
         if (stack.has(DataComponents.ENCHANTMENTS)) {
@@ -38,6 +38,17 @@ public class EnchantmentDisableTag {
             else
                 stack.set(DataComponents.STORED_ENCHANTMENTS, itemEnchantments.toImmutable());
         }
+    }
+
+    public static boolean getAndResetReloadState() {
+        boolean retValue = reloaded;
+        if (reloaded)
+            reloaded = false;
+        return retValue;
+    }
+
+    public static void setReloaded() {
+        reloaded = true;
     }
 
     public static ResourceLocation asResource(String path) {

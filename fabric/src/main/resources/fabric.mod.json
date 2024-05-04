@@ -19,7 +19,8 @@
     "icon": "${mod_id}.png",
     "environment": "*",
     "mixins": [
-        "${mod_id}.mixins.json"
+        "${mod_id}.mixins.json",
+        "${mod_id}.fabric.mixins.json"
     ],
     "accessWidener": "${mod_id}.accesswidener",
     "depends": {
