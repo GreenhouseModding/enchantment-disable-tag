@@ -25,39 +25,39 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 // Thanks Forge!
-@Mixin(value = ForgeRegistry.class, remap = false)
+@Mixin(ForgeRegistry.class)
 public class ForgeRegistryMixin<V> {
     @Shadow @Final private ResourceKey<Registry<V>> key;
 
-    @ModifyReturnValue(method = "getKeys", at = @At("RETURN"))
+    @ModifyReturnValue(method = "getKeys", at = @At("RETURN"), remap = false)
     private @NotNull Set<ResourceLocation> enchantmentdisabletag$filterOutKeys(@NotNull Set<ResourceLocation> original) {
         if (key != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT || EnchantmentDisableTag.getHelper() == null)
             return original;
         return original.stream().filter(resourceLocation -> EnchantmentDisableTag.getHelper().getHolder(resourceLocation).map(holder -> !holder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)).orElse(true)).collect(Collectors.toUnmodifiableSet());
     }
 
-    @ModifyReturnValue(method = "getResourceKeys", at = @At("RETURN"))
+    @ModifyReturnValue(method = "getResourceKeys", at = @At("RETURN"), remap = false)
     private Set<ResourceKey<V>> enchantmentdisabletag$filterOutResourceKeys(@NotNull Set<ResourceKey<V>> original) {
         if (key != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT || EnchantmentDisableTag.getHelper() == null)
             return original;
         return original.stream().filter(key -> EnchantmentDisableTag.getHelper().getHolder((ResourceKey<Enchantment>) key).map(holder -> !holder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)).orElse(true)).collect(Collectors.toUnmodifiableSet());
     }
 
-    @ModifyReturnValue(method = "getValues", at = @At("RETURN"))
+    @ModifyReturnValue(method = "getValues", at = @At("RETURN"), remap = false)
     private Collection<V> enchantmentdisabletag$filterOutValues(@NotNull Collection<V> original) {
         if (key != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT || EnchantmentDisableTag.getHelper() == null)
             return original;
         return original.stream().filter(value -> EnchantmentDisableTag.getHelper().getHolder((Enchantment) value).map(holder -> !holder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)).orElse(true)).collect(Collectors.toUnmodifiableSet());
     }
 
-    @ModifyReturnValue(method = "getEntries", at = @At("RETURN"))
+    @ModifyReturnValue(method = "getEntries", at = @At("RETURN"), remap = false)
     private Set<Map.Entry<ResourceKey<V>, V>> enchantmentdisabletag$filterEntries(@NotNull Set<Map.Entry<ResourceKey<V>, V>> original) {
         if (key != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT || EnchantmentDisableTag.getHelper() == null)
             return original;
         return original.stream().filter(value -> EnchantmentDisableTag.getHelper().getHolder((ResourceKey<Enchantment>) value.getKey()).map(holder -> !holder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)).orElse(true)).collect(Collectors.toUnmodifiableSet());
     }
 
-    @ModifyReturnValue(method = "iterator", at = @At("RETURN"))
+    @ModifyReturnValue(method = "iterator", at = @At("RETURN"), remap = false)
     private Iterator<V> enchantmentdisabletag$filterIterator(Iterator<V> original) {
         if (key != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT || EnchantmentDisableTag.getHelper() == null)
             return original;
