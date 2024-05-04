@@ -5,7 +5,7 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "client.TagCollectorMixin"
+    "client.ClientPacketListenerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
