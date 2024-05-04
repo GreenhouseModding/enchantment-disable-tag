@@ -5,13 +5,14 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "SlotMixin",
+    "CreativeModeTabsMixin",
     "EnchantmentHelperMixin",
     "EnchantRandomlyFunctionMixin",
     "ItemEnchantmentsMixin",
     "ItemEnchantmentsMutableMixin",
     "MappedRegistryMixin",
     "ResourceArgumentMixin",
+    "SlotMixin",
     "VillagerTradesEnchantBookForEmeraldsMixin"
   ],
   "server": [
