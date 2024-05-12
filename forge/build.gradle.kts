@@ -8,6 +8,7 @@ val mod_id: String by project
 val minecraft_version: String by project
 val forge_version: String by project
 val mixin_extras_version: String by project
+val jei_version: String by project
 
 jarJar.enable()
 
@@ -62,6 +63,12 @@ minecraft {
     }
 }
 
+repositories {
+    maven("https://maven.blamejared.com/") {
+        name = "Jared's maven"
+    }
+}
+
 dependencies {
     minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
     compileOnly("io.github.llamalad7:mixinextras-common:${mixin_extras_version}")
@@ -71,6 +78,7 @@ dependencies {
         jarJar.ranged(this, "[${mixin_extras_version},)")
     }
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
+    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 }
 tasks.jarJar.configure {
     archiveClassifier = ""
