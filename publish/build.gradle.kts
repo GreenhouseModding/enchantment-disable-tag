@@ -18,9 +18,9 @@ publishMods {
     val curseForgeProjectId = "1012987"
     val modrinthProjectId = "P7SsQE5n"
 
-    val neoForgeLoaders = listOf("forge", "neoforge")
+    val forgeLoaders = listOf("forge", "neoforge")
     val fabricLoaders = listOf("fabric", "quilt")
-    val neoForgeMCVersions = listOf("1.20.1")
+    val forgeMCVersions = listOf("1.20.1")
     val fabricMCVersions = listOf("1.20", "1.20.1")
 
     curseforge("curseforgeFabric") {
@@ -48,23 +48,23 @@ publishMods {
     curseforge("curseforgeForge") {
         file = project(":forge").tasks.getByName<Jar>("jar").archiveFile
         displayName = "v${mod_version} (Forge ${minecraft_version})"
-        version = "${mod_version}+${minecraft_version}-neoforge"
+        version = "${mod_version}+${minecraft_version}-forge"
 
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
         projectId = curseForgeProjectId
-        modLoaders.addAll(neoForgeLoaders)
-        minecraftVersions.addAll(neoForgeMCVersions)
+        modLoaders.addAll(forgeLoaders)
+        minecraftVersions.addAll(forgeMCVersions)
     }
 
     modrinth("modrinthForge") {
         file = project(":forge").tasks.getByName<Jar>("jar").archiveFile
         displayName = "v${mod_version} (Forge ${minecraft_version})"
-        version = "${mod_version}+${minecraft_version}-neoforge"
+        version = "${mod_version}+${minecraft_version}-forge"
 
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
         projectId = modrinthProjectId
-        modLoaders.addAll(neoForgeLoaders)
-        minecraftVersions.addAll(neoForgeMCVersions)
+        modLoaders.addAll(forgeLoaders)
+        minecraftVersions.addAll(forgeMCVersions)
     }
 
     val githubCommitish = "1.20.6"
