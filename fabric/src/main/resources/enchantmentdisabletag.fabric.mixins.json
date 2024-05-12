@@ -4,6 +4,9 @@
   "package": "dev.greenhouseteam.enchantmentdisabletag.mixin.fabric",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ReloadableServerResourcesMixin"
+  ],
   "client": [
     "client.TagCollectorMixin"
   ],

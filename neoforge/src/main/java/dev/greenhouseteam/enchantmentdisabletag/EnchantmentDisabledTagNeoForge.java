@@ -15,8 +15,7 @@ public class EnchantmentDisabledTagNeoForge {
     public static class GameEvents {
         @SubscribeEvent
         public static void onUpdateTags(TagsUpdatedEvent event) {
-            if (event.getUpdateCause().equals(TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED))
-                EnchantmentDisableTag.setReloaded();
+            EnchantmentDisableTag.setReloaded();
         }
     }
 

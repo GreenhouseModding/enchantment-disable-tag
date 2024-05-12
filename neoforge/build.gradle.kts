@@ -7,7 +7,9 @@ plugins {
 }
 
 val mod_id: String by project
+val minecraft_version: String by project
 val neoforge_version: String by project
+val emi_version: String by project
 
 val at = file("src/main/resources/${mod_id}.cfg");
 if (at.exists())
@@ -30,8 +32,16 @@ runs {
     }
 }
 
+repositories {
+    maven {
+        name = "TerraformersMC"
+        url = uri("https://maven.terraformersmc.com/")
+    }
+}
+
 dependencies {
     implementation("net.neoforged:neoforge:${neoforge_version}")
+    runtimeOnly("dev.emi:emi-neoforge:${emi_version}+${minecraft_version}")
 }
 
 tasks {
