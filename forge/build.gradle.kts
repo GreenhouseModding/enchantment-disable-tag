@@ -14,6 +14,7 @@ jarJar.enable()
 
 mixin {
     add(sourceSets["main"], "${mod_id}.refmap.json")
+    add(project(":common").sourceSets["main"], "${mod_id}.refmap.json")
 
     config("${mod_id}.mixins.json")
     config("${mod_id}.forge.mixins.json")
