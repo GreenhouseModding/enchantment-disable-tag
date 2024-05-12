@@ -88,6 +88,10 @@ tasks.jarJar.configure {
 
 tasks["jar"].finalizedBy("jarJar")
 
+tasks.withType<GenerateModuleMetadata> {
+    dependsOn("jarJar")
+}
+
 tasks.withType<PublishToMavenRepository> {
     dependsOn("jarJar")
 }
