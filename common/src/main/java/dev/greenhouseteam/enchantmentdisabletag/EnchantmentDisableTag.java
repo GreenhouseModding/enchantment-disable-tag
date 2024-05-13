@@ -32,14 +32,16 @@ public class EnchantmentDisableTag {
     public static void removeDisabledEnchantments(ItemStack stack) {
         if (stack.getTag() == null)
             return;
-        if (stack.getTag().contains("Enchantments", Tag.TAG_LIST))
+        if (stack.getTag().contains("Enchantments", Tag.TAG_LIST)) {
             removeDisabledEnchantments(stack.getTag().getList("Enchantments", Tag.TAG_COMPOUND));
-        if (stack.getTag().getList("Enchantments", Tag.TAG_LIST).isEmpty())
-            stack.removeTagKey("Enchantments");
-        if (stack.getItem() instanceof EnchantedBookItem && stack.getTag().contains("StoredEnchantments", Tag.TAG_LIST))
+            if (stack.getTag().getList("Enchantments", Tag.TAG_LIST).isEmpty())
+                stack.removeTagKey("Enchantments");
+        }
+        if (stack.getItem() instanceof EnchantedBookItem && stack.getTag().contains("StoredEnchantments", Tag.TAG_LIST)) {
             removeDisabledEnchantments(stack.getTag().getList("StoredEnchantments", Tag.TAG_COMPOUND));
-        if (stack.getItem() instanceof EnchantedBookItem && stack.getTag().getList("StoredEnchantments", Tag.TAG_LIST).isEmpty())
-            stack.removeTagKey("StoredEnchantments");
+            if (stack.getTag().getList("StoredEnchantments", Tag.TAG_LIST).isEmpty())
+                stack.removeTagKey("StoredEnchantments");
+        }
     }
 
     public static void removeDisabledEnchantments(ListTag list) {
