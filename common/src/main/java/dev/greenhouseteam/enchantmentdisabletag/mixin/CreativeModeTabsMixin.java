@@ -2,18 +2,11 @@ package dev.greenhouseteam.enchantmentdisabletag.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTag;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.enchantment.Enchantment;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-
-import java.util.HashSet;
-import java.util.List;
 
 @Mixin(CreativeModeTabs.class)
 public class CreativeModeTabsMixin {
