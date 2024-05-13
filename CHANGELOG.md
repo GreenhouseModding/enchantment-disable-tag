@@ -1,2 +1,1 @@
-- Allowed creative mode tab code to reload on the server.
-- [FORGE] Fixed mixin crash due to common code not having a refmap.
+- Fixed enchantments unintentionally getting deleted.
