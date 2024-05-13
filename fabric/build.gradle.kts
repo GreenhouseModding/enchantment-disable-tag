@@ -8,6 +8,7 @@ val fabric_version: String by project
 val minecraft_version: String by project
 val modmenu_version: String by project
 val mod_id: String by project
+val emi_version: String by project
 
 repositories {
     maven {
@@ -24,6 +25,7 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
 
     modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
+    modLocalRuntime("dev.emi:emi-fabric:${emi_version}+${minecraft_version}")
 }
 
 loom {

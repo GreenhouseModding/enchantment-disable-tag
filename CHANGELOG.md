@@ -1,1 +1,1 @@
-- Fixed creative mode tabs not reloading when the tag does.
+- Allowed creative mode tab code to reload on the server.
