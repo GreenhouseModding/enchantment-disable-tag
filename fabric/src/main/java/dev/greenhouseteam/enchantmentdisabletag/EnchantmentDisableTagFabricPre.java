@@ -1,12 +1,11 @@
 package dev.greenhouseteam.enchantmentdisabletag;
 
 import dev.greenhouseteam.enchantmentdisabletag.platform.EnchantmentDisableTagHelperFabric;
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
-public class EnchantmentDisableTagFabric implements ModInitializer {
-
+public class EnchantmentDisableTagFabricPre implements PreLaunchEntrypoint {
     @Override
-    public void onInitialize() {
+    public void onPreLaunch() {
         EnchantmentDisableTag.init(new EnchantmentDisableTagHelperFabric());
     }
 }
