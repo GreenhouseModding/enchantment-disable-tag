@@ -42,6 +42,7 @@ minecraft {
             mods {
                 create(mod_id) {
                     source(sourceSets["main"])
+                    source(sourceSets["test"])
                 }
             }
         }
@@ -58,6 +59,7 @@ minecraft {
             mods {
                 create(mod_id) {
                     source(sourceSets["main"])
+                    source(sourceSets["test"])
                 }
             }
         }

@@ -7,7 +7,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -29,19 +28,30 @@ public class EnchantmentDisableTag {
     public static ItemStack removeDisabledEnchantments(ItemStack stack) {
         if (stack.getTag() == null)
             return stack;
-        if (stack.getTag().contains("Enchantments", Tag.TAG_LIST)) {
-            removeDisabledEnchantments(stack.getTag().getList("Enchantments", Tag.TAG_COMPOUND));
-            if (stack.getTag().getList("Enchantments", Tag.TAG_COMPOUND).isEmpty())
-                stack.removeTagKey("Enchantments");
+        if (removeDisabledEnchantments(stack.getTag()) && stack.is(Items.ENCHANTED_BOOK)) {
+            ItemStack book = new ItemStack(Items.BOOK);
+            book.setTag(stack.getTag());
+            return book;
         }
-        if (stack.getItem() instanceof EnchantedBookItem && stack.getTag().contains("StoredEnchantments", Tag.TAG_LIST)) {
-            removeDisabledEnchantments(stack.getTag().getList("StoredEnchantments", Tag.TAG_COMPOUND));
-            if (stack.getTag().getList("StoredEnchantments", Tag.TAG_COMPOUND).isEmpty())
-                stack.removeTagKey("StoredEnchantments");
-        }
-        if (stack.is(Items.ENCHANTED_BOOK) && EnchantedBookItem.getEnchantments(stack).isEmpty())
-            return new ItemStack(Items.BOOK);
         return stack;
+    }
+
+    public static boolean removeDisabledEnchantments(CompoundTag tag) {
+        if (tag.contains("Enchantments", Tag.TAG_LIST)) {
+            removeDisabledEnchantments(tag.getList("Enchantments", Tag.TAG_COMPOUND));
+            if (tag.getList("Enchantments", Tag.TAG_COMPOUND).isEmpty()) {
+                tag.remove("Enchantments");
+                return true;
+            }
+        }
+        if (tag.contains("StoredEnchantments", Tag.TAG_LIST)) {
+            removeDisabledEnchantments(tag.getList("StoredEnchantments", Tag.TAG_COMPOUND));
+            if (tag.getList("StoredEnchantments", Tag.TAG_COMPOUND).isEmpty()) {
+                tag.remove("StoredEnchantments");
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void removeDisabledEnchantments(ListTag list) {
