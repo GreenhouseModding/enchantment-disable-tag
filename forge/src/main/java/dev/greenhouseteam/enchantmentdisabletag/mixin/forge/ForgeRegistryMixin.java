@@ -2,6 +2,7 @@ package dev.greenhouseteam.enchantmentdisabletag.mixin.forge;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTag;
+import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -33,28 +34,28 @@ public class ForgeRegistryMixin<V> {
     private @NotNull Set<ResourceLocation> enchantmentdisabletag$filterOutKeys(@NotNull Set<ResourceLocation> original) {
         if (key != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT || EnchantmentDisableTag.getHelper() == null)
             return original;
-        return original.stream().filter(resourceLocation -> EnchantmentDisableTag.getHelper().getHolder(resourceLocation).map(holder -> !holder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)).orElse(true)).collect(Collectors.toUnmodifiableSet());
+        return original.stream().filter(resourceLocation -> EnchantmentDisableTag.getHelper().getHolder(resourceLocation).map(holder -> !holder.is(EnchantmentDisableTags.DISABLED)).orElse(true)).collect(Collectors.toUnmodifiableSet());
     }
 
     @ModifyReturnValue(method = "getResourceKeys", at = @At("RETURN"), remap = false)
     private Set<ResourceKey<V>> enchantmentdisabletag$filterOutResourceKeys(@NotNull Set<ResourceKey<V>> original) {
         if (key != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT || EnchantmentDisableTag.getHelper() == null)
             return original;
-        return original.stream().filter(key -> EnchantmentDisableTag.getHelper().getHolder((ResourceKey<Enchantment>) key).map(holder -> !holder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)).orElse(true)).collect(Collectors.toUnmodifiableSet());
+        return original.stream().filter(key -> EnchantmentDisableTag.getHelper().getHolder((ResourceKey<Enchantment>) key).map(holder -> !holder.is(EnchantmentDisableTags.DISABLED)).orElse(true)).collect(Collectors.toUnmodifiableSet());
     }
 
     @ModifyReturnValue(method = "getValues", at = @At("RETURN"), remap = false)
     private Collection<V> enchantmentdisabletag$filterOutValues(@NotNull Collection<V> original) {
         if (key != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT || EnchantmentDisableTag.getHelper() == null)
             return original;
-        return original.stream().filter(value -> EnchantmentDisableTag.getHelper().getHolder((Enchantment) value).map(holder -> !holder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)).orElse(true)).collect(Collectors.toUnmodifiableSet());
+        return original.stream().filter(value -> EnchantmentDisableTag.getHelper().getHolder((Enchantment) value).map(holder -> !holder.is(EnchantmentDisableTags.DISABLED)).orElse(true)).collect(Collectors.toUnmodifiableSet());
     }
 
     @ModifyReturnValue(method = "getEntries", at = @At("RETURN"), remap = false)
     private Set<Map.Entry<ResourceKey<V>, V>> enchantmentdisabletag$filterEntries(@NotNull Set<Map.Entry<ResourceKey<V>, V>> original) {
         if (key != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT || EnchantmentDisableTag.getHelper() == null)
             return original;
-        return original.stream().filter(value -> EnchantmentDisableTag.getHelper().getHolder((ResourceKey<Enchantment>) value.getKey()).map(holder -> !holder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)).orElse(true)).collect(Collectors.toUnmodifiableSet());
+        return original.stream().filter(value -> EnchantmentDisableTag.getHelper().getHolder((ResourceKey<Enchantment>) value.getKey()).map(holder -> !holder.is(EnchantmentDisableTags.DISABLED)).orElse(true)).collect(Collectors.toUnmodifiableSet());
     }
 
     @ModifyReturnValue(method = "iterator", at = @At("RETURN"), remap = false)
@@ -67,7 +68,7 @@ public class ForgeRegistryMixin<V> {
         while (original.hasNext()) {
             V it = original.next();
             Holder<Enchantment> holder = EnchantmentDisableTag.getHolder((Enchantment) it);
-            if (holder == null || !holder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG))
+            if (holder == null || !holder.is(EnchantmentDisableTags.DISABLED))
                 list.add(it);
         }
         return list.iterator();

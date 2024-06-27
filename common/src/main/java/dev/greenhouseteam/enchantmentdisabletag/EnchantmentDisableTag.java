@@ -3,20 +3,16 @@ package dev.greenhouseteam.enchantmentdisabletag;
 import dev.greenhouseteam.enchantmentdisabletag.platform.EnchantmentDisableTagPlatformHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 public class EnchantmentDisableTag {
     public static final String MOD_ID = "enchantmentdisabletag";
-
-    public static final TagKey<Enchantment> DISABLED_ENCHANTMENT_TAG = TagKey.create(Registries.ENCHANTMENT, asResource("disabled"));
 
     private static EnchantmentDisableTagPlatformHelper helper;
     private static boolean reloaded = false;
@@ -52,7 +48,7 @@ public class EnchantmentDisableTag {
                 return false;
             if (compoundTag.contains("id", Tag.TAG_STRING)) {
                 Holder<Enchantment> enchantmentHolder = EnchantmentDisableTag.getHolder(BuiltInRegistries.ENCHANTMENT.get(new ResourceLocation(compoundTag.getString("id"))));
-                return enchantmentHolder != null && enchantmentHolder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG);
+                return enchantmentHolder != null && enchantmentHolder.is(EnchantmentDisableTags.DISABLED);
             }
             return false;
         });

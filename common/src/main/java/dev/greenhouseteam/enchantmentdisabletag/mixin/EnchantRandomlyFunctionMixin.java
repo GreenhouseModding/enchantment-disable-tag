@@ -1,6 +1,7 @@
 package dev.greenhouseteam.enchantmentdisabletag.mixin;
 
 import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTag;
+import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTags;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import org.spongepowered.asm.mixin.Final;
@@ -21,6 +22,6 @@ public class EnchantRandomlyFunctionMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void enchantmentdisabletag$modifyEnchantmentList(CallbackInfo ci) {
-        enchantments = enchantments.stream().filter(enchantment -> !EnchantmentDisableTag.getHolder(enchantment).is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)).toList();
+        enchantments = enchantments.stream().filter(enchantment -> !EnchantmentDisableTag.getHolder(enchantment).is(EnchantmentDisableTags.DISABLED)).toList();
     }
 }

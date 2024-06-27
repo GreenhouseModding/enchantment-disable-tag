@@ -2,6 +2,7 @@ package dev.greenhouseteam.enchantmentdisabletag.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTag;
+import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTags;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -14,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ItemStackMixin {
     @Inject(method = "enchant", at = @At("HEAD"), cancellable = true)
     private void enchantmentdisabletag$disallowEnchant(Enchantment enchantment, int number, CallbackInfo ci) {
-        if (EnchantmentDisableTag.getHolder(enchantment).is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG))
+        if (EnchantmentDisableTag.getHolder(enchantment).is(EnchantmentDisableTags.DISABLED))
             ci.cancel();
     }
 
