@@ -9,6 +9,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 public class EnchantmentDisableTag {
@@ -25,9 +26,9 @@ public class EnchantmentDisableTag {
         return helper;
     }
 
-    public static void removeDisabledEnchantments(ItemStack stack) {
+    public static ItemStack removeDisabledEnchantments(ItemStack stack) {
         if (stack.getTag() == null)
-            return;
+            return stack;
         if (stack.getTag().contains("Enchantments", Tag.TAG_LIST)) {
             removeDisabledEnchantments(stack.getTag().getList("Enchantments", Tag.TAG_COMPOUND));
             if (stack.getTag().getList("Enchantments", Tag.TAG_COMPOUND).isEmpty())
@@ -38,6 +39,9 @@ public class EnchantmentDisableTag {
             if (stack.getTag().getList("StoredEnchantments", Tag.TAG_COMPOUND).isEmpty())
                 stack.removeTagKey("StoredEnchantments");
         }
+        if (stack.is(Items.ENCHANTED_BOOK) && EnchantedBookItem.getEnchantments(stack).isEmpty())
+            return new ItemStack(Items.BOOK);
+        return stack;
     }
 
     public static void removeDisabledEnchantments(ListTag list) {

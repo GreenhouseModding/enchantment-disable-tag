@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class AbstractContainerMenuMixin {
     @ModifyVariable(method = "setCarried", at = @At("HEAD"), argsOnly = true)
     private ItemStack enchantmentdisabletag$removeFromCarried(ItemStack stack) {
-        EnchantmentDisableTag.removeDisabledEnchantments(stack);
-        return stack;
+        return EnchantmentDisableTag.removeDisabledEnchantments(stack);
     }
 }

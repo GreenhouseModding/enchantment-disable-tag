@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class SlotMixin {
     @ModifyVariable(method = "set", at = @At("HEAD"), argsOnly = true)
     private ItemStack enchantmentdisabletag$removeDisabledEnchantments(ItemStack stack) {
-        EnchantmentDisableTag.removeDisabledEnchantments(stack);
-        return stack;
+        return EnchantmentDisableTag.removeDisabledEnchantments(stack);
     }
 }
