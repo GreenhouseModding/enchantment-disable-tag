@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ReloadableServerResourcesMixin {
     @Inject(method = "updateRegistryTags()V", at = @At("TAIL"))
     private void enchantmentdisabletag$setToReloadCreativeTabsServer(CallbackInfo ci) {
-        EnchantmentDisableTag.setReloaded();
+        EnchantmentDisableTag.setCreativeTabToReload();
     }
 }

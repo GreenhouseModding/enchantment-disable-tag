@@ -34,29 +34,29 @@ public abstract class MappedRegistryMixin<T> {
 
     @ModifyArg(method = "keySet", at = @At(value = "INVOKE", target = "Ljava/util/Collections;unmodifiableSet(Ljava/util/Set;)Ljava/util/Set;"))
     private Set<ResourceLocation> enchantmentdisabletag$disableFromKeySet(Set<ResourceLocation> original) {
-        if (this.key() != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT)
+        if (key() != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT)
             return original;
 
         return original.stream().filter(t -> {
-            var optionalHolder = this.getHolder(t);
+            var optionalHolder = getHolder(t);
             return optionalHolder.isEmpty() || !optionalHolder.get().is((TagKey<T>) EnchantmentDisableTags.DISABLED);
         }).collect(Collectors.toSet());
     }
 
     @ModifyArg(method = "registryKeySet", at = @At(value = "INVOKE", target = "Ljava/util/Collections;unmodifiableSet(Ljava/util/Set;)Ljava/util/Set;"))
     private Set<ResourceKey<T>> enchantmentdisabletag$disableFromRegistryKeySet(Set<ResourceKey<T>> original) {
-        if (this.key() != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT)
+        if (key() != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT)
             return original;
 
         return original.stream().filter(t -> {
-            var optionalHolder = this.getHolder(t);
+            var optionalHolder = getHolder(t);
             return optionalHolder.isEmpty() || !optionalHolder.get().is((TagKey<T>) EnchantmentDisableTags.DISABLED);
         }).collect(Collectors.toSet());
     }
 
     @ModifyArg(method = "entrySet", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Maps;transformValues(Ljava/util/Map;Lcom/google/common/base/Function;)Ljava/util/Map;"))
     private Map<ResourceKey<T>, Holder.Reference<T>> enchantmentdisabletag$disableFromEntrySet(Map<ResourceKey<T>, Holder.Reference<T>> original) {
-        if (this.key() != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT)
+        if (key() != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT)
             return original;
 
         return original.entrySet().stream().filter(entry -> entry.getValue().is((TagKey<T>) EnchantmentDisableTags.DISABLED)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -65,12 +65,13 @@ public abstract class MappedRegistryMixin<T> {
     @ModifyReturnValue(method = "holders", at = @At("RETURN"))
     private Stream<Holder.Reference<T>> enchantmentdisabletag$disableFromHolders(Stream<Holder.Reference<T>> original) {
         // ref can be null on NeoForge. No clue how it happens, but hey, we have to compensate sometimes.
+        // isLoaded is a thing because this is used when syncing to client.
         return original.filter(ref -> ref != null && (!ref.key().isFor(Registries.ENCHANTMENT) || !ref.is((TagKey<T>) EnchantmentDisableTags.DISABLED)));
     }
 
     @ModifyArg(method = "iterator", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Iterators;transform(Ljava/util/Iterator;Lcom/google/common/base/Function;)Ljava/util/Iterator;"))
     private Iterator<T> enchantmentdisabletag$disableFromIterator(Iterator<T> original) {
-        if (this.key() != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT)
+        if (key() != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT)
             return original;
 
         // This is less performant, but we do it this way just in case new values are put into the iterator.

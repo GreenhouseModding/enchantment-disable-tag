@@ -1,14 +1,10 @@
+import dev.greenhouseteam.enchantmentdisabletag.gradle.Properties
+import dev.greenhouseteam.enchantmentdisabletag.gradle.Versions
+
 plugins {
     id("enchantmentdisabletag.loader")
-    id("fabric-loom") version "1.6-SNAPSHOT"
+    id("fabric-loom") version "1.7-SNAPSHOT"
 }
-
-val fabric_loader_version: String by project
-val fabric_version: String by project
-val minecraft_version: String by project
-val modmenu_version: String by project
-val mod_id: String by project
-val emi_version: String by project
 
 repositories {
     maven {
@@ -18,25 +14,25 @@ repositories {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${minecraft_version}")
+    minecraft("com.mojang:minecraft:${Versions.INTERNAL_MINECRAFT}")
     mappings(loom.officialMojangMappings())
 
-    modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
+    modImplementation("net.fabricmc:fabric-loader:${Versions.FABRIC_LOADER}")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.FABRIC_API}")
 
-    modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
-    // modLocalRuntime("dev.emi:emi-fabric:${emi_version}+${minecraft_version}")
+    modLocalRuntime("com.terraformersmc:modmenu:${Versions.MOD_MENU}")
+    modLocalRuntime("dev.emi:emi-fabric:${Versions.EMI}+${Versions.MINECRAFT}")
 }
 
 loom {
-    val aw = project(":common").file("src/main/resources/${mod_id}.accesswidener");
+    val aw = file("src/main/resources/${Properties.MOD_ID}.accesswidener");
     if (aw.exists())
         accessWidenerPath.set(aw)
     mixin {
-        defaultRefmapName.set("${mod_id}.refmap.json")
+        defaultRefmapName.set("${Properties.MOD_ID}.refmap.json")
     }
     mods {
-        register(mod_id) {
+        register(Properties.MOD_ID) {
             sourceSet(sourceSets["main"])
             sourceSet(sourceSets["test"])
         }

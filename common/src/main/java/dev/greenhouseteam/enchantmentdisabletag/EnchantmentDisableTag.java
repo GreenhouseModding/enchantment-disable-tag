@@ -13,7 +13,7 @@ import java.util.Map;
 public class EnchantmentDisableTag {
     public static final String MOD_ID = "enchantmentdisabletag";
 
-    public static boolean reloaded = false;
+    private static boolean creativeTabReload = false;
     private static boolean setToBook = false;
 
     public static ItemStack removeDisabledEnchantments(ItemStack stack) {
@@ -21,7 +21,7 @@ public class EnchantmentDisableTag {
             ItemEnchantments.Mutable itemEnchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
             for (Map.Entry<Holder<Enchantment>, Integer> entry : stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).entrySet())
                 if (entry.getKey().isBound() && !entry.getKey().is(EnchantmentDisableTags.DISABLED))
-                    itemEnchantments.set(entry.getKey().value(), entry.getValue());
+                    itemEnchantments.set(entry.getKey(), entry.getValue());
             if (itemEnchantments.keySet().isEmpty())
                 stack.remove(DataComponents.ENCHANTMENTS);
             else
@@ -31,7 +31,7 @@ public class EnchantmentDisableTag {
             ItemEnchantments.Mutable itemEnchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
             for (Map.Entry<Holder<Enchantment>, Integer> entry : stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).entrySet())
                 if (entry.getKey().isBound() && !entry.getKey().is(EnchantmentDisableTags.DISABLED))
-                    itemEnchantments.set(entry.getKey().value(), entry.getValue());
+                    itemEnchantments.set(entry.getKey(), entry.getValue());
             if (itemEnchantments.keySet().isEmpty()) {
                 stack.remove(DataComponents.STORED_ENCHANTMENTS);
                 if (stack.is(Items.ENCHANTED_BOOK)) {
@@ -55,17 +55,17 @@ public class EnchantmentDisableTag {
         setToBook = true;
     }
 
-    public static boolean getAndResetReloadState() {
-        boolean retValue = reloaded;
-        reloaded = false;
+    public static boolean getAndResetCreativeTabReloadState() {
+        boolean retValue = creativeTabReload;
+        creativeTabReload = false;
         return retValue;
     }
 
-    public static void setReloaded() {
-        reloaded = true;
+    public static void setCreativeTabToReload() {
+        creativeTabReload = true;
     }
 
     public static ResourceLocation asResource(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        return ResourceLocation.tryBuild(MOD_ID, path);
     }
 }

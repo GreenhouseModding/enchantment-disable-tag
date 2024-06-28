@@ -1,35 +1,33 @@
 modLoader="javafml"
 loaderVersion="${neoforge_loader_version_range}"
-issueTrackerURL="https://github.com/GreenhouseTeam/enchantment-disable-tag/issues"
+issueTrackerURL = "${issues}"
 license="${mod_license}"
 
 [[mods]]
 modId="${mod_id}"
 version="${version}"
 displayName="${mod_name}"
-displayURL="https://modrinth.com/project/enchantment-disable-tag/"
 logoFile="${mod_id}.png"
 logoBlur=false
-credits="MerchantPug"
-authors="Greenhouse Team"
-description='''${mod_description}'''
+authors="${mod_author}"
+credits="${mod_contributors}"
+description='''
+${mod_description}
+'''
 
 [[mixins]]
 config = "${mod_id}.mixins.json"
 
-[[accessTransformers]]
-file="${mod_id}.cfg"
-
 [[dependencies.${mod_id}]]
 modId="neoforge"
-type="required"
+mandatory=true
 versionRange="${neoforge_loader_version_range}"
 ordering="NONE"
-side="SERVER"
+side="BOTH"
 
 [[dependencies.${mod_id}]]
 modId="minecraft"
-type="required"
-versionRange="${minecraft_version_range}"
+mandatory=true
+versionRange="${neoforge_minecraft_version_range}"
 ordering="NONE"
-side="SERVER"
+side="BOTH"

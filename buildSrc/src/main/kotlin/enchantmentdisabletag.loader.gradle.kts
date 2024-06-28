@@ -1,9 +1,8 @@
+import dev.greenhouseteam.enchantmentdisabletag.gradle.Properties
+
 plugins {
     id("enchantmentdisabletag.common")
 }
-
-val group: String by project
-val mod_id: String by project
 
 configurations {
     register("commonJava") {
@@ -20,7 +19,7 @@ configurations {
 dependencies {
     compileOnly(project(":common")) {
         capabilities {
-            requireCapability("$group:$mod_id")
+            requireCapability("$group:${Properties.MOD_ID}")
         }
     }
     "commonJava"(project(":common", "commonJava"))

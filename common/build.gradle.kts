@@ -1,28 +1,39 @@
+import dev.greenhouseteam.enchantmentdisabletag.gradle.Properties
+import dev.greenhouseteam.enchantmentdisabletag.gradle.Versions
 
 plugins {
     id("enchantmentdisabletag.common")
-    id("org.spongepowered.gradle.vanilla") version "0.2.1-SNAPSHOT"
+    id("net.neoforged.moddev")
 }
 
-val mod_id: String by project
-val minecraft_version: String by project
-val mixin_extras_version: String by project
+sourceSets {
+    create("generated") {
+        resources {
+            srcDir("src/generated/resources")
+        }
+    }
+}
 
-minecraft {
-    version(minecraft_version)
-    val aw = file("src/main/resources/${mod_id}.accesswidener")
-    if (aw.exists())
-        accessWideners(aw)
+neoForge {
+    neoFormVersion = Versions.NEOFORM
+
+    val at = file("src/main/resources/${Properties.MOD_ID}.cfg")
+    if (at.exists())
+        accessTransformers.add(at.absolutePath)
 }
 
 dependencies {
-    compileOnly("io.github.llamalad7:mixinextras-common:${mixin_extras_version}")
-    annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}")
-    compileOnly("org.spongepowered", "mixin", "0.8.5")
+    compileOnly("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
+    annotationProcessor("io.github.llamalad7:mixinextras-common:${Versions.MIXIN_EXTRAS}")
+    compileOnly("net.fabricmc:sponge-mixin:${Versions.FABRIC_MIXIN}")
 }
 
 configurations {
     register("commonJava") {
+        isCanBeResolved = false
+        isCanBeConsumed = true
+    }
+    register("commonTestJava") {
         isCanBeResolved = false
         isCanBeConsumed = true
     }
@@ -38,6 +49,7 @@ configurations {
 
 artifacts {
     add("commonJava", sourceSets["main"].java.sourceDirectories.singleFile)
+    add("commonTestJava", sourceSets["test"].java.sourceDirectories.singleFile)
     add("commonResources", sourceSets["main"].resources.sourceDirectories.singleFile)
     add("commonTestResources", sourceSets["test"].resources.sourceDirectories.singleFile)
 }

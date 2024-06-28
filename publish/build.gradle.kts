@@ -1,3 +1,5 @@
+import dev.greenhouseteam.enchantmentdisabletag.gradle.Properties
+import dev.greenhouseteam.enchantmentdisabletag.gradle.Versions
 import org.gradle.jvm.tasks.Jar
 
 plugins {
@@ -7,78 +9,69 @@ plugins {
 evaluationDependsOn(":common")
 evaluationDependsOn(":fabric")
 evaluationDependsOn(":neoforge")
-
-val mod_version: String by project
-val minecraft_version: String by project
-
 publishMods {
     changelog = rootProject.file("CHANGELOG.md").readText()
     type = STABLE
 
-    val curseForgeProjectId = "1012987"
-    val modrinthProjectId = "P7SsQE5n"
-
     val neoForgeLoaders = listOf("neoforge")
-    val fabricLoaders = listOf("fabric", "quilt")
-    val neoForgeMCVersions = listOf("1.20.6")
-    val fabricMCVersions = listOf("1.20.5", "1.20.6")
+    val fabricLoaders = listOf("fabric")
+    val neoForgeMCVersions = listOf("1.21")
+    val fabricMCVersions = listOf("1.21")
 
     curseforge("curseforgeFabric") {
         file = project(":fabric").tasks.getByName<Jar>("remapJar").archiveFile
-        displayName = "v${mod_version} (Fabric ${minecraft_version})"
-        version = "${mod_version}+${minecraft_version}-fabric"
+        displayName = "v${Versions.MOD} (Fabric ${Versions.MINECRAFT})"
+        version = "${Versions.MOD}+${Versions.MINECRAFT}-fabric"
 
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
-        projectId = curseForgeProjectId
+        projectId = Properties.CURSEFORGE_PROJECT_ID
         modLoaders.addAll(fabricLoaders)
         minecraftVersions.addAll(fabricMCVersions)
     }
 
     modrinth("modrinthFabric") {
         file = project(":fabric").tasks.getByName<Jar>("remapJar").archiveFile
-        displayName = "v${mod_version} (Fabric ${minecraft_version})"
-        version = "${mod_version}+${minecraft_version}-fabric"
+        displayName = "v${Versions.MOD} (Fabric ${Versions.MINECRAFT})"
+        version = "${Versions.MOD}+${Versions.MINECRAFT}-fabric"
 
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-        projectId = modrinthProjectId
+        projectId = Properties.MODRINTH_PROJECT_ID
         modLoaders.addAll(fabricLoaders)
         minecraftVersions.addAll(fabricMCVersions)
     }
 
     curseforge("curseforgeNeoforge") {
         file = project(":neoforge").tasks.getByName<Jar>("jar").archiveFile
-        displayName = "v${mod_version} (NeoForge ${minecraft_version})"
-        version = "${mod_version}+${minecraft_version}-neoforge"
+        displayName = "v${Versions.MOD} (NeoForge ${Versions.MINECRAFT})"
+        version = "${Versions.MOD}+${Versions.MINECRAFT}-neoforge"
 
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
-        projectId = curseForgeProjectId
+        projectId = Properties.CURSEFORGE_PROJECT_ID
         modLoaders.addAll(neoForgeLoaders)
         minecraftVersions.addAll(neoForgeMCVersions)
     }
 
     modrinth("modrinthNeoforge") {
         file = project(":neoforge").tasks.getByName<Jar>("jar").archiveFile
-        displayName = "v${mod_version} (NeoForge ${minecraft_version})"
-        version = "${mod_version}+${minecraft_version}-neoforge"
+        displayName = "v${Versions.MOD} (NeoForge ${Versions.MINECRAFT})"
+        version = "${Versions.MOD}+${Versions.MINECRAFT}-neoforge"
 
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-        projectId = modrinthProjectId
+        projectId = Properties.MODRINTH_PROJECT_ID
         modLoaders.addAll(neoForgeLoaders)
         minecraftVersions.addAll(neoForgeMCVersions)
     }
 
-    val githubCommitish = "1.20.6"
-
     github {
-        displayName = "Enchantment Disable Tag ${mod_version} (${minecraft_version})"
+        displayName = "Enchantment Disable Tag ${Versions.MOD} (${Versions.MINECRAFT}})"
         file = project(":fabric").tasks.getByName<Jar>("remapJar").archiveFile
         additionalFiles.from(
             project(":neoforge").tasks.getByName<Jar>("jar").archiveFile)
-        version = "${mod_version}+${minecraft_version}"
+        version = "${Versions.MOD}+${Versions.MINECRAFT}"
 
         accessToken = providers.environmentVariable("GITHUB_TOKEN")
         repository = "GreenhouseTeam/enchantment-disable-tag"
-        commitish = githubCommitish // This is the branch the release tag will be created from
-        tagName = "${mod_version}+${minecraft_version}"
+        commitish = Properties.GITHUB_COMMITISH
+        tagName = "${Versions.MOD}+${Versions.MINECRAFT}"
     }
 }

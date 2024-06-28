@@ -5,15 +5,15 @@
     "name": "${mod_name}",
     "description": "${mod_description}",
     "authors": [
-        "Greenhouse Team"
+        "${mod_author}"
     ],
     "contributors": [
-        "MerchantPug"
+        ${fabric_mod_contributors}
     ],
     "contact": {
-        "homepage": "https://modrinth.com/project/enchantment-disable-tag/",
-        "sources": "https://github.com/GreenhouseTeam/enchantment-disable-tag",
-        "issues": "https://github.com/GreenhouseTeam/enchantment-disable-tag/issues"
+        "homepage": "${homepage}",
+        "issues": "${issues}",
+        "sources": "${sources}"
     },
     "license": "${mod_license}",
     "icon": "${mod_id}.png",
@@ -22,10 +22,10 @@
         "${mod_id}.mixins.json",
         "${mod_id}.fabric.mixins.json"
     ],
-    "accessWidener": "${mod_id}.accesswidener",
     "depends": {
-        "fabricloader": ">=0.15",
-        "minecraft": ">=1.20.5",
+        "fabricloader": "${fabric_loader_range}",
+        "fabric-api": "*",
+        "minecraft": "${fabric_minecraft_version_range}",
         "java": ">=${java_version}"
     }
 }

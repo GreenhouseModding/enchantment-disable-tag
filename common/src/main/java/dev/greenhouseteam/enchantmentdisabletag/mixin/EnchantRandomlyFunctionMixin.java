@@ -1,6 +1,5 @@
 package dev.greenhouseteam.enchantmentdisabletag.mixin;
 
-import com.mojang.serialization.Codec;
 import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -16,21 +15,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Optional;
 
 @Mixin(EnchantRandomlyFunction.class)
 public class EnchantRandomlyFunctionMixin {
-    @Shadow @Mutable @Final private static Codec<HolderSet<Enchantment>> ENCHANTMENT_SET_CODEC;
 
-    @Inject(method = "<clinit>", at = @At("TAIL"))
-    private static void enchantmentdisabletag$modifyEnchantmentSetCodec(CallbackInfo ci) {
-        ENCHANTMENT_SET_CODEC.xmap(holders -> {
-            List<Holder<Enchantment>> enchantmentHolders = new ArrayList<>();
-            for (int i = 0; i < holders.size(); ++i) {
-                if (!holders.get(i).is(EnchantmentDisableTags.DISABLED))
-                    enchantmentHolders.add(holders.get(i));
-            }
-            return HolderSet.direct(enchantmentHolders);
-        }, Function.identity());
+    @Mutable @Shadow @Final
+    private Optional<HolderSet<Enchantment>> options;
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void enchantmentdisabletag$modifyEnchantmentSetCodec(CallbackInfo ci) {
+        if (options.isEmpty())
+            return;
+        List<Holder<Enchantment>> enchantmentHolders = new ArrayList<>();
+        for (int i = 0; i < options.get().size(); ++i) {
+            if (!options.get().get(i).is(EnchantmentDisableTags.DISABLED))
+                enchantmentHolders.add(options.get().get(i));
+        }
+        if (options.stream().toList().equals(enchantmentHolders))
+            return;
+        this.options = Optional.of(HolderSet.direct(enchantmentHolders));
     }
 }

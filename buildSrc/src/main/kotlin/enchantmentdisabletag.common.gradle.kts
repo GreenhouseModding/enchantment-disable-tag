@@ -1,3 +1,6 @@
+import dev.greenhouseteam.enchantmentdisabletag.gradle.Properties
+import dev.greenhouseteam.enchantmentdisabletag.gradle.Versions
+
 plugins {
     base
     `java-library`
@@ -5,18 +8,12 @@ plugins {
     `maven-publish`
 }
 
-val mod_version: String by project
-val java_version: String by project
-val mod_id: String by project
-val mod_name: String by project
-val mod_author: String by project
-val minecraft_version: String by project
-
-base.archivesName.set("${mod_id}-${project.name}")
-version = "$mod_version+$minecraft_version"
+base.archivesName.set(Properties.MOD_ID + "-" + project.name)
+group = Properties.GROUP
+version = "${Versions.MOD}+${Versions.MINECRAFT}"
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(java_version))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(Versions.JAVA))
     withSourcesJar()
     withJavadocJar()
 }
@@ -32,6 +29,9 @@ repositories {
         }
         filter { includeGroupAndSubgroups("org.spongepowered") }
     }
+    maven("https://maven.fabricmc.net/") {
+        name = "Fabric"
+    }
 }
 
 dependencies {
@@ -42,8 +42,8 @@ dependencies {
 // Read more about capabilities here: https://docs.gradle.org/current/userguide/component_capabilities.html#sec:declaring-additional-capabilities-for-a-local-component
 setOf("apiElements", "runtimeElements", "sourcesElements", "javadocElements").forEach { variant ->
     configurations.getByName(variant).outgoing {
-        capability("$group:$mod_id-${project.name}:$version")
-        capability("$group:$mod_id:$version")
+        capability("$group:${Properties.MOD_ID}-${project.name}:$version")
+        capability("$group:${Properties.MOD_ID}:$version")
     }
     publishing.publications.forEach { publication ->
         if (publication is MavenPublication) {
@@ -55,59 +55,73 @@ setOf("apiElements", "runtimeElements", "sourcesElements", "javadocElements").fo
 tasks {
     named<Jar>("sourcesJar").configure {
         from(rootProject.file("LICENSE")) {
-            rename { "${it}_${mod_name}" }
+            rename { "${it}_${Properties.MOD_NAME}" }
         }
     }
     named<Jar>("jar").configure {
         from(rootProject.file("LICENSE")) {
-            rename { "${it}_${mod_name}" }
+            rename { "${it}_${Properties.MOD_NAME}" }
         }
 
         manifest {
-            attributes["Specification-Title"] = mod_name
-            attributes["Specification-Vendor"] = mod_author
+            attributes["Specification-Title"] = Properties.MOD_NAME
+            attributes["Specification-Vendor"] = Properties.MOD_AUTHOR
             attributes["Specification-Version"] = archiveVersion
             attributes["Implementation-Title"] = project.name
             attributes["Implementation-Version"] = archiveVersion
-            attributes["Implementation-Vendor"] = mod_author
-            attributes["Built-On-Minecraft"] = minecraft_version
+            attributes["Implementation-Vendor"] = Properties.MOD_AUTHOR
+            attributes["Built-On-Minecraft"] = Versions.INTERNAL_MINECRAFT
         }
     }
-    val minecraft_version_range: String by project
-    val fabric_version: String by project
-    val fabric_loader_version: String by project
-    val license: String by project
-    val mod_description: String by project
-    val neoforge_version: String by project
-    val neoforge_loader_version_range: String by project
 
     val expandProps = mapOf(
-        "version" to version,
+        "version" to Versions.MOD,
         "group" to project.group, //Else we target the task's group.
-        "minecraft_version" to minecraft_version,
-        "minecraft_version_range" to minecraft_version_range,
-        "fabric_version" to fabric_version,
-        "fabric_loader_version" to fabric_loader_version,
-        "mod_name" to mod_name,
-        "mod_id" to mod_id,
-        "mod_license" to license,
-        "mod_description" to mod_description,
-        "neoforge_version" to neoforge_version,
-        "neoforge_loader_version_range" to neoforge_loader_version_range,
-        "java_version" to java_version
+        "minecraft_version" to Versions.MINECRAFT,
+        "fabric_api_version" to Versions.FABRIC_API,
+        "fabric_loader_version" to Versions.FABRIC_LOADER,
+        "fabric_minecraft_version_range" to Versions.FABRIC_MINECRAFT_RANGE,
+        "fabric_loader_range" to Versions.FABRIC_LOADER_RANGE,
+        "mod_name" to Properties.MOD_NAME,
+        "mod_author" to Properties.MOD_AUTHOR,
+        "mod_contributors" to Properties.MOD_CONTRIBUTORS,
+        "fabric_mod_contributors" to createFabricContributors(),
+        "mod_id" to Properties.MOD_ID,
+        "mod_license" to Properties.LICENSE,
+        "mod_description" to Properties.DESCRIPTION,
+        "neoforge_version" to Versions.NEOFORGE,
+        "neoforge_minecraft_version_range" to Versions.NEOFORGE_MINECRAFT_RANGE,
+        "neoforge_loader_version_range" to Versions.NEOFORGE_LOADER_RANGE,
+        "java_version" to Versions.JAVA,
+        "homepage" to Properties.HOMEPAGE,
+        "issues" to Properties.ISSUE_TRACKER,
+        "sources" to Properties.GITHUB_REPO
     )
-    named<ProcessResources>("processResources").configure {
+
+    val processResourcesTasks = listOf("processResources", "processTestResources", "processDatagenResources")
+
+    withType<ProcessResources>().matching { processResourcesTasks.contains(it.name) }.configureEach {
         inputs.properties(expandProps)
         filesMatching(setOf("fabric.mod.json", "META-INF/neoforge.mods.toml", "*.mixins.json")) {
             expand(expandProps)
         }
+        exclude("\\.cache")
     }
-    named<ProcessResources>("processTestResources").configure {
-        inputs.properties(expandProps)
-        filesMatching(setOf("fabric.mod.json", "META-INF/neoforge.mods.toml", "*.mixins.json")) {
-            expand(expandProps)
-        }
+}
+
+fun createFabricContributors() : String {
+    val string = StringBuilder();
+    val contributors = Properties.MOD_CONTRIBUTORS.split(", ")
+    var count = 0
+    for (contributor in contributors) {
+        if (count > 0)
+            string.append("\t\t")
+        ++count
+        string.append("\"${contributor}\"")
+        if (count < contributors.size)
+            string.append(",\n")
     }
+    return string.toString()
 }
 
 publishing {

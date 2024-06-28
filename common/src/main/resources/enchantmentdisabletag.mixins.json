@@ -12,7 +12,9 @@
         "ItemEnchantmentsMixin",
         "ItemEnchantmentsMutableMixin",
         "ItemStackMixin",
+        "MappedRegistryAccessor",
         "MappedRegistryMixin",
+        "RegistrySynchronizationMixin",
         "ResourceArgumentMixin",
         "SlotMixin",
         "VillagerTradesEnchantBookForEmeraldsMixin"

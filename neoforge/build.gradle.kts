@@ -1,47 +1,55 @@
-import net.neoforged.gradle.dsl.common.runs.ide.extensions.IdeaRunExtension
+import dev.greenhouseteam.enchantmentdisabletag.gradle.Properties
+import dev.greenhouseteam.enchantmentdisabletag.gradle.Versions
 import org.apache.tools.ant.filters.LineContains
 
 plugins {
     id("enchantmentdisabletag.loader")
-    id("net.neoforged.gradle.userdev") version "7.0.151"
+    id("net.neoforged.moddev")
 }
 
-val mod_id: String by project
-val minecraft_version: String by project
-val neoforge_version: String by project
-val emi_version: String by project
+neoForge {
+    version = Versions.NEOFORGE
+    addModdingDependenciesTo(sourceSets["test"])
 
-val at = file("src/main/resources/${mod_id}.cfg");
-if (at.exists())
-    minecraft.accessTransformers.file(at)
+    val at = project(":common").file("src/main/resources/${Properties.MOD_ID}.cfg")
+    if (at.exists())
+        accessTransformers.add(at.absolutePath)
 
-runs {
-    configureEach {
-        modSource(sourceSets["main"])
-        modSource(sourceSets["test"])
-        systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
-        jvmArguments("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true")
-        extensions.configure<IdeaRunExtension>("idea") {
-            primarySourceSet = sourceSets["test"]
+    runs {
+        configureEach {
+            systemProperty("forge.logging.markers", "REGISTRIES")
+            systemProperty("forge.logging.console.level", "debug")
+            systemProperty("neoforge.enabledGameTestNamespaces", Properties.MOD_ID)
+        }
+        create("client") {
+            client()
+            sourceSet = sourceSets["test"]
+        }
+        create("server") {
+            server()
+            programArgument("--nogui")
+            sourceSet = sourceSets["test"]
         }
     }
-    create("client") {
-    }
-    create("server") {
-        programArgument("--nogui")
+
+    mods {
+        register(Properties.MOD_ID) {
+            sourceSet(sourceSets["main"])
+            sourceSet(sourceSets["test"])
+        }
     }
 }
 
 repositories {
-    maven {
-        name = "TerraformersMC"
-        url = uri("https://maven.terraformersmc.com/")
+    maven("https://maven.blamejared.com/") {
+        name = "Jared's maven"
     }
 }
 
 dependencies {
-    implementation("net.neoforged:neoforge:${neoforge_version}")
-    runtimeOnly("dev.emi:emi-neoforge:${emi_version}+${minecraft_version}")
+    compileOnly("mezz.jei:jei-${Versions.MINECRAFT}-common-api:${Versions.JEI}")
+    compileOnly("mezz.jei:jei-${Versions.MINECRAFT}-neoforge-api:${Versions.JEI}")
+    runtimeOnly("mezz.jei:jei-${Versions.MINECRAFT}-neoforge:${Versions.JEI}")
 }
 
 tasks {

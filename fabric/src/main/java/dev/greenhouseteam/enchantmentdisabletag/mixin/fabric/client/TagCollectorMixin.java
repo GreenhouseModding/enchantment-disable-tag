@@ -12,6 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class TagCollectorMixin {
     @Inject(method = "updateTags", at = @At("TAIL"))
     private void enchantmentdisabletag$updateTagValue(RegistryAccess registryAccess, boolean bl, CallbackInfo ci) {
-        EnchantmentDisableTag.setReloaded();
+        EnchantmentDisableTag.setCreativeTabToReload();
     }
 }
