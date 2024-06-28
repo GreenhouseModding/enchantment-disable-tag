@@ -1,25 +1,27 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "dev.greenhouseteam.enchantmentdisabletag.mixin",
-  "refmap": "${mod_id}.refmap.json",
-  "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "CreativeModeTabsMixin",
-    "EnchantmentHelperMixin",
-    "EnchantRandomlyFunctionMixin",
-    "ItemEnchantmentsMixin",
-    "ItemEnchantmentsMutableMixin",
-    "MappedRegistryMixin",
-    "ResourceArgumentMixin",
-    "SlotMixin",
-    "VillagerTradesEnchantBookForEmeraldsMixin"
-  ],
-  "server": [
-    "SlotMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
+    "required": true,
+    "minVersion": "0.8",
+    "package": "dev.greenhouseteam.enchantmentdisabletag.mixin",
+    "refmap": "${mod_id}.refmap.json",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "AbstractContainerMenuMixin",
+        "CreativeModeTabsMixin",
+        "EnchantmentHelperMixin",
+        "EnchantRandomlyFunctionMixin",
+        "ItemEnchantmentsMixin",
+        "ItemEnchantmentsMutableMixin",
+        "ItemStackMixin",
+        "MappedRegistryMixin",
+        "ResourceArgumentMixin",
+        "SlotMixin",
+        "VillagerTradesEnchantBookForEmeraldsMixin"
+    ],
+    "server": [
+        "SlotMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
   }
 }
 

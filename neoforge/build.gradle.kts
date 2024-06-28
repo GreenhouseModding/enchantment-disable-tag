@@ -3,7 +3,7 @@ import org.apache.tools.ant.filters.LineContains
 
 plugins {
     id("enchantmentdisabletag.loader")
-    id("net.neoforged.gradle.userdev") version "7.0.117"
+    id("net.neoforged.gradle.userdev") version "7.0.151"
 }
 
 val mod_id: String by project
@@ -25,9 +25,9 @@ runs {
             primarySourceSet = sourceSets["test"]
         }
     }
-    register("client") {
+    create("client") {
     }
-    register("server") {
+    create("server") {
         programArgument("--nogui")
     }
 }

@@ -1,9 +1,9 @@
 package dev.greenhouseteam.enchantmentdisabletag.mixin;
 
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
-import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTag;
 import com.google.common.collect.ImmutableList;
 import com.llamalad7.mixinextras.sugar.Share;
+import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -34,7 +34,7 @@ public class VillagerTradesEnchantBookForEmeraldsMixin {
     private void enchantmentdisabletag$disableFromVillagerTrades(int minLevel, int maxLevel, int villagerXp, Enchantment[] enchantments, CallbackInfo ci, @Share("shouldCancel") LocalBooleanRef shouldCancel) {
         List<Enchantment> finalEnchantments = new ArrayList<>();
         for (Enchantment enchantment : enchantments) {
-            if (!enchantment.builtInRegistryHolder().is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG))
+            if (!enchantment.builtInRegistryHolder().is(EnchantmentDisableTags.DISABLED))
                 finalEnchantments.add(enchantment);
         }
         enchantmentdisabletag$shouldDisable = finalEnchantments.isEmpty();

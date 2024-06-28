@@ -1,6 +1,7 @@
 package dev.greenhouseteam.enchantmentdisabletag.mixin;
 
 import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTag;
+import dev.greenhouseteam.enchantmentdisabletag.EnchantmentDisableTags;
 import dev.greenhouseteam.enchantmentdisabletag.access.ItemEnchantmentsAccess;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -34,18 +35,25 @@ public abstract class ItemEnchantmentsMixin implements ItemEnchantmentsAccess {
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void enchantmentdisabletag$validateEnchantmentsInCodec(CallbackInfo ci) {
         CODEC = CODEC.flatXmap(itemEnchantments -> {
-            List<Holder<Enchantment>> disabledHolders = new ArrayList<>(itemEnchantments.keySet().stream().filter(holder -> holder.is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)).toList());
+            List<Holder<Enchantment>> disabledHolders = new ArrayList<>(itemEnchantments.keySet().stream().filter(holder -> holder.is(EnchantmentDisableTags.DISABLED)).toList());
             if (!disabledHolders.isEmpty()) {
                 Object2IntOpenHashMap<Holder<Enchantment>> potentialNewMap = new Object2IntOpenHashMap<>();
                 for (Object2IntMap.Entry<Holder<Enchantment>> entry : itemEnchantments.entrySet()) {
-                    if (!entry.getKey().is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG))
+                    if (!entry.getKey().is(EnchantmentDisableTags.DISABLED))
                         potentialNewMap.addTo(entry.getKey(), entry.getIntValue());
                 }
                 var newItemEnchantments = new ItemEnchantments(potentialNewMap, ((ItemEnchantmentsMixin) (Object) itemEnchantments).enchantmentdisabletag$getShowInTooltip());
+                if (!itemEnchantments.isEmpty() && newItemEnchantments.isEmpty()) {
+                    newItemEnchantments = ItemEnchantments.EMPTY;
+                    EnchantmentDisableTag.setBookState();
+                }
                 if (disabledHolders.isEmpty())
                     return DataResult.success(newItemEnchantments);
-                if (disabledHolders.size() == 1)
+                if (disabledHolders.size() == 1) {
+                    if (newItemEnchantments.isEmpty())
+                        return DataResult.error(() -> "Enchantment " + disabledHolders.getFirst().getRegisteredName() + " has been disabled via the enchantmentdisabledtag:disabled enchantment tag.");
                     return DataResult.error(() -> "Enchantment " + disabledHolders.getFirst().getRegisteredName() + " has been disabled via the enchantmentdisabledtag:disabled enchantment tag.", newItemEnchantments);
+                }
                 StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < disabledHolders.size(); ++i) {
                     if (i == disabledHolders.size() - 1)
@@ -54,6 +62,8 @@ public abstract class ItemEnchantmentsMixin implements ItemEnchantmentsAccess {
                     if (i < disabledHolders.size() - 1)
                         builder.append(", ");
                 }
+                if (newItemEnchantments.isEmpty())
+                    return DataResult.error(() -> "Enchantments " + builder.toString() + " have been disabled via the enchantmentdisabledtag:disabled enchantment tag.");
                 return DataResult.error(() -> "Enchantments " + builder.toString() + " have been disabled via the enchantmentdisabledtag:disabled enchantment tag.", newItemEnchantments);
             }
             return DataResult.success(itemEnchantments);
@@ -63,7 +73,7 @@ public abstract class ItemEnchantmentsMixin implements ItemEnchantmentsAccess {
     @Override
     public void enchantmentdisabletag$validate() {
         for (Object2IntMap.Entry<Holder<Enchantment>> entry : this.enchantments.object2IntEntrySet()) {
-            if (entry.getKey().is(EnchantmentDisableTag.DISABLED_ENCHANTMENT_TAG)) {
+            if (entry.getKey().is(EnchantmentDisableTags.DISABLED)) {
                 this.enchantments.remove(entry, entry.getIntValue());
             }
         }

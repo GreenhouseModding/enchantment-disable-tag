@@ -25,7 +25,7 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
 
     modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
-    modLocalRuntime("dev.emi:emi-fabric:${emi_version}+${minecraft_version}")
+    // modLocalRuntime("dev.emi:emi-fabric:${emi_version}+${minecraft_version}")
 }
 
 loom {
