@@ -22,10 +22,7 @@ public class EnchantmentDisableTag {
             for (Map.Entry<Holder<Enchantment>, Integer> entry : stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).entrySet())
                 if (entry.getKey().isBound() && !entry.getKey().is(EnchantmentDisableTags.DISABLED))
                     itemEnchantments.set(entry.getKey(), entry.getValue());
-            if (itemEnchantments.keySet().isEmpty())
-                stack.remove(DataComponents.ENCHANTMENTS);
-            else
-                stack.set(DataComponents.ENCHANTMENTS, itemEnchantments.toImmutable());
+            stack.set(DataComponents.ENCHANTMENTS, itemEnchantments.toImmutable());
         }
         if (stack.has(DataComponents.STORED_ENCHANTMENTS) && !stack.get(DataComponents.STORED_ENCHANTMENTS).isEmpty()) {
             ItemEnchantments.Mutable itemEnchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
