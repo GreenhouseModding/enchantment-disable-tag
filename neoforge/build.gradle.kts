@@ -5,10 +5,15 @@ import org.apache.tools.ant.filters.LineContains
 plugins {
     id("enchantmentdisabletag.loader")
     id("net.neoforged.moddev")
+    id("me.modmuss50.mod-publish-plugin")
 }
 
 neoForge {
     version = Versions.NEOFORGE
+    parchment {
+        minecraftVersion = Versions.PARCHMENT_MINECRAFT
+        mappingsVersion = Versions.PARCHMENT
+    }
     addModdingDependenciesTo(sourceSets["test"])
 
     val at = project(":common").file("src/main/resources/${Properties.MOD_ID}.cfg")
@@ -57,5 +62,36 @@ tasks {
         filesMatching("*.mixins.json") {
             filter<LineContains>("negate" to true, "contains" to setOf("refmap"))
         }
+    }
+}
+
+publishMods {
+    file.set(tasks.named<Jar>("jar").get().archiveFile)
+    modLoaders.add("neoforge")
+    changelog = rootProject.file("CHANGELOG.md").readText()
+    version = "${Versions.MOD}+${Versions.MINECRAFT}-neoforge"
+    type = STABLE
+
+    curseforge {
+        projectId = Properties.CURSEFORGE_PROJECT_ID
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+
+        minecraftVersions.add(Versions.MINECRAFT)
+        javaVersions.add(JavaVersion.VERSION_21)
+
+        clientRequired = false
+        serverRequired = true
+    }
+
+    modrinth {
+        projectId = Properties.MODRINTH_PROJECT_ID
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+
+        minecraftVersions.add(Versions.MINECRAFT)
+    }
+
+    github {
+        accessToken = providers.environmentVariable("GITHUB_TOKEN")
+        parent(project(":common").tasks.named("publishGithub"))
     }
 }

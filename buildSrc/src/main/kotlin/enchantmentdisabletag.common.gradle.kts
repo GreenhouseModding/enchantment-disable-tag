@@ -70,7 +70,7 @@ tasks {
             attributes["Implementation-Title"] = project.name
             attributes["Implementation-Version"] = archiveVersion
             attributes["Implementation-Vendor"] = Properties.MOD_AUTHOR
-            attributes["Built-On-Minecraft"] = Versions.INTERNAL_MINECRAFT
+            attributes["Built-On-Minecraft"] = Versions.MINECRAFT
         }
     }
 
@@ -78,7 +78,6 @@ tasks {
         "version" to Versions.MOD,
         "group" to project.group, //Else we target the task's group.
         "minecraft_version" to Versions.MINECRAFT,
-        "fabric_api_version" to Versions.FABRIC_API,
         "fabric_loader_version" to Versions.FABRIC_LOADER,
         "fabric_minecraft_version_range" to Versions.FABRIC_MINECRAFT_RANGE,
         "fabric_loader_range" to Versions.FABRIC_LOADER_RANGE,
@@ -134,7 +133,7 @@ publishing {
     repositories {
         maven {
             name = "Greenhouse"
-            url = uri("https://maven.greenhouseteam.dev/releases")
+            url = uri("https://repo.greenhouse.house/releases")
             credentials {
                 username = System.getenv("MAVEN_USERNAME")
                 password = System.getenv("MAVEN_PASSWORD")

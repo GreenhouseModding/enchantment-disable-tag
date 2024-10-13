@@ -20,7 +20,4 @@ plugins {
 
 // This should match the folder name of the project, or else IDEA may complain (see https://youtrack.jetbrains.com/issue/IDEA-317606)
 rootProject.name = "enchantment-disable-tag"
-include("common")
-include("fabric")
-include("neoforge")
-include("publish")
+include("common", "fabric", "neoforge")
