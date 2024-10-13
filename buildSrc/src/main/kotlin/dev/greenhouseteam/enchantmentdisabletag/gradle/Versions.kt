@@ -3,6 +3,7 @@ package dev.greenhouseteam.enchantmentdisabletag.gradle
 object Versions {
     const val MOD = "1.1.1"
 
+    val SUPPORTED_MINECRAFT = listOf("1.21", "1.21.1")
     const val MINECRAFT = "1.21.1"
     const val PARCHMENT_MINECRAFT = "1.21"
     const val NEOFORM = "$MINECRAFT-20240808.144430"

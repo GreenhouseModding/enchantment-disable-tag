@@ -70,13 +70,14 @@ publishMods {
     modLoaders.add("fabric")
     changelog = rootProject.file("CHANGELOG.md").readText()
     version = "${Versions.MOD}+${Versions.MINECRAFT}-fabric"
+    displayName = "v${Versions.MOD} (Fabric ${Versions.MINECRAFT})"
     type = STABLE
 
     curseforge {
         projectId = Properties.CURSEFORGE_PROJECT_ID
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
 
-        minecraftVersions.add(Versions.MINECRAFT)
+        minecraftVersions.addAll(Versions.SUPPORTED_MINECRAFT)
         javaVersions.add(JavaVersion.VERSION_21)
 
         clientRequired = false
@@ -87,7 +88,7 @@ publishMods {
         projectId = Properties.MODRINTH_PROJECT_ID
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 
-        minecraftVersions.add(Versions.MINECRAFT)
+        minecraftVersions.addAll(Versions.SUPPORTED_MINECRAFT)
     }
 
     github {
