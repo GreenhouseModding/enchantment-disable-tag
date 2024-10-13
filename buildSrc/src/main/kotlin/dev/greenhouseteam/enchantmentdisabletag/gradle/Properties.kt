@@ -13,7 +13,6 @@ object Properties {
     const val CURSEFORGE_PROJECT_ID = "1012987"
     const val CURSEFORGE_PAGE = "https://www.curseforge.com/minecraft/mc-mods/enchantment-disable-tag"
     const val MODRINTH_PROJECT_ID = "P7SsQE5n"
-    const val GITHUB_REPO = "https://github.com/GreenhouseTeam/enchantment-disable-tag"
+    const val GITHUB_REPO = "GreenhouseTeam/enchantment-disable-tag"
     const val GITHUB_COMMITISH =  "1.21"
-    const val ISSUE_TRACKER = "https://github.com/GreenhouseTeam/enchantment-disable-tag/issues"
 }

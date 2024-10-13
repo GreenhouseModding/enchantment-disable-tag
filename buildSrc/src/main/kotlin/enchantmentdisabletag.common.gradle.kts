@@ -93,7 +93,6 @@ tasks {
         "neoforge_loader_version_range" to Versions.NEOFORGE_LOADER_RANGE,
         "java_version" to Versions.JAVA,
         "homepage" to Properties.HOMEPAGE,
-        "issues" to Properties.ISSUE_TRACKER,
         "sources" to Properties.GITHUB_REPO
     )
 

@@ -12,8 +12,8 @@
     ],
     "contact": {
         "homepage": "${homepage}",
-        "issues": "${issues}",
-        "sources": "${sources}"
+        "issues": "https://github.com/${sources}/issues",
+        "sources": "https://github.com/${sources}"
     },
     "license": "${mod_license}",
     "icon": "${mod_id}.png",
