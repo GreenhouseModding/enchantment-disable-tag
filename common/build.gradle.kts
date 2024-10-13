@@ -61,6 +61,7 @@ artifacts {
 publishMods {
     changelog = rootProject.file("CHANGELOG.md").readText()
     version = "${Versions.MOD}+${Versions.MINECRAFT}"
+    displayName = "v${Versions.MOD} (Minecraft ${Versions.MINECRAFT})"
     type = STABLE
 
     github {
