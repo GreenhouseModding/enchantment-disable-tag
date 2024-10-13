@@ -4,7 +4,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 
-public class EnchantmentDisabledTagNeoForge {
+public class EnchantmentDisableTagNeoForge {
     @EventBusSubscriber(modid = EnchantmentDisableTag.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
     public static class GameEvents {
         @SubscribeEvent
