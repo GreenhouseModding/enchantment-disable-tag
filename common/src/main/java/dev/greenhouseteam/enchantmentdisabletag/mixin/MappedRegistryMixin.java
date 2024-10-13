@@ -64,6 +64,9 @@ public abstract class MappedRegistryMixin<T> {
 
     @ModifyReturnValue(method = "holders", at = @At("RETURN"))
     private Stream<Holder.Reference<T>> enchantmentdisabletag$disableFromHolders(Stream<Holder.Reference<T>> original) {
+        if (key() != (ResourceKey<? extends Registry<?>>) Registries.ENCHANTMENT)
+            return original;
+
         // ref can be null on NeoForge. No clue how it happens, but hey, we have to compensate sometimes.
         return original.filter(ref -> ref != null && (!ref.key().isFor(Registries.ENCHANTMENT) || !ref.is((TagKey<T>) EnchantmentDisableTags.DISABLED)));
     }
