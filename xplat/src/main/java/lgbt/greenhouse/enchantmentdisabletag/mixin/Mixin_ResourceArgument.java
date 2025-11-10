@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ResourceArgument.class)
 public class Mixin_ResourceArgument<T> {
-
     @SuppressWarnings("unchecked")
     @ModifyReturnValue(method = "parse(Lcom/mojang/brigadier/StringReader;)Lnet/minecraft/core/Holder$Reference;", at = @At(value = "RETURN"))
     private Holder.Reference<T> enchantmentdisabletag$throwOnDisabled(Holder.Reference<T> original) throws CommandSyntaxException {

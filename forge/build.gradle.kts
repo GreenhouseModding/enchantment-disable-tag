@@ -29,17 +29,17 @@ mixin {
 
 legacyForge {
     version = libs.versions.forge.get()
-
-    validateAccessTransformers = true
-
-    val at = project(":xplat").file("src/main/resources/META-INF/accesstransformer.cfg")
-    if (at.exists())
-        setAccessTransformers(at)
-
     parchment {
         minecraftVersion = libs.versions.minecraft.asProvider().get()
         mappingsVersion = libs.versions.parchment.get()
     }
+    addModdingDependenciesTo(sourceSets["test"])
+
+    val at = project(":xplat").file("src/main/resources/META-INF/accesstransformer.cfg")
+    if (at.exists())
+        setAccessTransformers(at)
+    validateAccessTransformers = true
+
     runs {
         create("client") {
             client()
@@ -61,6 +61,8 @@ legacyForge {
     mods {
         register(Properties.MOD_ID) {
             sourceSet(sourceSets["main"])
+        }
+        register("${Properties.MOD_ID}_test") {
             sourceSet(sourceSets["test"])
         }
     }

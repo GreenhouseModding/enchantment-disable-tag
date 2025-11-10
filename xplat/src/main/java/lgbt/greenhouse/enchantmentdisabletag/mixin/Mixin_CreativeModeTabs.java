@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(CreativeModeTabs.class)
 public class Mixin_CreativeModeTabs {
-
     @ModifyExpressionValue(method = "tryRebuildTabContents", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/CreativeModeTab$ItemDisplayParameters;needsUpdate(Lnet/minecraft/world/flag/FeatureFlagSet;ZLnet/minecraft/core/HolderLookup$Provider;)Z"))
     private static boolean enchantmentdisabletag$refreshTabContents(boolean original, FeatureFlagSet flagSet, boolean hasPermissions, HolderLookup.Provider provider) {
         return original || EnchantmentDisableTag.getAndResetCreativeTabReloadState();

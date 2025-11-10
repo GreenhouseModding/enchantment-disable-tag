@@ -1,5 +1,6 @@
 package lgbt.greenhouse.enchantmentdisabletag;
 
+import lgbt.greenhouse.enchantmentdisabletag.duck.Duck_PotentialEnchantmentDisabledStack;
 import lgbt.greenhouse.enchantmentdisabletag.platform.EnchantmentDisableTagPlatformHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.Optional;
 
+@SuppressWarnings("DataFlowIssue")
 public class EnchantmentDisableTag {
     public static final String MOD_ID = "enchantmentdisabletag";
     public static final TagKey<Enchantment> DISABLED = TagKey.create(Registries.ENCHANTMENT, EnchantmentDisableTag.id("disabled"));
@@ -28,6 +30,7 @@ public class EnchantmentDisableTag {
 
         CompoundTag tag = stack.getTag();
         if (removeDisabledEnchantments(tag)) {
+            ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$setWasDisabled();
             if (stack.is(Items.ENCHANTED_BOOK) && !tag.contains("StoredEnchantments")) {
                 ItemStack book = new ItemStack(Items.BOOK, stack.getCount());
                 book.setTag(tag);

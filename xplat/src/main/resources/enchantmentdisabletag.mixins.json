@@ -7,6 +7,8 @@
   "mixins": [
     "Mixin_CreativeModeTabItemDisplayBuilder",
     "Mixin_CreativeModeTabs",
+    "Mixin_EnchantedBookItem",
+    "Mixin_EnchantmentHelper",
     "Mixin_EnchantmentMenu",
     "Mixin_FriendlyByteBuf",
     "Mixin_HolderSet",

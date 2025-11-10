@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 
 @Mixin(MappedRegistry.class)
 public abstract class Mixin_MappedRegistry<T> {
-
     @Shadow public abstract Optional<Holder.Reference<T>> getHolder(ResourceKey<T> resourceKey);
 
     @Shadow
@@ -77,8 +76,9 @@ public abstract class Mixin_MappedRegistry<T> {
             return original;
         }
 
-        return original.stream()
-                .filter(ref -> ref != null && (!ref.key().isFor(Registries.ENCHANTMENT) || !ref.is((TagKey<T>) EnchantmentDisableTag.DISABLED)))
+        var holders = original.stream()
+                .filter(ref -> ref != null && !ref.is((TagKey<T>) EnchantmentDisableTag.DISABLED))
                 .toList();
+        return holders;
     }
 }

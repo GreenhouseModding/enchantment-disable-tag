@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}",
+  "id": "${mod_id}_test",
   "version": "${mod_version}+${minecraft_version}",
-  "name": "${mod_name}",
+  "name": "${mod_name} Test",
   "description": "${mod_description}",
   "authors": [
     "${mod_author}"
@@ -16,24 +16,18 @@
     "sources": "${sources}"
   },
   "license": "${mod_license}",
-  "icon": "${mod_id}.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "lgbt.greenhouse.enchantmentdisabletag.EnchantmentDisableTagFabric"
+      "lgbt.greenhouse.enchantmentdisabletag.test.EnchantmentDisableTagTest"
     ]
   },
-  "mixins": [
-    "${mod_id}.mixins.json",
-    "${mod_id}.fabric.mixins.json"
-  ],
   "depends": {
     "fabricloader": "${fabric_loader_range}",
     "fabric-api": "*",
     "minecraft": "${fabric_minecraft_version_range}",
     "java": ">=${java_version}"
   },
-  "accessWidener": "enchantmentdisabletag.accesswidener",
   "custom": {
     "modmenu": {
       "links": {
