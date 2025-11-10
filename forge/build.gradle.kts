@@ -12,6 +12,8 @@ repositories {
 }
 
 dependencies {
+    annotationProcessor(libs.mixin)
+
     compileOnly(libs.mixin.extras)
     annotationProcessor(libs.mixin.extras)
     implementation(libs.mixin.extras.forge)
@@ -62,4 +64,11 @@ legacyForge {
             sourceSet(sourceSets["test"])
         }
     }
+}
+
+tasks.getByName<Jar>("jar") {
+    manifest.attributes(
+        Pair("MixinConfig", "${Properties.MOD_ID}.mixins.json"),
+        Pair("MixinConfig", "${Properties.MOD_ID}.forge.mixins.json")
+    )
 }
