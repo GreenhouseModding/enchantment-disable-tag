@@ -22,4 +22,4 @@ plugins {
 rootProject.name = "enchantment-disable-tag"
 include("xplat")
 include("fabric")
-include("neoforge")
+include("forge")

@@ -17,21 +17,16 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Mixin(MappedRegistry.class)
 public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncContext {
     @Unique
     private boolean enchantmentdisabletag$syncing = false;
-
-    @Shadow public abstract Optional<Holder.Reference<T>> getHolder(ResourceLocation resourceLocation);
 
     @Shadow public abstract Optional<Holder.Reference<T>> getHolder(ResourceKey<T> resourceKey);
 
@@ -47,7 +42,7 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
         }
 
         return original.stream().filter(t -> {
-            var optionalHolder = getHolder(t);
+            var optionalHolder = getHolder(ResourceKey.create(key, t));
             return optionalHolder.isEmpty() || !optionalHolder.get().is((TagKey<T>) EnchantmentDisableTag.DISABLED);
         }).collect(Collectors.toSet());
     }
@@ -72,36 +67,21 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
             return original;
         }
 
-        return original.entrySet().stream().filter(entry -> entry.getValue().is((TagKey<T>) EnchantmentDisableTag.DISABLED)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return original.entrySet().stream()
+                .filter(entry -> entry.getValue().is((TagKey<T>) EnchantmentDisableTag.DISABLED))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     @SuppressWarnings("unchecked")
-    @ModifyReturnValue(method = "holders", at = @At("RETURN"))
-    private Stream<Holder.Reference<T>> enchantmentdisabletag$disableFromHolders(Stream<Holder.Reference<T>> original) {
+    @ModifyReturnValue(method = "holdersInOrder", at = @At("RETURN"))
+    private List<Holder.Reference<T>> enchantmentdisabletag$disableFromHolders(List<Holder.Reference<T>> original) {
         if (!key.equals(Registries.ENCHANTMENT) || enchantmentdisabletag$syncing) {
             return original;
         }
 
-        // ref can be null on NeoForge. No clue how it happens, but hey, we have to compensate sometimes.
-        return original.filter(ref -> ref != null && (!ref.key().isFor(Registries.ENCHANTMENT) || !ref.is((TagKey<T>) EnchantmentDisableTag.DISABLED)));
-    }
-
-    @SuppressWarnings("unchecked")
-    @ModifyArg(method = "iterator", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Iterators;transform(Ljava/util/Iterator;Lcom/google/common/base/Function;)Ljava/util/Iterator;"))
-    private Iterator<T> enchantmentdisabletag$disableFromIterator(Iterator<T> original) {
-        if (!key.equals(Registries.ENCHANTMENT)) {
-            return original;
-        }
-
-        // This is less performant, but we do it this way just in case new values are put into the iterator.
-        List<T> list = new ArrayList<>();
-        while (original.hasNext()) {
-            T it = original.next();
-            if (it instanceof Holder.Reference<?> reference && reference.key().isFor(Registries.ENCHANTMENT) && !((Holder.Reference<T>)reference).is((TagKey<T>) EnchantmentDisableTag.DISABLED)) {
-                list.add(it);
-            }
-        }
-        return list.iterator();
+        return original.stream()
+                .filter(ref -> ref != null && (!ref.key().isFor(Registries.ENCHANTMENT) || !ref.is((TagKey<T>) EnchantmentDisableTag.DISABLED)))
+                .toList();
     }
 
     @Override

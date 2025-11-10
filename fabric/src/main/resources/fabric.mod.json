@@ -28,6 +28,7 @@
     "minecraft": "${fabric_minecraft_version_range}",
     "java": ">=${java_version}"
   },
+  "accessWidener": "enchantmentdisabletag.accesswidener",
   "custom": {
     "modmenu": {
       "links": {

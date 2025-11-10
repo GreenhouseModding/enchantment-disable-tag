@@ -3,19 +3,20 @@
   "minVersion": "0.8",
   "package": "lgbt.greenhouse.enchantmentdisabletag.mixin",
   "refmap": "${mod_id}.refmap.json",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "Mixin_CreativeModeTabItemDisplayBuilder",
     "Mixin_CreativeModeTabs",
     "Mixin_EnchantmentMenu",
+    "Mixin_FriendlyByteBuf",
     "Mixin_HolderSet",
     "Mixin_ItemStack",
     "Mixin_MappedRegistry",
-    "Mixin_RegistrySynchronization",
     "Mixin_ResourceArgument",
-    "Mixin_TagNetworkSerialization"
+    "Mixin_TagNetworkSerialization",
+    "Mixin_VillagerTradesEnchantBookForEmeralds"
   ],
   "injectors": {
     "defaultRequire": 1
   }
 }
-

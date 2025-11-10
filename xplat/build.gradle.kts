@@ -2,7 +2,7 @@ import lgbt.greenhouse.enchantmentdisabletag.gradle.Properties
 
 plugins {
     id("conventions.xplat")
-    alias(libs.plugins.moddev)
+    alias(libs.plugins.moddev.legacy)
     alias(libs.plugins.mod.publish)
 }
 
@@ -20,15 +20,15 @@ dependencies {
     annotationProcessor(libs.mixin.extras)
 }
 
-neoForge {
-    neoFormVersion = libs.versions.neoform.get()
+legacyForge {
+    mcpVersion = libs.versions.minecraft.asProvider().get()
     parchment {
         minecraftVersion = libs.versions.minecraft.parchment.get()
         mappingsVersion = libs.versions.parchment.get()
     }
     addModdingDependenciesTo(sourceSets["test"])
 
-    val at = file("src/main/resources/${Properties.MOD_ID}.cfg")
+    val at = file("src/main/resources/META-INF/accesstransformer.cfg")
     if (at.exists())
         setAccessTransformers(at)
     validateAccessTransformers = true
@@ -73,6 +73,6 @@ publishMods {
         commitish = Properties.GITHUB_COMMITISH
 
         file(project(":fabric"))
-        additionalFile(project(":neoforge"))
+        additionalFile(project(":forge"))
     }
 }

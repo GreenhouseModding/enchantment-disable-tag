@@ -1,4 +1,4 @@
-package dev.greenhouseteam.enchantmentdisabletag.platform;
+package lgbt.greenhouse.enchantmentdisabletag.platform;
 
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class EnchantmentDisableTagHelperForge implements EnchantmentDisableTagPlatformHelper {
+public class EnchantmentDisableTagPlatformHelperForge implements EnchantmentDisableTagPlatformHelper {
     @Override
     public Optional<Holder<Enchantment>> getHolder(Enchantment enchantment) {
         return ForgeRegistries.ENCHANTMENTS.getHolder(enchantment);
@@ -23,5 +23,15 @@ public class EnchantmentDisableTagHelperForge implements EnchantmentDisableTagPl
     @Override
     public @NotNull Optional<Holder<Enchantment>> getHolder(ResourceKey<Enchantment> enchantmentKey) {
         return ForgeRegistries.ENCHANTMENTS.getHolder(enchantmentKey);
+    }
+
+    @Override
+    public Class<? extends EnchantmentDisableTagPlatformHelper> type() {
+        return EnchantmentDisableTagPlatformHelperForge.class;
+    }
+
+    @Override
+    public EnchantmentDisableTagPlatformHelper get() {
+        return this;
     }
 }
