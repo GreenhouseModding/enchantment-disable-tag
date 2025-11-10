@@ -24,10 +24,5 @@ public class EnchantmentDisableTagTest implements ModInitializer {
             EnchantmentHelper.setEnchantments(Map.of(Enchantments.SHARPNESS, 1, Enchantments.MOB_LOOTING, 2), swordStack);
             entries.accept(swordStack);
         });
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(entries -> {
-            ItemStack bookStack = new ItemStack(Items.ENCHANTED_BOOK);
-            EnchantedBookItem.addEnchantment(bookStack, new EnchantmentInstance(Enchantments.AQUA_AFFINITY, 1));
-            entries.accept(bookStack);
-        });
     }
 }

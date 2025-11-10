@@ -29,11 +29,6 @@ public class EnchantmentDisableTagTest {
                 EnchantmentHelper.setEnchantments(Map.of(Enchantments.SHARPNESS, 1, Enchantments.MOB_LOOTING, 2), swordStack);
                 event.accept(swordStack);
             }
-            if (event.getTabKey().equals(CreativeModeTabs.INGREDIENTS)) {
-                ItemStack bookStack = new ItemStack(Items.ENCHANTED_BOOK);
-                EnchantedBookItem.addEnchantment(bookStack, new EnchantmentInstance(Enchantments.AQUA_AFFINITY, 1));
-                event.accept(bookStack);
-            }
         }
     }
 }
