@@ -25,13 +25,15 @@ public class Mixin_CreativeModeTabItemDisplayBuilder {
     @Final
     public Set<ItemStack> searchTabContents;
 
-    @SuppressWarnings("ConstantValue")
     @Inject(method = "accept", at = @At("HEAD"), cancellable = true)
     private void enchantmentdisabletag$filterOutInvalidCreativeItems(ItemStack stack, CreativeModeTab.TabVisibility visibility, CallbackInfo ci) {
         if (
-                stack.is(Items.ENCHANTED_BOOK) && EnchantedBookItem.getEnchantments(stack).isEmpty() && ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled() ||
-                visibility != CreativeModeTab.TabVisibility.SEARCH_TAB_ONLY && tabContents.contains(stack) && ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled() ||
-                visibility == CreativeModeTab.TabVisibility.SEARCH_TAB_ONLY && searchTabContents.contains(stack) && ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled()
+                 ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled() &&
+                 (
+                         stack.is(Items.ENCHANTED_BOOK) && EnchantedBookItem.getEnchantments(stack).isEmpty() ||
+                         visibility != CreativeModeTab.TabVisibility.SEARCH_TAB_ONLY && tabContents.contains(stack) ||
+                         visibility == CreativeModeTab.TabVisibility.SEARCH_TAB_ONLY && searchTabContents.contains(stack)
+                 )
         ) {
             ci.cancel();
         }
