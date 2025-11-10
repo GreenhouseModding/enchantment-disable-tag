@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(FriendlyByteBuf.class)
 public class Mixin_FriendlyByteBuf {
     @ModifyReturnValue(method = "readItem", at = @At("RETURN"))
-    private ItemStack enchiridion$removeDisabledEnchantmentsFromReadItem(ItemStack original) {
+    private ItemStack enchantmentdisabletag$removeDisabledEnchantmentsFromReadItem(ItemStack original) {
         return EnchantmentDisableTag.removeDisabledEnchantments(original);
     }
 }

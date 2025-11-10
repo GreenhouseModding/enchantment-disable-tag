@@ -32,7 +32,7 @@ public abstract class Mixin_ItemStack {
     private CompoundTag tag;
 
     @Inject(method = "<init>(Lnet/minecraft/nbt/CompoundTag;)V", at = @At("TAIL"))
-    private void enchiridion$removeDisabledEnchantmentsFromTag(CompoundTag compoundTag, CallbackInfo ci) {
+    private void enchantmentdisabletag$removeDisabledEnchantmentsFromTag(CompoundTag compoundTag, CallbackInfo ci) {
         CompoundTag workingTag = compoundTag.getCompound("tag");
         boolean result = EnchantmentDisableTag.removeDisabledEnchantments(workingTag);
         if (result) {
