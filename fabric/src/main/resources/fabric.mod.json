@@ -18,6 +18,11 @@
   "license": "${mod_license}",
   "icon": "${mod_id}.png",
   "environment": "*",
+  "entrypoints": {
+    "main": [
+      "lgbt.greenhouse.enchantmentdisabletag.EnchantmentDisableTagFabric"
+    ]
+  },
   "mixins": [
     "${mod_id}.mixins.json",
     "${mod_id}.fabric.mixins.json"

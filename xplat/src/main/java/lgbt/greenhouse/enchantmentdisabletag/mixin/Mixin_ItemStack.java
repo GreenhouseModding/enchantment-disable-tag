@@ -5,10 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.serialization.Codec;
 import lgbt.greenhouse.enchantmentdisabletag.EnchantmentDisableTag;
 import lgbt.greenhouse.enchantmentdisabletag.duck.Duck_PotentialEnchantmentDisabledStack;
-import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.component.PatchedDataComponentMap;
+import net.minecraft.core.component.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
@@ -47,10 +44,6 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
     public abstract boolean is(Item item);
 
     @Shadow
-    @Nullable
-    public abstract <T> T remove(DataComponentType<? extends T> component);
-
-    @Shadow
     public abstract DataComponentMap getComponents();
 
     @Unique
@@ -59,14 +52,16 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void enchantmentdisabletag$removeEnchantmentsWhenDecoding(CallbackInfo ci) {
         CODEC = CODEC.xmap(stack -> {
-            ItemStack newStack = EnchantmentDisableTag.removeDisabledEnchantments(stack);
+            ItemStack newStack = stack.copy();
+            EnchantmentDisableTag.removeDisabledEnchantments(newStack);
             if (!ItemStack.isSameItemSameComponents(stack, newStack)) {
                 ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$setWasDisabled();
             }
             return newStack;
         }, Function.identity());
         OPTIONAL_STREAM_CODEC = OPTIONAL_STREAM_CODEC.map(stack -> {
-            ItemStack newStack = EnchantmentDisableTag.removeDisabledEnchantments(stack);
+            ItemStack newStack = stack.copy();
+            EnchantmentDisableTag.removeDisabledEnchantments(newStack);
             if (!ItemStack.isSameItemSameComponents(stack, newStack)) {
                 ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$setWasDisabled();
             }
@@ -74,11 +69,10 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
         }, Function.identity());
     }
 
-    @SuppressWarnings("unchecked")
     @WrapOperation(method = "set", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/PatchedDataComponentMap;set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;"))
     @Nullable
     private <T> T enchantmentdisabletag$removeDisabledEnchantmentsWhenSettingComponents(PatchedDataComponentMap instance, DataComponentType<? super T> component, T value, Operation<T> original) {
-        if (original instanceof ItemEnchantments originalEnchantments) {
+        if (value instanceof ItemEnchantments originalEnchantments) {
             ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(originalEnchantments);
             mutable.removeIf(enchantmentHolder -> enchantmentHolder.is(EnchantmentDisableTag.DISABLED));
             ItemEnchantments newEnchantments = mutable.toImmutable();
@@ -87,14 +81,13 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
                     item = Items.BOOK;
                 }
                 enchantmentdisabletag$wasDisabled = true;
-                remove(component);
-                return (T) getComponents().get(component);
+                return original.call(instance, component, ((Accessor_PatchedDataComponentMap)getComponents()).enchantmentdisabletag$getPrototype().get(component));
             } else if (!newEnchantments.equals(originalEnchantments)) {
                 enchantmentdisabletag$wasDisabled = true;
                 return original.call(instance, component, newEnchantments);
             }
         }
-        return original.call(instance, component, original);
+        return original.call(instance, component, value);
     }
 
     @Override
