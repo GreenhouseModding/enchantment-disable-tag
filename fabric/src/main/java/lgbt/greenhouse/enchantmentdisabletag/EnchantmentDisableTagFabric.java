@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +33,7 @@ public class EnchantmentDisableTagFabric implements ModInitializer {
         for (Iterator<ItemStack> it = entries.iterator(); it.hasNext();) {
             ItemStack stack = it.next();
             if (
-                    stack.getItem() instanceof EnchantedBookItem && EnchantedBookItem.getEnchantments(stack).isEmpty() && ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled() ||
+                    stack.is(Items.ENCHANTED_BOOK) && EnchantedBookItem.getEnchantments(stack).isEmpty() && ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled() ||
                     ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled() && processedTabEntries.stream().anyMatch(existingStack -> ItemStack.isSameItemSameTags(stack, existingStack))
             ) {
                 it.remove();
