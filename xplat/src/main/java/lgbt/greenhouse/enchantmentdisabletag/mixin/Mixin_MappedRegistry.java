@@ -24,9 +24,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mixin(MappedRegistry.class)
-public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncContext {
-    @Unique
-    private boolean enchantmentdisabletag$syncing = false;
+public abstract class Mixin_MappedRegistry<T> {
 
     @Shadow public abstract Optional<Holder.Reference<T>> getHolder(ResourceKey<T> resourceKey);
 
@@ -75,17 +73,12 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
     @SuppressWarnings("unchecked")
     @ModifyReturnValue(method = "holdersInOrder", at = @At("RETURN"))
     private List<Holder.Reference<T>> enchantmentdisabletag$disableFromHolders(List<Holder.Reference<T>> original) {
-        if (!key.equals(Registries.ENCHANTMENT) || enchantmentdisabletag$syncing) {
+        if (!key.equals(Registries.ENCHANTMENT)) {
             return original;
         }
 
         return original.stream()
                 .filter(ref -> ref != null && (!ref.key().isFor(Registries.ENCHANTMENT) || !ref.is((TagKey<T>) EnchantmentDisableTag.DISABLED)))
                 .toList();
-    }
-
-    @Override
-    public void enchantmentdisabletag$setSyncing(boolean value) {
-        enchantmentdisabletag$syncing = value;
     }
 }
