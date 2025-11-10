@@ -44,7 +44,9 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
     public abstract boolean is(Item item);
 
     @Shadow
-    public abstract DataComponentMap getComponents();
+    @Final
+    @Mutable
+    PatchedDataComponentMap components;
 
     @Unique
     private boolean enchantmentdisabletag$wasDisabled = false;
@@ -76,16 +78,12 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
             ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(originalEnchantments);
             mutable.removeIf(enchantmentHolder -> enchantmentHolder.is(EnchantmentDisableTag.DISABLED));
             ItemEnchantments newEnchantments = mutable.toImmutable();
-            if (newEnchantments.isEmpty()) {
-                if (component == DataComponents.STORED_ENCHANTMENTS && is(Items.ENCHANTED_BOOK)) {
-                    item = Items.BOOK;
-                }
-                enchantmentdisabletag$wasDisabled = true;
-                return original.call(instance, component, ((Accessor_PatchedDataComponentMap)getComponents()).enchantmentdisabletag$getPrototype().get(component));
-            } else if (!newEnchantments.equals(originalEnchantments)) {
-                enchantmentdisabletag$wasDisabled = true;
-                return original.call(instance, component, newEnchantments);
+            if (newEnchantments.isEmpty() && component == DataComponents.STORED_ENCHANTMENTS && is(Items.ENCHANTED_BOOK)) {
+                item = Items.BOOK;
+                components = PatchedDataComponentMap.fromPatch(item.components(), components.asPatch());
             }
+            enchantmentdisabletag$wasDisabled = true;
+            return original.call(instance, component, newEnchantments);
         }
         return original.call(instance, component, value);
     }
