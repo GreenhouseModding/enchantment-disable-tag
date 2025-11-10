@@ -41,15 +41,13 @@ public class EnchantmentDisableTag {
     }
 
     public static boolean removeDisabledEnchantments(CompoundTag tag) {
-        if (tag.contains("Enchantments", Tag.TAG_LIST)) {
-            removeDisabledEnchantments(tag.getList("Enchantments", Tag.TAG_COMPOUND));
+        if (tag.contains("Enchantments", Tag.TAG_LIST) && removeDisabledEnchantments(tag.getList("Enchantments", Tag.TAG_COMPOUND))) {
             if (tag.getList("Enchantments", Tag.TAG_COMPOUND).isEmpty()) {
                 tag.remove("Enchantments");
             }
             return true;
         }
-        if (tag.contains("StoredEnchantments", Tag.TAG_LIST)) {
-            removeDisabledEnchantments(tag.getList("StoredEnchantments", Tag.TAG_COMPOUND));
+        if (tag.contains("StoredEnchantments", Tag.TAG_LIST) && removeDisabledEnchantments(tag.getList("StoredEnchantments", Tag.TAG_COMPOUND))) {
             if (tag.getList("StoredEnchantments", Tag.TAG_COMPOUND).isEmpty()) {
                 tag.remove("StoredEnchantments");
             }
@@ -58,10 +56,10 @@ public class EnchantmentDisableTag {
         return false;
     }
 
-    public static void removeDisabledEnchantments(ListTag list) {
+    public static boolean removeDisabledEnchantments(ListTag list) {
         if (list == null)
-            return;
-        list.removeIf(tag -> {
+            return false;
+        return list.removeIf(tag -> {
             if (!(tag instanceof CompoundTag compoundTag))
                 return false;
             if (compoundTag.contains("id", Tag.TAG_STRING)) {
