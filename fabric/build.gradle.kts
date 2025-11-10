@@ -1,15 +1,12 @@
-plugins {
-    id("enchantmentdisabletag.loader")
-    id("fabric-loom") version "1.6-SNAPSHOT"
-}
+@file:Suppress("UnstableApiUsage")
 
-val fabric_loader_version: String by project
-val fabric_version: String by project
-val minecraft_version: String by project
-val modmenu_version: String by project
-val emi_version: String by project
-val mixin_extras_version: String by project
-val mod_id: String by project
+import lgbt.greenhouse.enchantmentdisabletag.gradle.Properties
+
+plugins {
+    id("conventions.loader")
+    alias(libs.plugins.loom)
+    alias(libs.plugins.mod.publish)
+}
 
 repositories {
     maven {
@@ -19,29 +16,28 @@ repositories {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${minecraft_version}")
-    mappings(loom.officialMojangMappings())
+    minecraft(libs.minecraft)
+    mappings(loom.layered {
+        officialMojangMappings()
+        parchment(libs.parchment)
+    })
 
-    modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
+    modImplementation(libs.fabric.loader)
+    modImplementation(libs.fabric.api)
+    modLocalRuntime(libs.mod.menu)
 
-    include("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")
-    implementation("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")
-    annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")
-
-    modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
-    modLocalRuntime("dev.emi:emi-fabric:${emi_version}+${minecraft_version}")
+    modLocalRuntime(libs.mod.menu)
 }
 
 loom {
-    val aw = project(":common").file("src/main/resources/${mod_id}.accesswidener");
+    val aw = file("src/main/resources/${Properties.MOD_ID}.accesswidener")
     if (aw.exists())
         accessWidenerPath.set(aw)
     mixin {
-        defaultRefmapName.set("${mod_id}.refmap.json")
+        defaultRefmapName.set("${Properties.MOD_ID}.refmap.json")
     }
     mods {
-        register(mod_id) {
+        register(Properties.MOD_ID) {
             sourceSet(sourceSets["main"])
             sourceSet(sourceSets["test"])
         }
@@ -49,19 +45,51 @@ loom {
     runs {
         named("client") {
             client()
-            setConfigName("Fabric Client")
+            configName = "Fabric Client"
+            runDir("runs/client")
             setSource(sourceSets["test"])
             ideConfigGenerated(true)
-            vmArgs("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true")
-            runDir("run")
+            vmArgs("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true", "-Dfabric-api.gametest")
         }
         named("server") {
             server()
-            setConfigName("Fabric Server")
+            configName = "Fabric Server"
+            runDir("runs/server")
             setSource(sourceSets["test"])
             ideConfigGenerated(true)
             vmArgs("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true")
-            runDir("run")
         }
+    }
+}
+
+
+publishMods {
+    file.set(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get().archiveFile)
+    modLoaders.add("fabric")
+    changelog = rootProject.file("CHANGELOG.md").readText()
+    displayName = "v${Properties.MOD_VERSION} (Fabric ${libs.versions.minecraft.asProvider().get()})"
+    version = "${Properties.MOD_VERSION}+${libs.versions.minecraft.asProvider().get()}-fabric"
+    type = STABLE
+
+    curseforge {
+        projectId = Properties.CURSEFORGE_PROJECT_ID
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+
+        minecraftVersions.addAll(Properties.SUPPORTED_MINECRAFT_VERSIONS)
+        javaVersions.add(JavaVersion.VERSION_21)
+
+        clientRequired = true
+        serverRequired = true
+
+        requires("fabric-api")
+    }
+
+    modrinth {
+        projectId = Properties.MODRINTH_PROJECT_ID
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+
+        minecraftVersions.addAll(Properties.SUPPORTED_MINECRAFT_VERSIONS)
+
+        requires("fabric-api")
     }
 }

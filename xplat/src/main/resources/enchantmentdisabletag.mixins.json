@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "lgbt.greenhouse.enchantmentdisabletag.mixin",
+  "refmap": "${mod_id}.refmap.json",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "Mixin_CreativeModeTabs",
+    "Mixin_EnchantmentMenu",
+    "Mixin_HolderSet",
+    "Mixin_ItemStack",
+    "Mixin_MappedRegistry",
+    "Mixin_RegistrySynchronization",
+    "Mixin_ResourceArgument",
+    "Mixin_TagNetworkSerialization"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
+

@@ -2,8 +2,8 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
-        maven("https://maven.minecraftforge.net") {
-            name = "Forge"
+        maven("https://maven.neoforged.net/releases") {
+            name = "NeoForged"
         }
         maven("https://maven.fabricmc.net/") {
             name = "Fabric"
@@ -20,7 +20,6 @@ plugins {
 
 // This should match the folder name of the project, or else IDEA may complain (see https://youtrack.jetbrains.com/issue/IDEA-317606)
 rootProject.name = "enchantment-disable-tag"
-include("common")
+include("xplat")
 include("fabric")
-include("forge")
-include("publish")
+include("neoforge")
