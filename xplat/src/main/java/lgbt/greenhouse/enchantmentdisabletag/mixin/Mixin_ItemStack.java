@@ -44,8 +44,7 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
     public abstract boolean is(Item item);
 
     @Shadow
-    @Nullable
-    public abstract <T> T remove(DataComponentType<? extends T> component);
+    public abstract DataComponentMap getComponents();
 
     @Unique
     private boolean enchantmentdisabletag$wasDisabled = false;
@@ -70,7 +69,6 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
         }, Function.identity());
     }
 
-    @SuppressWarnings("unchecked")
     @WrapOperation(method = "set", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/PatchedDataComponentMap;set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;"))
     @Nullable
     private <T> T enchantmentdisabletag$removeDisabledEnchantmentsWhenSettingComponents(PatchedDataComponentMap instance, DataComponentType<? super T> component, T value, Operation<T> original) {
@@ -83,7 +81,7 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
                     item = Items.BOOK;
                 }
                 enchantmentdisabletag$wasDisabled = true;
-                return (T) remove(component);
+                return original.call(instance, component, ((Accessor_PatchedDataComponentMap)getComponents()).enchantmentdisabletag$getPrototype().get(component));
             } else if (!newEnchantments.equals(originalEnchantments)) {
                 enchantmentdisabletag$wasDisabled = true;
                 return original.call(instance, component, newEnchantments);
