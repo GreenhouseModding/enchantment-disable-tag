@@ -1,39 +1,54 @@
-import dev.greenhouseteam.enchantmentdisabletag.gradle.Properties
-import dev.greenhouseteam.enchantmentdisabletag.gradle.Versions
+import lgbt.greenhouse.enchantmentdisabletag.gradle.Properties
 import org.apache.tools.ant.filters.LineContains
 
 plugins {
-    id("enchantmentdisabletag.loader")
-    id("net.neoforged.moddev")
-    id("me.modmuss50.mod-publish-plugin")
+    id("conventions.loader")
+    alias(libs.plugins.moddev)
+    alias(libs.plugins.mod.publish)
 }
 
+tasks {
+    named<ProcessResources>("processResources").configure {
+        filesMatching("*.mixins.json") {
+            filter<LineContains>("negate" to true, "contains" to setOf("refmap"))
+        }
+    }
+}
+
+
 neoForge {
-    version = Versions.NEOFORGE
+    version = libs.versions.neoforge.get()
     parchment {
-        minecraftVersion = Versions.PARCHMENT_MINECRAFT
-        mappingsVersion = Versions.PARCHMENT
+        minecraftVersion = libs.versions.minecraft.parchment.get()
+        mappingsVersion = libs.versions.parchment.get()
     }
     addModdingDependenciesTo(sourceSets["test"])
 
-    val at = project(":common").file("src/main/resources/${Properties.MOD_ID}.cfg")
+    val at = project(":xplat").file("src/main/resources/${Properties.MOD_ID}.cfg")
     if (at.exists())
-        accessTransformers.add(at.absolutePath)
+        setAccessTransformers(at)
+    validateAccessTransformers = true
 
     runs {
         configureEach {
             systemProperty("forge.logging.markers", "REGISTRIES")
             systemProperty("forge.logging.console.level", "debug")
-            systemProperty("neoforge.enabledGameTestNamespaces", Properties.MOD_ID)
+            systemProperty("neoforge.enabledGameTestNamespaces", "${Properties.MOD_ID},${Properties.MOD_ID}_test")
         }
         create("client") {
             client()
+            ideName = "NeoForge Client (:${project.name})"
+            gameDirectory.set(file("runs/client"))
             sourceSet = sourceSets["test"]
+            jvmArguments.set(setOf("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"))
         }
         create("server") {
             server()
+            ideName = "NeoForge Server (:${project.name})"
+            gameDirectory.set(file("runs/server"))
             programArgument("--nogui")
             sourceSet = sourceSets["test"]
+            jvmArguments.set(setOf("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"))
         }
     }
 
@@ -45,18 +60,6 @@ neoForge {
     }
 }
 
-repositories {
-    maven("https://maven.blamejared.com/") {
-        name = "Jared's maven"
-    }
-}
-
-dependencies {
-    compileOnly("mezz.jei:jei-${Versions.MINECRAFT}-common-api:${Versions.JEI}")
-    compileOnly("mezz.jei:jei-${Versions.MINECRAFT}-neoforge-api:${Versions.JEI}")
-    runtimeOnly("mezz.jei:jei-${Versions.MINECRAFT}-neoforge:${Versions.JEI}")
-}
-
 tasks {
     named<ProcessResources>("processResources").configure {
         filesMatching("*.mixins.json") {
@@ -66,21 +69,21 @@ tasks {
 }
 
 publishMods {
-    file.set(tasks.named<Jar>("jar").get().archiveFile)
+    file.set(tasks.named<org.gradle.jvm.tasks.Jar>("jar").get().archiveFile)
     modLoaders.add("neoforge")
     changelog = rootProject.file("CHANGELOG.md").readText()
-    version = "${Versions.MOD}+${Versions.MINECRAFT}-neoforge"
-    displayName = "v${Versions.MOD} (NeoForge ${Versions.MINECRAFT})"
+    displayName = "v${Properties.MOD_VERSION} (NeoForge ${libs.versions.minecraft.asProvider().get()})"
+    version = "${Properties.MOD_VERSION}+${libs.versions.minecraft.asProvider().get()}-neoforge"
     type = STABLE
 
     curseforge {
         projectId = Properties.CURSEFORGE_PROJECT_ID
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
 
-        minecraftVersions.addAll(Versions.SUPPORTED_MINECRAFT)
+        minecraftVersions.addAll(Properties.SUPPORTED_MINECRAFT_VERSIONS)
         javaVersions.add(JavaVersion.VERSION_21)
 
-        clientRequired = false
+        clientRequired = true
         serverRequired = true
     }
 
@@ -88,11 +91,6 @@ publishMods {
         projectId = Properties.MODRINTH_PROJECT_ID
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 
-        minecraftVersions.addAll(Versions.SUPPORTED_MINECRAFT)
-    }
-
-    github {
-        accessToken = providers.environmentVariable("GITHUB_TOKEN")
-        parent(project(":common").tasks.named("publishGithub"))
+        minecraftVersions.addAll(Properties.SUPPORTED_MINECRAFT_VERSIONS)
     }
 }

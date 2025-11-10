@@ -1,18 +1,14 @@
-import dev.greenhouseteam.enchantmentdisabletag.gradle.Properties
-import dev.greenhouseteam.enchantmentdisabletag.gradle.Versions
-import org.gradle.jvm.tasks.Jar
+@file:Suppress("UnstableApiUsage")
+
+import lgbt.greenhouse.enchantmentdisabletag.gradle.Properties
 
 plugins {
-    id("enchantmentdisabletag.loader")
-    id("fabric-loom") version "1.7-SNAPSHOT"
-    id("me.modmuss50.mod-publish-plugin")
+    id("conventions.loader")
+    alias(libs.plugins.loom)
+    alias(libs.plugins.mod.publish)
 }
 
 repositories {
-    maven {
-        name = "ParchmentMC"
-        url = uri("https://maven.parchmentmc.org")
-    }
     maven {
         name = "TerraformersMC"
         url = uri("https://maven.terraformersmc.com/")
@@ -20,20 +16,21 @@ repositories {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${Versions.MINECRAFT}")
+    minecraft(libs.minecraft)
     mappings(loom.layered {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${Versions.PARCHMENT_MINECRAFT}:${Versions.PARCHMENT}@zip")
+        parchment(libs.parchment)
     })
-    modImplementation("net.fabricmc:fabric-loader:${Versions.FABRIC_LOADER}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.FABRIC_API}")
 
-    modLocalRuntime("com.terraformersmc:modmenu:${Versions.MOD_MENU}")
-    modLocalRuntime("dev.emi:emi-fabric:${Versions.EMI}+${Versions.MINECRAFT}")
+    modImplementation(libs.fabric.loader)
+    modImplementation(libs.fabric.api)
+    modLocalRuntime(libs.mod.menu)
+
+    modLocalRuntime(libs.mod.menu)
 }
 
 loom {
-    val aw = file("src/main/resources/${Properties.MOD_ID}.accesswidener");
+    val aw = file("src/main/resources/${Properties.MOD_ID}.accesswidener")
     if (aw.exists())
         accessWidenerPath.set(aw)
     mixin {
@@ -48,51 +45,51 @@ loom {
     runs {
         named("client") {
             client()
-            setConfigName("Fabric Client")
+            configName = "Fabric Client"
+            runDir("runs/client")
             setSource(sourceSets["test"])
             ideConfigGenerated(true)
-            vmArgs("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true")
-            runDir("run")
+            vmArgs("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true", "-Dfabric-api.gametest")
         }
         named("server") {
             server()
-            setConfigName("Fabric Server")
+            configName = "Fabric Server"
+            runDir("runs/server")
             setSource(sourceSets["test"])
             ideConfigGenerated(true)
             vmArgs("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true")
-            runDir("run")
         }
     }
 }
 
+
 publishMods {
-    file.set(tasks.named<Jar>("remapJar").get().archiveFile)
+    file.set(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get().archiveFile)
     modLoaders.add("fabric")
     changelog = rootProject.file("CHANGELOG.md").readText()
-    version = "${Versions.MOD}+${Versions.MINECRAFT}-fabric"
-    displayName = "v${Versions.MOD} (Fabric ${Versions.MINECRAFT})"
+    displayName = "v${Properties.MOD_VERSION} (Fabric ${libs.versions.minecraft.asProvider().get()})"
+    version = "${Properties.MOD_VERSION}+${libs.versions.minecraft.asProvider().get()}-fabric"
     type = STABLE
 
     curseforge {
         projectId = Properties.CURSEFORGE_PROJECT_ID
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
 
-        minecraftVersions.addAll(Versions.SUPPORTED_MINECRAFT)
+        minecraftVersions.addAll(Properties.SUPPORTED_MINECRAFT_VERSIONS)
         javaVersions.add(JavaVersion.VERSION_21)
 
-        clientRequired = false
+        clientRequired = true
         serverRequired = true
+
+        requires("fabric-api")
     }
 
     modrinth {
         projectId = Properties.MODRINTH_PROJECT_ID
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 
-        minecraftVersions.addAll(Versions.SUPPORTED_MINECRAFT)
-    }
+        minecraftVersions.addAll(Properties.SUPPORTED_MINECRAFT_VERSIONS)
 
-    github {
-        accessToken = providers.environmentVariable("GITHUB_TOKEN")
-        parent(project(":common").tasks.named("publishGithub"))
+        requires("fabric-api")
     }
 }

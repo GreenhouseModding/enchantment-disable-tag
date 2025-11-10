@@ -1,4 +1,6 @@
+## Changes
+- Simplified the structure of the entire mod.
+- ItemEnchantments will only remove disabled enchantments when applied directly to an ItemStack. This allows innate enchantments to work out of the box.
+
 ## Bugfixes
-- Fixed removing enchantments disallowing items to be enchanted. [#5](https://github.com/GreenhouseModding/enchantment-disable-tag/pull/5) - theendercore
-- Fixed removed enchantments appearing in the enchanting table. [#5](https://github.com/GreenhouseModding/enchantment-disable-tag/pull/5) - theendercore
-- Fixed slots without any enchantments showing up in the enchanting table.
+- Fixed crash on later NeoForge versions.

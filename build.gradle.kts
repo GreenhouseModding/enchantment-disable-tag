@@ -1,5 +1,5 @@
 plugins {
-    id("fabric-loom") version "1.7-SNAPSHOT" apply false
-    id("net.neoforged.moddev") version "0.1.108" apply false
-    id("me.modmuss50.mod-publish-plugin") version "0.6.2" apply false
+    alias(libs.plugins.loom) apply false
+    alias(libs.plugins.moddev) apply false
+    alias(libs.plugins.mod.publish) apply false
 }
