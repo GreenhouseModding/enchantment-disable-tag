@@ -23,6 +23,8 @@ gradle.projectsEvaluated {
 			runtimeClasspath += project(":xplat").sourceSets["main"].output
 		}
 		getByName("test") {
+            compileClasspath += project(":xplat").sourceSets["main"].output
+            runtimeClasspath += project(":xplat").sourceSets["main"].output
 			compileClasspath += project(":xplat").sourceSets["test"].output
 			runtimeClasspath += project(":xplat").sourceSets["test"].output
 		}
@@ -64,5 +66,8 @@ tasks {
         from(configurations.getByName("xplatJava"))
         dependsOn(configurations.getByName("xplatResources"))
         from(configurations.getByName("xplatResources"))
+    }
+    named<Test>("test").configure {
+        failOnNoDiscoveredTests = false
     }
 }

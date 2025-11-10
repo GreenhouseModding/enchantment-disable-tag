@@ -5,6 +5,7 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "Mixin_CreativeModeTabItemDisplayBuilder",
     "Mixin_CreativeModeTabs",
     "Mixin_EnchantmentMenu",
     "Mixin_HolderSet",

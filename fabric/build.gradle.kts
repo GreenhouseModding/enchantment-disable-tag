@@ -36,12 +36,16 @@ loom {
     mixin {
         defaultRefmapName.set("${Properties.MOD_ID}.refmap.json")
     }
+
     mods {
         register(Properties.MOD_ID) {
             sourceSet(sourceSets["main"])
+        }
+        register("${Properties.MOD_ID}_test") {
             sourceSet(sourceSets["test"])
         }
     }
+
     runs {
         named("client") {
             client()
@@ -61,7 +65,6 @@ loom {
         }
     }
 }
-
 
 publishMods {
     file.set(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get().archiveFile)

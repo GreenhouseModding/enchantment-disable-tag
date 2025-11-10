@@ -17,7 +17,7 @@ mod-menu = "11.0.3"
 neoforge = "21.1.173"
 
 # Gradle
-loom = "1.11.+"
+loom = "1.13.+"
 moddev = "2.0.105"
 mod-publish = "1.1.0"
 

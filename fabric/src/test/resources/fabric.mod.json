@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}_test",
+  "version": "${mod_version}+${minecraft_version}",
+  "name": "${mod_name} Test",
+  "description": "${mod_description}",
+  "authors": [
+    "${mod_author}"
+  ],
+  "contributors": [
+    "${fabric_mod_contributors}"
+  ],
+  "contact": {
+    "homepage": "${modrinth_page}",
+    "issues": "${sources}/issues",
+    "sources": "${sources}"
+  },
+  "license": "${mod_license}",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "lgbt.greenhouse.enchantmentdisabletag.test.EnchantmentDisableTagTest"
+    ]
+  },
+  "depends": {
+    "fabricloader": "${fabric_loader_range}",
+    "fabric-api": "*",
+    "minecraft": "${fabric_minecraft_version_range}",
+    "java": ">=${java_version}"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.curseforge": "${curseforge_page}",
+        "modmenu.modrinth": "${modrinth_page}",
+        "modmenu.github_releases": "${sources}/releases",
+        "modmenu.kofi": "https://ko-fi.com/merchantcalico"
+      }
+    }
+  }
+}

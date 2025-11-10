@@ -1,5 +1,6 @@
 import lgbt.greenhouse.enchantmentdisabletag.gradle.Properties
 import org.apache.tools.ant.filters.LineContains
+import org.gradle.kotlin.dsl.register
 
 plugins {
     id("conventions.loader")
@@ -15,7 +16,6 @@ tasks {
     }
 }
 
-
 neoForge {
     version = libs.versions.neoforge.get()
     parchment {
@@ -28,6 +28,15 @@ neoForge {
     if (at.exists())
         setAccessTransformers(at)
     validateAccessTransformers = true
+
+    mods {
+        register(Properties.MOD_ID) {
+            sourceSet(sourceSets["main"])
+        }
+        register("${Properties.MOD_ID}_test") {
+            sourceSet(sourceSets["test"])
+        }
+    }
 
     runs {
         configureEach {
@@ -49,13 +58,6 @@ neoForge {
             programArgument("--nogui")
             sourceSet = sourceSets["test"]
             jvmArguments.set(setOf("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"))
-        }
-    }
-
-    mods {
-        register(Properties.MOD_ID) {
-            sourceSet(sourceSets["main"])
-            sourceSet(sourceSets["test"])
         }
     }
 }
