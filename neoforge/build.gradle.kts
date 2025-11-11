@@ -8,14 +8,6 @@ plugins {
     alias(libs.plugins.mod.publish)
 }
 
-tasks {
-    named<ProcessResources>("processResources").configure {
-        filesMatching("*.mixins.json") {
-            filter<LineContains>("negate" to true, "contains" to setOf("refmap"))
-        }
-    }
-}
-
 neoForge {
     version = libs.versions.neoforge.get()
     parchment {
@@ -58,14 +50,6 @@ neoForge {
             programArgument("--nogui")
             sourceSet = sourceSets["test"]
             jvmArguments.set(setOf("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"))
-        }
-    }
-}
-
-tasks {
-    named<ProcessResources>("processResources").configure {
-        filesMatching("*.mixins.json") {
-            filter<LineContains>("negate" to true, "contains" to setOf("refmap"))
         }
     }
 }

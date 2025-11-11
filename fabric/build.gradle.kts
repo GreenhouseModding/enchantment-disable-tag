@@ -33,9 +33,6 @@ loom {
     val aw = file("src/main/resources/${Properties.MOD_ID}.accesswidener")
     if (aw.exists())
         accessWidenerPath.set(aw)
-    mixin {
-        defaultRefmapName.set("${Properties.MOD_ID}.refmap.json")
-    }
 
     mods {
         register(Properties.MOD_ID) {
