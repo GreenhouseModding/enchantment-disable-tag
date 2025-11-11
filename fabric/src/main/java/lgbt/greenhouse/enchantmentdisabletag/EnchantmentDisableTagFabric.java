@@ -4,6 +4,7 @@ import lgbt.greenhouse.enchantmentdisabletag.duck.Duck_PotentialEnchantmentDisab
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -15,11 +16,13 @@ public class EnchantmentDisableTagFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        ItemGroupEvents.MODIFY_ENTRIES_ALL.addPhaseOrdering(Event.DEFAULT_PHASE, REMOVE_OBSOLETE_ITEMS_PHASE);
-        ItemGroupEvents.MODIFY_ENTRIES_ALL.register(REMOVE_OBSOLETE_ITEMS_PHASE, (group, entries) -> {
-            filterOutTabStacks(entries.getDisplayStacks());
-            filterOutTabStacks(entries.getSearchTabStacks());
-        });
+        if (FabricLoader.getInstance().isModLoaded("fabric-item-group-api-v1")) {
+            ItemGroupEvents.MODIFY_ENTRIES_ALL.addPhaseOrdering(Event.DEFAULT_PHASE, REMOVE_OBSOLETE_ITEMS_PHASE);
+            ItemGroupEvents.MODIFY_ENTRIES_ALL.register(REMOVE_OBSOLETE_ITEMS_PHASE, (group, entries) -> {
+                filterOutTabStacks(entries.getDisplayStacks());
+                filterOutTabStacks(entries.getSearchTabStacks());
+            });
+        }
     }
 
     private static void filterOutTabStacks(List<ItemStack> entries) {
