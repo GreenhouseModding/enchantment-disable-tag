@@ -33,10 +33,9 @@ public class EnchantmentDisableTagFabric implements ModInitializer {
 
         for (ItemStack disabledStack : disabledEntries.reversed()) {
             entriesReference.remove(disabledStack);
-            if (entriesReference.contains(disabledStack)) { // Check for a duplicate entry.
+            if (((Duck_PotentialEnchantmentDisabledStack)(Object)disabledStack).enchantmentdisabletag$changedToUnenchantedItem() || entriesReference.contains(disabledStack)) { // Check for a duplicate entry.
                 entries.remove(disabledStack);
             }
         }
-        entries.removeIf(stack -> ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$changedToUnenchantedItem());
     }
 }
