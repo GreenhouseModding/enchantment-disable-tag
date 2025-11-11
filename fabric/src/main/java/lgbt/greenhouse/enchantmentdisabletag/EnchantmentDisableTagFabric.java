@@ -6,11 +6,14 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EnchantmentDisableTagFabric implements ModInitializer {
     public static final ResourceLocation REMOVE_OBSOLETE_ITEMS_PHASE = EnchantmentDisableTag.id("remove_obsolete_items");
@@ -27,19 +30,21 @@ public class EnchantmentDisableTagFabric implements ModInitializer {
         }
     }
 
-    @SuppressWarnings({"DataFlowIssue", "RedundantOperationOnEmptyContainer"})
+    @SuppressWarnings({"DataFlowIssue", "ConstantValue"})
     private static void filterOutTabStacks(List<ItemStack> entries) {
         List<ItemStack> disabledEntries = entries.stream()
                 .filter(stack -> ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled())
-                .toList();
-        Collections.reverse(entries.stream()
-                .filter(stack -> ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled())
-                .toList());
+                .collect(Collectors.toCollection(ArrayList::new));
+        Collections.reverse(disabledEntries);
         List<ItemStack> entriesReference = new ArrayList<>(entries);
 
         for (ItemStack disabledStack : disabledEntries) {
             entriesReference.remove(disabledStack);
-            if (((Duck_PotentialEnchantmentDisabledStack)(Object)disabledStack).enchantmentdisabletag$changedToUnenchantedItem() || entriesReference.contains(disabledStack)) { // Check for a duplicate entry.
+            if (
+                    disabledStack.is(Items.ENCHANTED_BOOK) && EnchantedBookItem.getEnchantments(disabledStack).isEmpty() ||
+                    ((Duck_PotentialEnchantmentDisabledStack)(Object)disabledStack).enchantmentdisabletag$changedToUnenchantedItem() ||
+                    entriesReference.contains(disabledStack) // Check for a duplicate entry.
+            ) {
                 entries.remove(disabledStack);
             }
         }
