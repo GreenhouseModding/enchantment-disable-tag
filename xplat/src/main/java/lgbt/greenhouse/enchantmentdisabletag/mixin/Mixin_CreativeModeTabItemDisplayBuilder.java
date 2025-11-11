@@ -26,15 +26,21 @@ public class Mixin_CreativeModeTabItemDisplayBuilder {
     @SuppressWarnings("DataFlowIssue")
     @Inject(method = "accept", at = @At("HEAD"), cancellable = true)
     private void enchantmentdisabletag$filterOutInvalidCreativeItems(ItemStack stack, CreativeModeTab.TabVisibility visibility, CallbackInfo ci) {
-        if (
-                ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$changedToUnenchantedItem() ||
-                ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled() &&
-                (
-                        visibility != CreativeModeTab.TabVisibility.SEARCH_TAB_ONLY && tabContents.contains(stack) ||
-                        visibility == CreativeModeTab.TabVisibility.SEARCH_TAB_ONLY && searchTabContents.contains(stack)
-                )
-        ) {
-            ci.cancel();
+        if (((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled()) {
+            if (
+                    ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$changedToUnenchantedItem() ||
+                    visibility != CreativeModeTab.TabVisibility.SEARCH_TAB_ONLY && tabContents.contains(stack) ||
+                    visibility != CreativeModeTab.TabVisibility.PARENT_TAB_ONLY && searchTabContents.contains(stack)
+            ) {
+                ci.cancel();
+            }
+        } else {
+            if (visibility != CreativeModeTab.TabVisibility.SEARCH_TAB_ONLY) {
+                tabContents.removeIf(contentsStack -> ((Duck_PotentialEnchantmentDisabledStack)(Object)contentsStack).enchantmentdisabletag$wasDisabled() && ItemStack.isSameItemSameComponents(contentsStack, stack));
+            }
+            if (visibility != CreativeModeTab.TabVisibility.PARENT_TAB_ONLY) {
+                searchTabContents.removeIf(contentsStack -> ((Duck_PotentialEnchantmentDisabledStack)(Object)contentsStack).enchantmentdisabletag$wasDisabled() && ItemStack.isSameItemSameComponents(contentsStack, stack));
+            }
         }
     }
 }

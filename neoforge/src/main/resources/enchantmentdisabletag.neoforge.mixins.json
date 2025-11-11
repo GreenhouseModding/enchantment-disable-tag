@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "lgbt.greenhouse.enchantmentdisabletag.mixin.neoforge",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "Mixin_BuildCreativeModeTabContentsEvent"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
+
