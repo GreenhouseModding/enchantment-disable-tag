@@ -34,6 +34,8 @@ public class EnchantmentDisableTag {
             if (stack.is(Items.ENCHANTED_BOOK) && !tag.contains("StoredEnchantments")) {
                 ItemStack book = new ItemStack(Items.BOOK, stack.getCount());
                 book.setTag(tag);
+                ((Duck_PotentialEnchantmentDisabledStack)(Object)book).enchantmentdisabletag$setWasDisabled();
+                ((Duck_PotentialEnchantmentDisabledStack)(Object)book).enchantmentdisabletag$setChangedToUnenchantedItem();
                 return book;
             }
         }

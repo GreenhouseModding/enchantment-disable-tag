@@ -6,12 +6,10 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 public class EnchantmentDisableTagFabric implements ModInitializer {
@@ -29,19 +27,21 @@ public class EnchantmentDisableTagFabric implements ModInitializer {
         }
     }
 
-    @SuppressWarnings("ConstantValue")
+    @SuppressWarnings({"DataFlowIssue", "RedundantOperationOnEmptyContainer"})
     private static void filterOutTabStacks(List<ItemStack> entries) {
-        List<ItemStack> processedTabEntries = new ArrayList<>();
+        List<ItemStack> disabledEntries = entries.stream()
+                .filter(stack -> ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled())
+                .toList();
+        Collections.reverse(entries.stream()
+                .filter(stack -> ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled())
+                .toList());
+        List<ItemStack> entriesReference = new ArrayList<>(entries);
 
-        for (Iterator<ItemStack> it = entries.iterator(); it.hasNext();) {
-            ItemStack stack = it.next();
-            if (
-                    stack.is(Items.ENCHANTED_BOOK) && EnchantedBookItem.getEnchantments(stack).isEmpty() && ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled() ||
-                    ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled() && processedTabEntries.stream().anyMatch(existingStack -> ItemStack.isSameItemSameTags(stack, existingStack))
-            ) {
-                it.remove();
+        for (ItemStack disabledStack : disabledEntries) {
+            entriesReference.remove(disabledStack);
+            if (((Duck_PotentialEnchantmentDisabledStack)(Object)disabledStack).enchantmentdisabletag$changedToUnenchantedItem() || entriesReference.contains(disabledStack)) { // Check for a duplicate entry.
+                entries.remove(disabledStack);
             }
-            processedTabEntries.add(stack);
         }
     }
 }

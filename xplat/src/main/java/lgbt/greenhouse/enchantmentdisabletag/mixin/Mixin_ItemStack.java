@@ -32,6 +32,8 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
 
     @Unique
     private boolean enchantmentdisabletag$wasDisabled = false;
+    @Unique
+    private boolean enchantmentdisabletag$changedToUnenchantedItem = false;
 
     @Inject(method = "<init>(Lnet/minecraft/nbt/CompoundTag;)V", at = @At("TAIL"))
     private void enchantmentdisabletag$removeDisabledEnchantmentsFromTag(CompoundTag compoundTag, CallbackInfo ci) {
@@ -41,6 +43,7 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
             enchantmentdisabletag$wasDisabled = true;
             if (getItem().equals(Items.ENCHANTED_BOOK) && !workingTag.contains("StoredEnchantments")) {
                 item = Items.BOOK;
+                enchantmentdisabletag$changedToUnenchantedItem = true;
             }
             tag = workingTag;
             getItem().verifyTagAfterLoad(tag);
@@ -64,5 +67,10 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
     @Override
     public void enchantmentdisabletag$setWasDisabled() {
         enchantmentdisabletag$wasDisabled = true;
+    }
+
+    @Override
+    public boolean enchantmentdisabletag$changedToUnenchantedItem() {
+        return enchantmentdisabletag$changedToUnenchantedItem;
     }
 }
