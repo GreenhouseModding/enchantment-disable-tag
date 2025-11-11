@@ -86,8 +86,9 @@ public abstract class Mixin_ForgeRegistry<V> {
         while (original.hasNext()) {
             V it = original.next();
             Optional<Holder<V>> holder = getHolder(it);
-            if (holder.isPresent() && ((Holder<Enchantment>) holder.get()).is(EnchantmentDisableTag.DISABLED))
+            if (holder.isPresent() && !((Holder<Enchantment>)holder.get()).is(EnchantmentDisableTag.DISABLED)) {
                 list.add(it);
+            }
         }
         return list.iterator();
     }
