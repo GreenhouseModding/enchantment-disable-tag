@@ -30,6 +30,8 @@ public class EnchantmentDisableTagTest implements ModInitializer {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
             HolderLookup<Enchantment> enchantmentLookup = entries.getContext().holders().lookupOrThrow(Registries.ENCHANTMENT);
 
+            entries.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantmentLookup.getOrThrow(Enchantments.AQUA_AFFINITY), 1)));
+
             ItemStack bookStack = new ItemStack(Items.ENCHANTED_BOOK);
             EnchantmentHelper.updateEnchantments(bookStack, mutable -> {
                 mutable.set(enchantmentLookup.getOrThrow(Enchantments.SHARPNESS), 3);
