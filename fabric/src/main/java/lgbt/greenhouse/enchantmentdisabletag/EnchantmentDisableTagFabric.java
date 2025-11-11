@@ -8,13 +8,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class EnchantmentDisableTagFabric implements ModInitializer {
     public static final ResourceLocation REMOVE_OBSOLETE_ITEMS_PHASE = EnchantmentDisableTag.id("remove_obsolete_items");
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     public void onInitialize() {
         ItemGroupEvents.MODIFY_ENTRIES_ALL.addPhaseOrdering(Event.DEFAULT_PHASE, REMOVE_OBSOLETE_ITEMS_PHASE);
@@ -24,18 +22,18 @@ public class EnchantmentDisableTagFabric implements ModInitializer {
         });
     }
 
-    @SuppressWarnings("DataFlowIssue")
     private static void filterOutTabStacks(List<ItemStack> entries) {
-        List<ItemStack> processedTabEntries = new ArrayList<>();
+        List<ItemStack> disabledEntries = entries.stream()
+                .filter(stack -> ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled())
+                .toList();
 
-        for (Iterator<ItemStack> it = entries.iterator(); it.hasNext();) {
-            ItemStack stack = it.next();
-            if (
-                    ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled() && processedTabEntries.stream().anyMatch(existingStack -> ItemStack.isSameItemSameComponents(stack, existingStack))
-            ) {
-                it.remove();
+        List<ItemStack> entriesReference = new ArrayList<>(entries);
+
+        for (ItemStack disabledStack : disabledEntries.reversed()) {
+            entriesReference.remove(disabledStack);
+            if (entriesReference.contains(disabledStack)) { // Check for a duplicate entry.
+                entries.remove(disabledStack);
             }
-            processedTabEntries.add(stack);
         }
     }
 }
