@@ -2,7 +2,7 @@
 - Simplified the structure of the entire mod.
 - The mod will now remove obsolete disabled items within the creative mode tab.
 - The mod will only remove disabled enchantments when applied directly to an ItemStack. This allows innate enchantments to work out of the box.
-- Fabric API is now an optional dependency.
+- Fabric API is now an optional dependency for the Fabric version of the mod.
 
 ## Bugfixes
 - Fixed crash on later NeoForge versions.
