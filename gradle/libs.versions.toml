@@ -18,7 +18,7 @@ neoforge = "21.1.173"
 
 # Gradle
 loom = "1.13.+"
-moddev = "2.0.105"
+moddev = "2.0.116"
 mod-publish = "1.1.0"
 
 [libraries]
