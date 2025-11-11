@@ -4,7 +4,6 @@
   "package": "lgbt.greenhouse.enchantmentdisabletag.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "Accessor_PatchedDataComponentMap",
     "Mixin_CreativeModeTabItemDisplayBuilder",
     "Mixin_CreativeModeTabs",
     "Mixin_EnchantmentMenu",

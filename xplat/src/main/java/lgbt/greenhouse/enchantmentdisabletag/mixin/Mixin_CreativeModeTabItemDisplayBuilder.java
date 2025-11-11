@@ -27,6 +27,7 @@ public class Mixin_CreativeModeTabItemDisplayBuilder {
     @Inject(method = "accept", at = @At("HEAD"), cancellable = true)
     private void enchantmentdisabletag$filterOutInvalidCreativeItems(ItemStack stack, CreativeModeTab.TabVisibility visibility, CallbackInfo ci) {
         if (
+                ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$changedToUnenchantedItem() ||
                 ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled() &&
                 (
                         visibility != CreativeModeTab.TabVisibility.SEARCH_TAB_ONLY && tabContents.contains(stack) ||

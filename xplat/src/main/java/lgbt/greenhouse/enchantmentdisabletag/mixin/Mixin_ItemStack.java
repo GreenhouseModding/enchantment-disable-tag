@@ -50,6 +50,8 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
 
     @Unique
     private boolean enchantmentdisabletag$wasDisabled = false;
+    @Unique
+    private boolean enchantmentdisabletag$changedToUnenchantedItem = false;
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void enchantmentdisabletag$removeEnchantmentsWhenDecoding(CallbackInfo ci) {
@@ -78,12 +80,15 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
             ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(originalEnchantments);
             mutable.removeIf(enchantmentHolder -> enchantmentHolder.is(EnchantmentDisableTag.DISABLED));
             ItemEnchantments newEnchantments = mutable.toImmutable();
-            if (newEnchantments.isEmpty() && component == DataComponents.STORED_ENCHANTMENTS && is(Items.ENCHANTED_BOOK)) {
-                item = Items.BOOK;
-                components = PatchedDataComponentMap.fromPatch(item.components(), components.asPatch());
+            if (!newEnchantments.equals(originalEnchantments)) {
+                if (newEnchantments.isEmpty() && component == DataComponents.STORED_ENCHANTMENTS && is(Items.ENCHANTED_BOOK)) {
+                    item = Items.BOOK;
+                    components = PatchedDataComponentMap.fromPatch(item.components(), components.asPatch());
+                    enchantmentdisabletag$changedToUnenchantedItem = true;
+                }
+                enchantmentdisabletag$wasDisabled = true;
+                return original.call(instance, component, newEnchantments);
             }
-            enchantmentdisabletag$wasDisabled = true;
-            return original.call(instance, component, newEnchantments);
         }
         return original.call(instance, component, value);
     }
@@ -96,5 +101,10 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
     @Override
     public void enchantmentdisabletag$setWasDisabled() {
         enchantmentdisabletag$wasDisabled = true;
+    }
+
+    @Override
+    public boolean enchantmentdisabletag$changedToUnenchantedItem() {
+        return enchantmentdisabletag$changedToUnenchantedItem;
     }
 }

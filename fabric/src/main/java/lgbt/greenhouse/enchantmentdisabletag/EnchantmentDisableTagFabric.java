@@ -29,7 +29,6 @@ public class EnchantmentDisableTagFabric implements ModInitializer {
         List<ItemStack> disabledEntries = entries.stream()
                 .filter(stack -> ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$wasDisabled())
                 .toList();
-
         List<ItemStack> entriesReference = new ArrayList<>(entries);
 
         for (ItemStack disabledStack : disabledEntries.reversed()) {
@@ -38,5 +37,6 @@ public class EnchantmentDisableTagFabric implements ModInitializer {
                 entries.remove(disabledStack);
             }
         }
+        entries.removeIf(stack -> ((Duck_PotentialEnchantmentDisabledStack)(Object)stack).enchantmentdisabletag$changedToUnenchantedItem());
     }
 }
