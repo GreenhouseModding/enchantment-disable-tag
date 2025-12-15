@@ -32,7 +32,7 @@ public class Mixin_RegistrySynchronization {
             return;
         }
 
-        registryAccess.registry(registryData.key())
+        registryAccess.lookup(registryData.key())
                 .ifPresent(registry -> ((Duck_DisableTagSyncContext)registry).enchantmentdisabletag$setSyncing(true));
     }
 
@@ -47,7 +47,7 @@ public class Mixin_RegistrySynchronization {
             return;
         }
 
-        registryAccess.registry(registryData.key())
+        registryAccess.lookup(registryData.key())
                 .ifPresent(registry -> ((Duck_DisableTagSyncContext)registry).enchantmentdisabletag$setSyncing(false));
     }
 }

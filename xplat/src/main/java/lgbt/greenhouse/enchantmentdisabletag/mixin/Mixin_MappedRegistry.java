@@ -1,6 +1,9 @@
 package lgbt.greenhouse.enchantmentdisabletag.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import it.unimi.dsi.fastutil.objects.ObjectImmutableList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 import lgbt.greenhouse.enchantmentdisabletag.EnchantmentDisableTag;
 import lgbt.greenhouse.enchantmentdisabletag.duck.Duck_DisableTagSyncContext;
 import net.minecraft.core.Holder;
@@ -31,13 +34,15 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
     @Unique
     private boolean enchantmentdisabletag$syncing = false;
 
-    @Shadow public abstract Optional<Holder.Reference<T>> getHolder(ResourceLocation resourceLocation);
+    @Shadow
+    public abstract Optional<Holder.Reference<T>> get(ResourceLocation p_316743_);
 
-    @Shadow public abstract Optional<Holder.Reference<T>> getHolder(ResourceKey<T> resourceKey);
+    @Shadow
+    public abstract Optional<Holder.Reference<T>> get(ResourceKey<T> p_205905_);
 
     @Shadow
     @Final
-    ResourceKey<? extends Registry<T>> key;
+    private ResourceKey<? extends Registry<T>> key;
 
     @SuppressWarnings("unchecked")
     @ModifyArg(method = "keySet", at = @At(value = "INVOKE", target = "Ljava/util/Collections;unmodifiableSet(Ljava/util/Set;)Ljava/util/Set;"))
@@ -47,7 +52,7 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
         }
 
         return original.stream().filter(t -> {
-            var optionalHolder = getHolder(t);
+            var optionalHolder = get(t);
             return optionalHolder.isEmpty() || !optionalHolder.get().is((TagKey<T>) EnchantmentDisableTag.DISABLED);
         }).collect(Collectors.toSet());
     }
@@ -60,13 +65,13 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
         }
 
         return original.stream().filter(t -> {
-            var optionalHolder = getHolder(t);
+            var optionalHolder = get(t);
             return optionalHolder.isEmpty() || !optionalHolder.get().is((TagKey<T>) EnchantmentDisableTag.DISABLED);
         }).collect(Collectors.toSet());
     }
 
     @SuppressWarnings("unchecked")
-    @ModifyArg(method = "entrySet", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Maps;transformValues(Ljava/util/Map;Lcom/google/common/base/Function;)Ljava/util/Map;"))
+    @ModifyArg(method = "entrySet", at = @At(value = "INVOKE", target = "Lnet/minecraft/Util;mapValuesLazy(Ljava/util/Map;Lcom/google/common/base/Function;)Ljava/util/Map;"), index = 0)
     private Map<ResourceKey<T>, Holder.Reference<T>> enchantmentdisabletag$disableFromEntrySet(Map<ResourceKey<T>, Holder.Reference<T>> original) {
         if (!key.equals(Registries.ENCHANTMENT)) {
             return original;
@@ -76,14 +81,13 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
     }
 
     @SuppressWarnings("unchecked")
-    @ModifyReturnValue(method = "holders", at = @At("RETURN"))
-    private Stream<Holder.Reference<T>> enchantmentdisabletag$disableFromHolders(Stream<Holder.Reference<T>> original) {
-        if (!key.equals(Registries.ENCHANTMENT) || enchantmentdisabletag$syncing) {
+    @ModifyReturnValue(method = "listElements", at = @At("RETURN"))
+    private Stream<Holder.Reference<T>> enchantmentdisabletag$disableFromListElements(Stream<Holder.Reference<T>> original) {
+        if (enchantmentdisabletag$syncing || !key.equals(Registries.ENCHANTMENT)) {
             return original;
         }
 
-        // ref can be null on NeoForge. No clue how it happens, but hey, we have to compensate sometimes.
-        return original.filter(ref -> ref != null && (!ref.key().isFor(Registries.ENCHANTMENT) || !ref.is((TagKey<T>) EnchantmentDisableTag.DISABLED)));
+        return original.filter(entry -> !entry.is((TagKey<T>) EnchantmentDisableTag.DISABLED));
     }
 
     @SuppressWarnings("unchecked")
@@ -102,6 +106,28 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
             }
         }
         return list.iterator();
+    }
+
+    @SuppressWarnings("unchecked")
+    @ModifyExpressionValue(method = "getAny", at = @At(value = "FIELD", target = "Lnet/minecraft/core/MappedRegistry;byId:Lit/unimi/dsi/fastutil/objects/ObjectList;", ordinal = 1))
+    private ObjectList<Holder.Reference<T>> enchantmentdisabletag$disableFromGetAny(ObjectList<Holder.Reference<T>> selections) {
+        if (!key.equals(Registries.ENCHANTMENT) || enchantmentdisabletag$syncing) {
+            return selections;
+        }
+
+        // ref can be null on NeoForge. No clue how it happens, but hey, we have to compensate sometimes.
+        return selections.stream().filter(ref -> ref != null && (!ref.key().isFor(Registries.ENCHANTMENT) || !ref.is((TagKey<T>) EnchantmentDisableTag.DISABLED))).collect(ObjectImmutableList.toList());
+    }
+
+    @SuppressWarnings("unchecked")
+    @ModifyArg(method = "getRandom", at = @At(value = "INVOKE", target = "Lnet/minecraft/Util;getRandomSafe(Ljava/util/List;Lnet/minecraft/util/RandomSource;)Ljava/util/Optional;"), index = 0)
+    private List<Holder.Reference<T>> enchantmentdisabletag$disableFromGetRandom(List<Holder.Reference<T>> selections) {
+        if (!key.equals(Registries.ENCHANTMENT) || enchantmentdisabletag$syncing) {
+            return selections;
+        }
+
+        // ref can be null on NeoForge. No clue how it happens, but hey, we have to compensate sometimes.
+        return selections.stream().filter(ref -> ref != null && (!ref.key().isFor(Registries.ENCHANTMENT) || !ref.is((TagKey<T>) EnchantmentDisableTag.DISABLED))).toList();
     }
 
     @Override

@@ -20,16 +20,16 @@ public class Mixin_TagNetworkSerialization {
     @Inject(method = { "method_40103", "lambda$serializeToNetwork$2" }, at = @At("HEAD"))
     private static <T> void enchantmentdisabletag$setToSyncWhilstSerializingTagsToNetwork(Registry<T> registry,
                                                                                           Map<ResourceLocation, IntList> map,
-                                                                                          Pair<TagKey<T>, HolderSet.Named<T>> pair,
+                                                                                          HolderSet.Named<T> holder,
                                                                                           CallbackInfo ci) {
-        ((Duck_DisableTagSyncContext)pair.getSecond()).enchantmentdisabletag$setSyncing(true);
+        ((Duck_DisableTagSyncContext)holder).enchantmentdisabletag$setSyncing(true);
     }
 
     @Inject(method = { "method_40103", "lambda$serializeToNetwork$2" }, at = @At("TAIL"))
     private static <T> void enchantmentdisabletag$resetSyncStateAfterSerializingTagsToNetwork(Registry<T> registry,
                                                                                               Map<ResourceLocation, IntList> map,
-                                                                                              Pair<TagKey<T>, HolderSet.Named<T>> pair,
+                                                                                              HolderSet.Named<T> holder,
                                                                                               CallbackInfo ci) {
-        ((Duck_DisableTagSyncContext)pair.getSecond()).enchantmentdisabletag$setSyncing(false);
+        ((Duck_DisableTagSyncContext)holder).enchantmentdisabletag$setSyncing(false);
     }
 }

@@ -22,12 +22,21 @@ public class Mixin_HolderSet<T> implements Duck_DisableTagSyncContext {
     @SuppressWarnings({"unchecked", "ConstantValue"})
     @ModifyReturnValue(method = "contents", at = @At("RETURN"))
     private List<Holder<T>> enchantmentdisabletag$disableObtainingFromHolderSets(List<Holder<T>> original) {
-        if ((HolderSet<T>)this instanceof HolderSet.Named<T> named && named.key().equals(EnchantmentDisableTag.DISABLED) || enchantmentdisabletag$syncing) {
+        if ((HolderSet<T>)this instanceof HolderSet.Named<T> named && named.key().equals(EnchantmentDisableTag.DISABLED) || enchantmentdisabletag$syncing || original == null) {
             return original;
         }
 
         return original.stream()
-                .filter(holder -> !holder.isBound() || !(holder.value() instanceof Enchantment) || !((Holder<Enchantment>)holder).is(EnchantmentDisableTag.DISABLED))
+                .filter(holder -> {
+                    if (!holder.isBound() || !(holder.value() instanceof Enchantment))
+                        return true;
+
+                    try {
+                        return !((Holder<Enchantment>)holder).is(EnchantmentDisableTag.DISABLED);
+                    } catch (IllegalStateException ex) {
+                        return true;
+                    }
+                })
                 .toList();
     }
 
@@ -39,9 +48,17 @@ public class Mixin_HolderSet<T> implements Duck_DisableTagSyncContext {
         }
 
         return original.mapRight(holders -> holders.stream()
-                .filter(holder -> !holder.isBound() || !(holder.value() instanceof Enchantment) || !((Holder<Enchantment>)holder).is(EnchantmentDisableTag.DISABLED))
-                .toList()
-        );
+                .filter(holder -> {
+                    if (!holder.isBound() || !(holder.value() instanceof Enchantment))
+                        return true;
+
+                    try {
+                        return !((Holder<Enchantment>)holder).is(EnchantmentDisableTag.DISABLED);
+                    } catch (IllegalStateException ex) {
+                        return true;
+                    }
+                })
+                .toList());
     }
 
     @Override

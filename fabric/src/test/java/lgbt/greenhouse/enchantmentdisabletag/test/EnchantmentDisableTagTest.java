@@ -2,10 +2,10 @@ package lgbt.greenhouse.enchantmentdisabletag.test;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.*;
@@ -37,8 +37,14 @@ public class EnchantmentDisableTagTest implements ModInitializer {
             });
             entries.accept(bookStack);
 
-            entries.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantmentLookup.getOrThrow(Enchantments.AQUA_AFFINITY), 1)));
-            entries.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantmentLookup.getOrThrow(Enchantments.SHARPNESS), 5)));
+            entries.accept(createBookWithEnchantment(enchantmentLookup.getOrThrow(Enchantments.AQUA_AFFINITY), 1));
+            entries.accept(createBookWithEnchantment(enchantmentLookup.getOrThrow(Enchantments.SHARPNESS), 5));
         });
+    }
+
+    private static ItemStack createBookWithEnchantment(Holder<Enchantment> holder, int level) {
+        ItemStack stack = Items.ENCHANTED_BOOK.getDefaultInstance();
+        stack.enchant(holder, level);
+        return stack;
     }
 }
