@@ -1,10 +1,10 @@
 package lgbt.greenhouse.enchantmentdisabletag.test;
 
 import lgbt.greenhouse.enchantmentdisabletag.EnchantmentDisableTag;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.*;
@@ -13,7 +13,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
 public class EnchantmentDisableTagTest {
-    @EventBusSubscriber(modid = EnchantmentDisableTag.MOD_ID + "_test", bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(modid = EnchantmentDisableTag.MOD_ID + "_test")
     public static class ModEvents {
         @SubscribeEvent
         public static void buildCreativeModeContents(BuildCreativeModeTabContentsEvent event) {
@@ -39,9 +39,15 @@ public class EnchantmentDisableTagTest {
                 });
                 event.accept(bookStack);
 
-                event.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantmentLookup.getOrThrow(Enchantments.AQUA_AFFINITY), 1)));
-                event.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantmentLookup.getOrThrow(Enchantments.SHARPNESS), 5)));
+                event.accept(createBookWithEnchantment(enchantmentLookup.getOrThrow(Enchantments.AQUA_AFFINITY), 1));
+                event.accept(createBookWithEnchantment(enchantmentLookup.getOrThrow(Enchantments.SHARPNESS), 5));
             }
         }
+    }
+
+    private static ItemStack createBookWithEnchantment(Holder<Enchantment> holder, int level) {
+        ItemStack stack = Items.ENCHANTED_BOOK.getDefaultInstance();
+        stack.enchant(holder, level);
+        return stack;
     }
 }
