@@ -1,9 +1,7 @@
 name: Release Mod
 
 on:
-  push:
-    tags:
-      - '*'
+  workflow_dispatch:
 
 concurrency:
   group: "release"
