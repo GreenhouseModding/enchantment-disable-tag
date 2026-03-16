@@ -8,7 +8,7 @@ object Properties {
     const val MOD_NAME = "Enchantment Disable Tag"
     const val MOD_ID = "enchantmentdisabletag"
     const val MOD_AUTHOR = "Greenhouse Modding"
-    val MOD_CONTRIBUTORS = listOf("MerchantCalico")
+    val MOD_CONTRIBUTORS = listOf("ChrysanthCow")
     const val DESCRIPTION = "Adds an enchantment tag for disabling enchantments."
     const val LICENSE = "CC0-1.0"
 
