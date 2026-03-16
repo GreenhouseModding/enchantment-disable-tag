@@ -74,3 +74,30 @@ tasks.getByName<Jar>("jar") {
         Pair("MixinConfig", "${Properties.MOD_ID}.forge.mixins.json")
     )
 }
+
+publishMods {
+    file.set(tasks.named<org.gradle.jvm.tasks.Jar>("jar").get().archiveFile)
+    modLoaders.add("forge")
+    changelog = rootProject.file("CHANGELOG.md").readText()
+    displayName = "v${Properties.MOD_VERSION} (Forge ${libs.versions.minecraft.asProvider().get()})"
+    version = "${Properties.MOD_VERSION}+${libs.versions.minecraft.asProvider().get()}-forge"
+    type = STABLE
+
+    curseforge {
+        projectId = Properties.CURSEFORGE_PROJECT_ID
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+
+        minecraftVersions.addAll(Properties.SUPPORTED_MINECRAFT_VERSIONS)
+        javaVersions.add(JavaVersion.VERSION_21)
+
+        clientRequired = true
+        serverRequired = true
+    }
+
+    modrinth {
+        projectId = Properties.MODRINTH_PROJECT_ID
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+
+        minecraftVersions.addAll(Properties.SUPPORTED_MINECRAFT_VERSIONS)
+    }
+}
