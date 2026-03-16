@@ -78,7 +78,7 @@ publishMods {
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
 
         minecraftVersions.addAll(Properties.SUPPORTED_MINECRAFT_VERSIONS)
-        javaVersions.add(JavaVersion.VERSION_21)
+        javaVersions.add(JavaVersion.VERSION_17)
 
         clientRequired = true
         serverRequired = true

@@ -2,7 +2,7 @@ package lgbt.greenhouse.enchantmentdisabletag.gradle
 
 object Properties {
     const val MOD_VERSION = "2.0.0"
-    const val JAVA_VERSION = 21
+    const val JAVA_VERSION = 17
 
     const val GROUP = "lgbt.greenhouse"
     const val MOD_NAME = "Enchantment Disable Tag"
