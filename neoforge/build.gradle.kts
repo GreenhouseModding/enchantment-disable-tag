@@ -1,6 +1,4 @@
 import lgbt.greenhouse.enchantmentdisabletag.gradle.Properties
-import org.apache.tools.ant.filters.LineContains
-import org.gradle.kotlin.dsl.register
 
 plugins {
     id("conventions.loader")
@@ -10,10 +8,6 @@ plugins {
 
 neoForge {
     version = libs.versions.neoforge.get()
-    parchment {
-        minecraftVersion = libs.versions.minecraft.parchment.get()
-        mappingsVersion = libs.versions.parchment.get()
-    }
     addModdingDependenciesTo(sourceSets["test"])
 
     val at = project(":xplat").file("src/main/resources/${Properties.MOD_ID}.cfg")
@@ -58,8 +52,8 @@ publishMods {
     file.set(tasks.named<org.gradle.jvm.tasks.Jar>("jar").get().archiveFile)
     modLoaders.add("neoforge")
     changelog = rootProject.file("CHANGELOG.md").readText()
-    displayName = "v${Properties.MOD_VERSION} (NeoForge ${libs.versions.minecraft.asProvider().get()})"
-    version = "${Properties.MOD_VERSION}+${libs.versions.minecraft.asProvider().get()}-neoforge"
+    displayName = "v${Properties.MOD_VERSION} (NeoForge ${Properties.FRIENDLY_MINECRAFT_VERSION})"
+    version = "${Properties.MOD_VERSION}+${Properties.FRIENDLY_MINECRAFT_VERSION}-neoforge"
     type = STABLE
 
     curseforge {

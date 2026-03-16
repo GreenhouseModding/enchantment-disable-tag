@@ -1,30 +1,26 @@
 [versions]
-minecraft = "1.21.10"
-minecraft-parchment = "1.21.10"
-parchment = "2025.10.12"
+minecraft = "26.1-pre-2"
 
 # Xplat
-neoform = "1.21.10-20251010.172816"
-mixin = "0.15.5+mixin.0.8.7"
+neoform = "26.1-pre-2-1"
+mixin = "0.16.5+mixin.0.8.7"
 mixin-extras = "0.5.0"
 
 # Fabric
-fabric-loader = "0.17.3"
-fabric-api = "0.138.3+1.21.10"
-mod-menu = "16.0.0-rc.1"
+fabric-loader = "0.18.4"
+fabric-api = "0.143.14+26.1"
+mod-menu = "18.0.0-alpha.6"
 
 # NeoForge
-neoforge = "21.10.64"
+neoforge = "26.1.0.0-alpha.14+snapshot-11"
 
 # Gradle
-loom = "1.13.+"
-moddev = "2.0.116"
+loom = "1.15.+"
+moddev = "2.0.140"
 mod-publish = "1.1.0"
 
 [libraries]
-minecraft = { module = "com.mojang.:minecraft", version.ref = "minecraft" }
-parchment = { module = "org.parchmentmc.data:parchment-1.21.10", version.ref = "parchment" }
-
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 mixin = { module = "net.fabricmc:sponge-mixin", version.ref = "mixin" }
 mixin-extras = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixin-extras" }
 
@@ -33,6 +29,6 @@ fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fab
 mod-menu = { module = "com.terraformersmc:modmenu", version.ref = "mod-menu" }
 
 [plugins]
-loom = { id = "fabric-loom", version.ref = "loom" }
+loom = { id = "net.fabricmc.fabric-loom", version.ref = "loom" }
 moddev = { id = "net.neoforged.moddev", version.ref = "moddev" }
 mod-publish = { id = "me.modmuss50.mod-publish-plugin", version.ref = "mod-publish" }

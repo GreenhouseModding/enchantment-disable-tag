@@ -13,7 +13,7 @@ val libs = the<LibrariesForLibs>()
 
 base.archivesName.set("${Properties.MOD_ID}-${project.name}")
 group = Properties.GROUP
-version = "${Properties.MOD_VERSION}+${libs.versions.minecraft.asProvider().get()}"
+version = "${Properties.MOD_VERSION}+${Properties.FRIENDLY_MINECRAFT_VERSION}"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(Properties.JAVA_VERSION))
@@ -77,14 +77,14 @@ tasks {
             attributes["Implementation-Title"] = project.name
             attributes["Implementation-Version"] = archiveVersion
             attributes["Implementation-Vendor"] = Properties.MOD_AUTHOR
-			attributes["Built-On-Minecraft"] = libs.versions.minecraft.asProvider().get()
+			attributes["Built-On-Minecraft"] = libs.versions.minecraft.get()
         }
     }
 
 	val expandProps = mapOf(
 		"mod_version" to Properties.MOD_VERSION,
 		"group" to project.group, //Else we target the task's group.
-		"minecraft_version" to libs.versions.minecraft.asProvider().get(),
+		"minecraft_version" to libs.versions.minecraft.get(),
 		"fabric_api_version" to libs.versions.fabric.api.get(),
 		"fabric_loader_version" to libs.versions.fabric.loader.get(),
 		"fabric_minecraft_version_range" to Properties.FABRIC_MINECRAFT_RANGE,

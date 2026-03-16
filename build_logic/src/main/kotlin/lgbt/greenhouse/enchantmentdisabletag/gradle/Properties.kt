@@ -2,24 +2,25 @@ package lgbt.greenhouse.enchantmentdisabletag.gradle
 
 object Properties {
     const val MOD_VERSION = "2.0.0"
-    const val JAVA_VERSION = 21
+    const val FRIENDLY_MINECRAFT_VERSION = "26.1.x"
+    const val JAVA_VERSION = 25
 
     const val GROUP = "lgbt.greenhouse.enchantmentdisabletag"
     const val MOD_NAME = "Enchantment Disable Tag"
     const val MOD_ID = "enchantmentdisabletag"
     const val MOD_AUTHOR = "Greenhouse Modding"
-    val MOD_CONTRIBUTORS = listOf("MerchantCalico")
+    val MOD_CONTRIBUTORS = listOf("ChrysanthCow")
     const val DESCRIPTION = "Adds an enchantment tag for disabling enchantments."
     const val LICENSE = "CC0-1.0"
 
-    val SUPPORTED_MINECRAFT_VERSIONS = listOf("1.21", "1.21.1")
+    val SUPPORTED_MINECRAFT_VERSIONS = listOf("26.1")
 
-    const val FABRIC_LOADER_RANGE = ">=0.17"
-    const val FABRIC_MINECRAFT_RANGE = "1.21.10"
+    const val FABRIC_LOADER_RANGE = ">=0.18"
+    const val FABRIC_MINECRAFT_RANGE = "~26.1-"
 
     const val NEOFORGE_LOADER_RANGE = "[4,)"
-    const val NEOFORGE_RANGE = "[21.10,21.11)"
-    const val NEOFORGE_MINECRAFT_RANGE = "[1.21.10,1.21.11)"
+    const val NEOFORGE_RANGE = "[26.1.0.0-alpha.14,26.2.0.0)"
+    const val NEOFORGE_MINECRAFT_RANGE = "[26.1-snapshot-11,26.2)"
 
     const val CURSEFORGE_PAGE = "https://www.curseforge.com/minecraft/mc-mods/enchantment-disable-tag"
     const val CURSEFORGE_PROJECT_ID = "1012987"
@@ -28,8 +29,7 @@ object Properties {
 
     const val FORGEJO_URL = "https://git.greenhouse.lgbt"
     const val FORGEJO_REPO = "GreenhouseModding/enchantment-disable-tag"
-    const val FORGEJO_COMMITISH = "1.21.1"
-
+    const val FORGEJO_COMMITISH = "26.1.x"
 
     const val MAVEN_URL = "https://maven.greenhouse.lgbt/releases"
 }

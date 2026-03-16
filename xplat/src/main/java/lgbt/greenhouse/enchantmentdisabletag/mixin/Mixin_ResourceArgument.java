@@ -21,7 +21,7 @@ public class Mixin_ResourceArgument<T> {
         if (original.key().isFor(Registries.ENCHANTMENT) && original.is((TagKey<T>) EnchantmentDisableTag.DISABLED)) {
             throw new DynamicCommandExceptionType(
                     key -> Component.translatableWithFallback("command.enchantmentdisabledtag.disabled", "Enchantment " + key + " has been disabled via the enchantmentdisabletag:disabled enchantment tag.", key)
-            ).create(original.key().location().toString());
+            ).create(original.key().identifier().toString());
         }
         return original;
     }

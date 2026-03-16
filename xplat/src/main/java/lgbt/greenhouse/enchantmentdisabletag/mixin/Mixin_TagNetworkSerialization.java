@@ -1,12 +1,10 @@
 package lgbt.greenhouse.enchantmentdisabletag.mixin;
 
-import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.ints.IntList;
 import lgbt.greenhouse.enchantmentdisabletag.duck.Duck_DisableTagSyncContext;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagNetworkSerialization;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,17 +15,17 @@ import java.util.Map;
 
 @Mixin(TagNetworkSerialization.class)
 public class Mixin_TagNetworkSerialization {
-    @Inject(method = { "method_40103", "lambda$serializeToNetwork$2" }, at = @At("HEAD"))
+    @Inject(method = "lambda$serializeToNetwork$0", at = @At("HEAD"))
     private static <T> void enchantmentdisabletag$setToSyncWhilstSerializingTagsToNetwork(Registry<T> registry,
-                                                                                          Map<ResourceLocation, IntList> map,
+                                                                                          Map<Identifier, IntList> map,
                                                                                           HolderSet.Named<T> holder,
                                                                                           CallbackInfo ci) {
         ((Duck_DisableTagSyncContext)holder).enchantmentdisabletag$setSyncing(true);
     }
 
-    @Inject(method = { "method_40103", "lambda$serializeToNetwork$2" }, at = @At("TAIL"))
+    @Inject(method = "lambda$serializeToNetwork$0", at = @At("TAIL"))
     private static <T> void enchantmentdisabletag$resetSyncStateAfterSerializingTagsToNetwork(Registry<T> registry,
-                                                                                              Map<ResourceLocation, IntList> map,
+                                                                                              Map<Identifier, IntList> map,
                                                                                               HolderSet.Named<T> holder,
                                                                                               CallbackInfo ci) {
         ((Duck_DisableTagSyncContext)holder).enchantmentdisabletag$setSyncing(false);

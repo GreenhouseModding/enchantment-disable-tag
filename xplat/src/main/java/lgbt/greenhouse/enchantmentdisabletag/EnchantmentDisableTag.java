@@ -2,7 +2,7 @@ package lgbt.greenhouse.enchantmentdisabletag;
 
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -35,7 +35,7 @@ public class EnchantmentDisableTag {
         creativeTabReload = true;
     }
 
-    public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 }

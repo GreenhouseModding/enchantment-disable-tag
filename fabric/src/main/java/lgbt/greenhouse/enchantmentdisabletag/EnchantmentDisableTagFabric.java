@@ -2,23 +2,23 @@ package lgbt.greenhouse.enchantmentdisabletag;
 
 import lgbt.greenhouse.enchantmentdisabletag.duck.Duck_PotentialEnchantmentDisabledStack;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EnchantmentDisableTagFabric implements ModInitializer {
-    public static final ResourceLocation REMOVE_OBSOLETE_ITEMS_PHASE = EnchantmentDisableTag.id("remove_obsolete_items");
+    public static final Identifier REMOVE_OBSOLETE_ITEMS_PHASE = EnchantmentDisableTag.id("remove_obsolete_items");
 
     @Override
     public void onInitialize() {
         if (FabricLoader.getInstance().isModLoaded("fabric-item-group-api-v1")) {
-            ItemGroupEvents.MODIFY_ENTRIES_ALL.addPhaseOrdering(Event.DEFAULT_PHASE, REMOVE_OBSOLETE_ITEMS_PHASE);
-            ItemGroupEvents.MODIFY_ENTRIES_ALL.register(REMOVE_OBSOLETE_ITEMS_PHASE, (group, entries) -> {
+            CreativeModeTabEvents.MODIFY_OUTPUT_ALL.addPhaseOrdering(Event.DEFAULT_PHASE, REMOVE_OBSOLETE_ITEMS_PHASE);
+            CreativeModeTabEvents.MODIFY_OUTPUT_ALL.register(REMOVE_OBSOLETE_ITEMS_PHASE, (group, entries) -> {
                 filterOutTabStacks(entries.getDisplayStacks());
                 filterOutTabStacks(entries.getSearchTabStacks());
             });

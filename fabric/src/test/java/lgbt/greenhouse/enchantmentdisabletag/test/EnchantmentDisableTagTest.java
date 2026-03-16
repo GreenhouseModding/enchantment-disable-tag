@@ -1,7 +1,7 @@
 package lgbt.greenhouse.enchantmentdisabletag.test;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -13,7 +13,7 @@ import net.minecraft.world.item.enchantment.*;
 public class EnchantmentDisableTagTest implements ModInitializer {
     @Override
     public void onInitialize() {
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COMBAT).register(entries -> {
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT).register(entries -> {
             HolderLookup<Enchantment> enchantmentLookup = entries.getContext().holders().lookupOrThrow(Registries.ENCHANTMENT);
 
             ItemStack chestplateStack = new ItemStack(Items.IRON_CHESTPLATE);
@@ -27,7 +27,7 @@ public class EnchantmentDisableTagTest implements ModInitializer {
             EnchantmentHelper.setEnchantments(swordStack, enchantments.toImmutable());
             entries.accept(swordStack);
         });
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
             HolderLookup<Enchantment> enchantmentLookup = entries.getContext().holders().lookupOrThrow(Registries.ENCHANTMENT);
             ItemStack bookStack = new ItemStack(Items.ENCHANTED_BOOK);
             EnchantmentHelper.updateEnchantments(bookStack, mutable -> {

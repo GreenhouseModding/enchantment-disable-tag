@@ -22,10 +22,6 @@ dependencies {
 
 neoForge {
     neoFormVersion = libs.versions.neoform.get()
-    parchment {
-        minecraftVersion = libs.versions.minecraft.parchment.get()
-        mappingsVersion = libs.versions.parchment.get()
-    }
     addModdingDependenciesTo(sourceSets["test"])
 
     val at = file("src/main/resources/${Properties.MOD_ID}.cfg")
@@ -62,15 +58,15 @@ artifacts {
 
 publishMods {
     changelog = rootProject.file("CHANGELOG.md").readText()
-    displayName = "v${Properties.MOD_VERSION} (Minecraft ${libs.versions.minecraft.asProvider().get()})"
-    version = "${Properties.MOD_VERSION}+${libs.versions.minecraft.asProvider().get()}"
+    displayName = "v${Properties.MOD_VERSION} (Minecraft ${Properties.FRIENDLY_MINECRAFT_VERSION})"
+    version = "${Properties.MOD_VERSION}+${Properties.FRIENDLY_MINECRAFT_VERSION}"
     type = STABLE
 
     forgejo {
         accessToken = providers.environmentVariable("FORGEJO_TOKEN")
         host(uri(Properties.FORGEJO_URL))
         repository = Properties.FORGEJO_REPO
-        tagName = "${Properties.MOD_VERSION}+${libs.versions.minecraft.asProvider().get()}"
+        tagName = "${Properties.MOD_VERSION}+${Properties.FRIENDLY_MINECRAFT_VERSION}"
         commitish = Properties.FORGEJO_COMMITISH
 
         file(project(":fabric"))

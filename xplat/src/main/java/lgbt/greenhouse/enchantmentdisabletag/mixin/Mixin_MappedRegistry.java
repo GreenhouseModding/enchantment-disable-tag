@@ -10,9 +10,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,7 +36,7 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
     private boolean enchantmentdisabletag$syncing = false;
 
     @Shadow
-    public abstract Optional<Holder.Reference<T>> get(ResourceLocation p_316743_);
+    public abstract Optional<Holder.Reference<T>> get(Identifier p_316743_);
 
     @Shadow
     public abstract Optional<Holder.Reference<T>> get(ResourceKey<T> p_205905_);
@@ -46,7 +47,7 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
 
     @SuppressWarnings("unchecked")
     @ModifyArg(method = "keySet", at = @At(value = "INVOKE", target = "Ljava/util/Collections;unmodifiableSet(Ljava/util/Set;)Ljava/util/Set;"))
-    private Set<ResourceLocation> enchantmentdisabletag$disableFromKeySet(Set<ResourceLocation> original) {
+    private Set<Identifier> enchantmentdisabletag$disableFromKeySet(Set<Identifier> original) {
         if (!key.equals(Registries.ENCHANTMENT)) {
             return original;
         }
@@ -71,7 +72,7 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
     }
 
     @SuppressWarnings("unchecked")
-    @ModifyArg(method = "entrySet", at = @At(value = "INVOKE", target = "Lnet/minecraft/Util;mapValuesLazy(Ljava/util/Map;Lcom/google/common/base/Function;)Ljava/util/Map;"), index = 0)
+    @ModifyArg(method = "entrySet", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;mapValuesLazy(Ljava/util/Map;Lcom/google/common/base/Function;)Ljava/util/Map;"), index = 0)
     private Map<ResourceKey<T>, Holder.Reference<T>> enchantmentdisabletag$disableFromEntrySet(Map<ResourceKey<T>, Holder.Reference<T>> original) {
         if (!key.equals(Registries.ENCHANTMENT)) {
             return original;
@@ -109,7 +110,7 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
     }
 
     @SuppressWarnings("unchecked")
-    @ModifyExpressionValue(method = "getAny", at = @At(value = "FIELD", target = "Lnet/minecraft/core/MappedRegistry;byId:Lit/unimi/dsi/fastutil/objects/ObjectList;", ordinal = 1))
+    @ModifyExpressionValue(method = "getAny", at = @At(value = "FIELD", target = "Lnet/minecraft/core/MappedRegistry;byId:Lit/unimi/dsi/fastutil/objects/ObjectList;", ordinal = 1, opcode = Opcodes.GETFIELD))
     private ObjectList<Holder.Reference<T>> enchantmentdisabletag$disableFromGetAny(ObjectList<Holder.Reference<T>> selections) {
         if (!key.equals(Registries.ENCHANTMENT) || enchantmentdisabletag$syncing) {
             return selections;
@@ -120,7 +121,7 @@ public abstract class Mixin_MappedRegistry<T> implements Duck_DisableTagSyncCont
     }
 
     @SuppressWarnings("unchecked")
-    @ModifyArg(method = "getRandom", at = @At(value = "INVOKE", target = "Lnet/minecraft/Util;getRandomSafe(Ljava/util/List;Lnet/minecraft/util/RandomSource;)Ljava/util/Optional;"), index = 0)
+    @ModifyArg(method = "getRandom", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;getRandomSafe(Ljava/util/List;Lnet/minecraft/util/RandomSource;)Ljava/util/Optional;"), index = 0)
     private List<Holder.Reference<T>> enchantmentdisabletag$disableFromGetRandom(List<Holder.Reference<T>> selections) {
         if (!key.equals(Registries.ENCHANTMENT) || enchantmentdisabletag$syncing) {
             return selections;

@@ -9,24 +9,18 @@ plugins {
 }
 
 repositories {
-    maven {
+    maven("https://maven.terraformersmc.com/") {
         name = "TerraformersMC"
-        url = uri("https://maven.terraformersmc.com/")
     }
 }
 
 dependencies {
     minecraft(libs.minecraft)
-    mappings(loom.layered {
-        officialMojangMappings()
-        parchment(libs.parchment)
-    })
 
-    modImplementation(libs.fabric.loader)
-    modImplementation(libs.fabric.api)
-    modLocalRuntime(libs.mod.menu)
+    implementation(libs.fabric.loader)
+    implementation(libs.fabric.api)
 
-    modLocalRuntime(libs.mod.menu)
+    localRuntime(libs.mod.menu)
 }
 
 loom {
@@ -64,11 +58,11 @@ loom {
 }
 
 publishMods {
-    file.set(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get().archiveFile)
+    file.set(tasks.named<org.gradle.jvm.tasks.Jar>("jar").get().archiveFile)
     modLoaders.add("fabric")
     changelog = rootProject.file("CHANGELOG.md").readText()
-    displayName = "v${Properties.MOD_VERSION} (Fabric ${libs.versions.minecraft.asProvider().get()})"
-    version = "${Properties.MOD_VERSION}+${libs.versions.minecraft.asProvider().get()}-fabric"
+    displayName = "v${Properties.MOD_VERSION} (Fabric ${Properties.FRIENDLY_MINECRAFT_VERSION})"
+    version = "${Properties.MOD_VERSION}+${Properties.FRIENDLY_MINECRAFT_VERSION}}-fabric"
     type = STABLE
 
     curseforge {

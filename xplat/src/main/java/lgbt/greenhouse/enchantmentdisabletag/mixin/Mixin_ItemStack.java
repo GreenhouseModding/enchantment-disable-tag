@@ -5,10 +5,12 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.serialization.Codec;
 import lgbt.greenhouse.enchantmentdisabletag.EnchantmentDisableTag;
 import lgbt.greenhouse.enchantmentdisabletag.duck.Duck_PotentialEnchantmentDisabledStack;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -32,22 +34,19 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
     @Mutable
     public static Codec<ItemStack> CODEC;
 
-    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Shadow
+    @Final
+    @Mutable
+    private PatchedDataComponentMap components;
+
+    @Shadow
+    public abstract Item getItem();
+
     @Mutable
     @Shadow
     @Final
     @Deprecated
-    @Nullable
-    private Item item;
-
-    @Shadow
-    public abstract boolean is(Item item);
-
-    @Shadow
-    @Final
-    @Mutable
-    PatchedDataComponentMap components;
-
+    private @org.jspecify.annotations.Nullable Holder<Item> item;
     @Unique
     private boolean enchantmentdisabletag$wasDisabled = false;
     @Unique
@@ -73,7 +72,7 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
         }, Function.identity());
     }
 
-    @WrapOperation(method = "set", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/PatchedDataComponentMap;set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;"))
+    @WrapOperation(method = "set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/PatchedDataComponentMap;set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;"))
     @Nullable
     private <T> T enchantmentdisabletag$removeDisabledEnchantmentsWhenSettingComponents(PatchedDataComponentMap instance, DataComponentType<? super T> component, T value, Operation<T> original) {
         if (value instanceof ItemEnchantments originalEnchantments) {
@@ -81,8 +80,8 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
             mutable.removeIf(enchantmentHolder -> enchantmentHolder.is(EnchantmentDisableTag.DISABLED));
             ItemEnchantments newEnchantments = mutable.toImmutable();
             if (!newEnchantments.equals(originalEnchantments)) {
-                if (newEnchantments.isEmpty() && component == DataComponents.STORED_ENCHANTMENTS && is(Items.ENCHANTED_BOOK)) {
-                    item = Items.BOOK;
+                if (newEnchantments.isEmpty() && component == DataComponents.STORED_ENCHANTMENTS && ((ItemInstance)this).is(Items.ENCHANTED_BOOK)) {
+                    item = Items.BOOK.builtInRegistryHolder();
                     components = PatchedDataComponentMap.fromPatch(item.components(), components.asPatch());
                     enchantmentdisabletag$changedToUnenchantedItem = true;
                 }
@@ -91,6 +90,27 @@ public abstract class Mixin_ItemStack implements Duck_PotentialEnchantmentDisabl
             }
         }
         return original.call(instance, component, value);
+    }
+
+    @WrapOperation(method = "set(Lnet/minecraft/core/component/TypedDataComponent;)Ljava/lang/Object;", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/PatchedDataComponentMap;set(Lnet/minecraft/core/component/TypedDataComponent;)Ljava/lang/Object;"))
+    @Nullable
+    private <T> T enchantmentdisabletag$removeDisabledEnchantmentsWhenSettingComponents(PatchedDataComponentMap instance, TypedDataComponent<T> typedComponent, Operation<T> original) {
+        if (typedComponent.value() instanceof ItemEnchantments originalEnchantments) {
+            ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(originalEnchantments);
+            mutable.removeIf(enchantmentHolder -> enchantmentHolder.is(EnchantmentDisableTag.DISABLED));
+            ItemEnchantments newEnchantments = mutable.toImmutable();
+            if (!newEnchantments.equals(originalEnchantments)) {
+                if (newEnchantments.isEmpty() && typedComponent.type() == DataComponents.STORED_ENCHANTMENTS && ((ItemInstance)this).is(Items.ENCHANTED_BOOK)) {
+                    item = Items.BOOK.builtInRegistryHolder();
+                    components = PatchedDataComponentMap.fromPatch(getItem().components(), components.asPatch());
+                    enchantmentdisabletag$changedToUnenchantedItem = true;
+                }
+                enchantmentdisabletag$wasDisabled = true;
+                //noinspection unchecked
+                return original.call(instance, new TypedDataComponent<>((DataComponentType<? super ItemEnchantments>)(Object)typedComponent.type(), newEnchantments));
+            }
+        }
+        return original.call(instance, typedComponent);
     }
 
     @Override
