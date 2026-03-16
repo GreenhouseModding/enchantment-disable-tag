@@ -11,12 +11,12 @@ out
 *.ipr
 *.iws
 *.iml
-.idea/*
-!.idea/scopes
+.idea
 
 # gradle
 build
 .gradle
+.kotlin
 
 # other
 eclipse

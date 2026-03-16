@@ -4,7 +4,7 @@ object Properties {
     const val MOD_VERSION = "2.0.0"
     const val JAVA_VERSION = 21
 
-    const val GROUP = "lgbt.greenhouse"
+    const val GROUP = "lgbt.greenhouse.enchantmentdisabletag"
     const val MOD_NAME = "Enchantment Disable Tag"
     const val MOD_ID = "enchantmentdisabletag"
     const val MOD_AUTHOR = "Greenhouse Modding"
@@ -25,8 +25,10 @@ object Properties {
     const val MODRINTH_PAGE = "https://modrinth.com/mod/enchantment-disable-tag"
     const val MODRINTH_PROJECT_ID = "P7SsQE5n"
 
-    const val GITHUB_REPO = "GreenhouseTeam/enchantment-disable-tag"
-    const val GITHUB_COMMITISH =  "1.21.1"
+    const val FORGEJO_URL = "https://git.greenhouse.lgbt"
+    const val FORGEJO_REPO = "GreenhouseModding/enchantment-disable-tag"
+    const val FORGEJO_COMMITISH = "1.21.1"
+
 
     const val MAVEN_URL = "https://maven.greenhouse.lgbt/releases"
 }
