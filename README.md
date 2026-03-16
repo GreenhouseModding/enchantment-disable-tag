@@ -26,16 +26,17 @@ repositories {
 dependencies {
     // Depend on the Xplat build, for Mojmap based cross-platform modules.
     compileOnly("lgbt.greenhouse.enchantmentdisabletag:enchantmentdisabletag-xplat:${enchantment_disable_tag_version}")
-    
+
     // Depend on the Fabric build, for Loom.
     // Intermediary based cross-platform modules should also use this instead of the xplat build.
     modImplementation("lgbt.greenhouse.enchantmentdisabletag:enchantmentdisabletag-fabric:${enchantment_disable_tag_version}")
-    
+
     // Depend on the Forge build, for Legacy ModDevGradle.
     modImplementation("lgbt.greenhouse.enchantmentdisabletag:enchantmentdisabletag-forge:${enchantment_disable_tag_version}")
 
     // Depend on the Forge build, for ForgeGradle.
     implementation(fg.deobf("lgbt.greenhouse.enchantmentdisabletag:enchantmentdisabletag-forge:${enchantment_disable_tag_version}"))
+}
 ```
 
 ```properties
