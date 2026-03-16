@@ -1,0 +1,29 @@
+name: Build
+
+on: push
+
+jobs:
+  build:
+
+    runs-on: docker
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Repository
+        uses: https://code.forgejo.org/actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: https://git.greenhouse.lgbt/Modding/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: https://git.greenhouse.lgbt/Modding/gradle-actions/setup-gradle@v4
+        with:
+          cache-read-only: false
+
+      - name: Build with Gradle
+        run: ./gradlew build --stacktrace
