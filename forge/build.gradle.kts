@@ -3,6 +3,7 @@ import lgbt.greenhouse.enchantmentdisabletag.gradle.Properties
 plugins {
     id("conventions.loader")
     alias(libs.plugins.moddev.legacy)
+    alias(libs.plugins.mod.publish)
 }
 
 repositories {
