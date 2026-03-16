@@ -103,7 +103,7 @@ tasks {
 		"java_version" to Properties.JAVA_VERSION,
 		"curseforge_page" to Properties.CURSEFORGE_PAGE,
 		"modrinth_page" to Properties.MODRINTH_PAGE,
-		"sources" to "https://github.com/${Properties.GITHUB_REPO}"
+        "sources" to "${Properties.FORGEJO_URL}/${Properties.FORGEJO_REPO}"
 	)
 
     val processResourcesTasks = listOf("processResources", "processTestResources", "processDatagenResources")

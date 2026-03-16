@@ -66,11 +66,12 @@ publishMods {
     version = "${Properties.MOD_VERSION}+${libs.versions.minecraft.asProvider().get()}"
     type = STABLE
 
-    github {
-        accessToken = providers.environmentVariable("GITHUB_TOKEN")
-        repository = Properties.GITHUB_REPO
+    forgejo {
+        accessToken = providers.environmentVariable("FORGEJO_TOKEN")
+        host(uri(Properties.FORGEJO_URL))
+        repository = Properties.FORGEJO_REPO
         tagName = "${Properties.MOD_VERSION}+${libs.versions.minecraft.asProvider().get()}"
-        commitish = Properties.GITHUB_COMMITISH
+        commitish = Properties.FORGEJO_COMMITISH
 
         file(project(":fabric"))
         additionalFile(project(":forge"))
