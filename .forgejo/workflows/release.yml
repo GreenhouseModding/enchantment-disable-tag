@@ -40,6 +40,24 @@ jobs:
           retention-days: 1
           overwrite: true
 
+  curseforge:
+    runs-on: docker
+    needs: build
+
+    steps:
+      - name: Download Build Files
+        uses: https://code.forgejo.org/forgejo/download-artifact@v4
+        with:
+          name: build
+
+      - name: Chmod gradlew
+        run: chmod +x ./gradlew
+
+      - name: Publish to CurseForge
+        run: ./gradlew publishCurseforge
+        env:
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+
   modrinth:
     runs-on: docker
     needs: build
