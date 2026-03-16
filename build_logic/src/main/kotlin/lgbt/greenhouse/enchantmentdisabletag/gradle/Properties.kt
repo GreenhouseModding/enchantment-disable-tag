@@ -4,7 +4,7 @@ object Properties {
     const val MOD_VERSION = "2.0.0"
     const val JAVA_VERSION = 17
 
-    const val GROUP = "lgbt.greenhouse"
+    const val GROUP = "lgbt.greenhouse.enchantmentdisabletag"
     const val MOD_NAME = "Enchantment Disable Tag"
     const val MOD_ID = "enchantmentdisabletag"
     const val MOD_AUTHOR = "Greenhouse Modding"
