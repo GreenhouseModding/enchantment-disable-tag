@@ -84,7 +84,7 @@ tasks {
 	val expandProps = mapOf(
 		"mod_version" to Properties.MOD_VERSION,
 		"group" to project.group, //Else we target the task's group.
-		"minecraft_version" to libs.versions.minecraft.get(),
+		"minecraft_version" to Properties.FRIENDLY_MINECRAFT_VERSION,
 		"fabric_api_version" to libs.versions.fabric.api.get(),
 		"fabric_loader_version" to libs.versions.fabric.loader.get(),
 		"fabric_minecraft_version_range" to Properties.FABRIC_MINECRAFT_RANGE,
