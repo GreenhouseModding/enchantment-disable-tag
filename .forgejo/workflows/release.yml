@@ -45,10 +45,10 @@ jobs:
     needs: build
 
     steps:
-      - name: Set up JDK 25
+      - name: Set up JDK 17
         uses: https://git.greenhouse.lgbt/Modding/setup-java@v5
         with:
-          java-version: '25'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Download Build Files
@@ -69,10 +69,10 @@ jobs:
     needs: build
 
     steps:
-      - name: Set up JDK 25
+      - name: Set up JDK 17
         uses: https://git.greenhouse.lgbt/Modding/setup-java@v5
         with:
-          java-version: '25'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Download Build Files
@@ -93,10 +93,10 @@ jobs:
     needs: build
 
     steps:
-      - name: Set up JDK 25
+      - name: Set up JDK 17
         uses: https://git.greenhouse.lgbt/Modding/setup-java@v5
         with:
-          java-version: '25'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Download Build Files
@@ -117,10 +117,10 @@ jobs:
     needs: build
 
     steps:
-      - name: Set up JDK 25
+      - name: Set up JDK 17
         uses: https://git.greenhouse.lgbt/Modding/setup-java@v5
         with:
-          java-version: '25'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Download Build Files
