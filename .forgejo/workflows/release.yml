@@ -45,6 +45,12 @@ jobs:
     needs: build
 
     steps:
+      - name: Set up JDK 25
+        uses: https://git.greenhouse.lgbt/Modding/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
       - name: Download Build Files
         uses: https://code.forgejo.org/forgejo/download-artifact@v4
         with:
@@ -63,6 +69,12 @@ jobs:
     needs: build
 
     steps:
+      - name: Set up JDK 25
+        uses: https://git.greenhouse.lgbt/Modding/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
       - name: Download Build Files
         uses: https://code.forgejo.org/forgejo/download-artifact@v4
         with:
@@ -81,6 +93,12 @@ jobs:
     needs: build
 
     steps:
+      - name: Set up JDK 25
+        uses: https://git.greenhouse.lgbt/Modding/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
       - name: Download Build Files
         uses: https://code.forgejo.org/forgejo/download-artifact@v4
         with:
@@ -99,6 +117,12 @@ jobs:
     needs: build
 
     steps:
+      - name: Set up JDK 25
+        uses: https://git.greenhouse.lgbt/Modding/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
       - name: Download Build Files
         uses: https://code.forgejo.org/forgejo/download-artifact@v4
         with:
