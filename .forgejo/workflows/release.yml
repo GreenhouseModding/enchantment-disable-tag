@@ -110,7 +110,7 @@ jobs:
       - name: Publish to Forgejo
         run: ./gradlew publishForgejo
         env:
-          FORGEJO_TOKEN: ${{ forge.FORGEJO_TOKEN }}
+          FORGEJO_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
 
   maven:
     runs-on: docker
