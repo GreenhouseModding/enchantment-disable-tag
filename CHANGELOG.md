@@ -1,3 +1,1 @@
-## Bugfixes
-
-- Hopefully fix Forge build failing to obfuscate correctly.
+- Upload the actual correct Forge JAR for production environment.
