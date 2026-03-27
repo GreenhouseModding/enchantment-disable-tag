@@ -70,6 +70,7 @@ legacyForge {
 }
 
 tasks.getByName<Jar>("jar") {
+    finalizedBy("reobfJar")
     manifest.attributes(
         Pair("MixinConfig", "${Properties.MOD_ID}.mixins.json"),
         Pair("MixinConfig", "${Properties.MOD_ID}.forge.mixins.json")
