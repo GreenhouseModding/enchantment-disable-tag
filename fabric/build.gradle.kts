@@ -75,7 +75,7 @@ publishMods {
         clientRequired = true
         serverRequired = true
 
-        requires("fabric-api")
+        optional("fabric-api")
     }
 
     modrinth {
@@ -84,6 +84,6 @@ publishMods {
 
         minecraftVersions.addAll(Properties.SUPPORTED_MINECRAFT_VERSIONS)
 
-        requires("fabric-api")
+        optional("fabric-api")
     }
 }
