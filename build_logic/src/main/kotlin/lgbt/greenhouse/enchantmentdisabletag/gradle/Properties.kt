@@ -16,11 +16,11 @@ object Properties {
     val SUPPORTED_MINECRAFT_VERSIONS = listOf("26.1")
 
     const val FABRIC_LOADER_RANGE = ">=0.18"
-    const val FABRIC_MINECRAFT_RANGE = "~26.1-"
+    const val FABRIC_MINECRAFT_RANGE = "~26.1"
 
     const val NEOFORGE_LOADER_RANGE = "[4,)"
-    const val NEOFORGE_RANGE = "[26.1.0.0-alpha.14,26.2.0.0)"
-    const val NEOFORGE_MINECRAFT_RANGE = "[26.1-snapshot-11,26.2)"
+    const val NEOFORGE_RANGE = "[26.1.0.0-beta,26.2.0.0)"
+    const val NEOFORGE_MINECRAFT_RANGE = "[26.1,26.2)"
 
     const val CURSEFORGE_PAGE = "https://www.curseforge.com/minecraft/mc-mods/enchantment-disable-tag"
     const val CURSEFORGE_PROJECT_ID = "1012987"
