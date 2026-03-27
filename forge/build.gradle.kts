@@ -78,7 +78,7 @@ tasks.getByName<Jar>("jar") {
 }
 
 publishMods {
-    file.set(tasks.named<org.gradle.jvm.tasks.Jar>("jar").get().archiveFile)
+    file.set(tasks.named<org.gradle.jvm.tasks.Jar>("reobfJar").get().archiveFile)
     modLoaders.add("forge")
     changelog = rootProject.file("CHANGELOG.md").readText()
     displayName = "v${Properties.MOD_VERSION} (Forge ${libs.versions.minecraft.asProvider().get()})"
