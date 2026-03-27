@@ -10,7 +10,6 @@ mixin-extras = "0.3.6"
 # Fabric
 fabric-loader = "0.16.14"
 fabric-api = "0.92.6+1.20.1"
-mod-menu = "7.2.2"
 
 # Forge
 forge = "1.20.1-47.4.18"
@@ -30,7 +29,6 @@ mixin-extras-forge = { module = "io.github.llamalad7:mixinextras-forge", version
 
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
 fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
-mod-menu = { module = "com.terraformersmc:modmenu", version.ref = "mod-menu" }
 
 [plugins]
 loom = { id = "fabric-loom", version.ref = "loom" }

@@ -24,9 +24,6 @@ dependencies {
 
     modImplementation(libs.fabric.loader)
     modImplementation(libs.fabric.api)
-    modLocalRuntime(libs.mod.menu)
-
-    modLocalRuntime(libs.mod.menu)
 }
 
 loom {
